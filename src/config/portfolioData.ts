@@ -21,9 +21,10 @@ export const portfolioData: PortfolioData = {
       school: "Southeast University",
       degree: "B.Sc. in Computer Science",
       period: "2022 - Present",
-    }
+    },
   ],
-  about: "A performance-driven engineer architecting high-availability backends and scalable microservices. Specialized in constructing resilient infrastructures using NestJS, Go, and AWS, while bridgeing the gap with pixel-perfect frontend experiences.",
+  about:
+    "A performance-driven engineer architecting high-availability backends and scalable microservices. Specialized in constructing resilient infrastructures using NestJS, Go, and AWS, while bridgeing the gap with pixel-perfect frontend experiences.",
   experience: [
     {
       company: "Softvence Agency",
@@ -33,22 +34,36 @@ export const portfolioData: PortfolioData = {
         "Architecting scalable RESTful APIs and Microservices using Node.js, NestJS, and TypeScript.",
         "Managing distributed systems with Redis caching and real-time WebSocket communication.",
         "Implementing secure FinTech flows with Stripe and automated billing structures.",
-        "Orchestrating containerized deployments via Docker, Nginx, and AWS EC2/S3 pipelines."
+        "Orchestrating containerized deployments via Docker, Nginx, and AWS EC2/S3 pipelines.",
       ],
-      tech: ["NestJS", "NodeJs", "Docker", "AWS", "Redis", "Kafka", "PostgreSQL" , "Prisma" , "MongoDB" , "Mongoose" , "WebSockets", "Socket.io" , "WebRTC"]
-    }
+      tech: [
+        "NestJS",
+        "NodeJs",
+        "Docker",
+        "AWS",
+        "Redis",
+        "Kafka",
+        "PostgreSQL",
+        "Prisma",
+        "MongoDB",
+        "Mongoose",
+        "WebSockets",
+        "Socket.io",
+        "WebRTC",
+      ],
+    },
   ],
   techStack: [
     {
       title: "Core Languages",
       items: [
-        { name: "Go", icon: SiGo, color: "#00ADD8" },
+        { name: "TypeScript", icon: SiTypescript, color: "#3178C6" },
         { name: "JavaScript", icon: SiJavascript, color: "#F7DF1E" },
+        { name: "Go", icon: SiGo, color: "#00ADD8" },
         { name: "Python", icon: SiPython, color: "#3776AB" },
         { name: "C", icon: SiC, color: "#00599C" },
         { name: "C++", icon: SiCplusplus, color: "#00599C" },
-        { name: "TypeScript", icon: SiTypescript, color: "#3178C6" },
-      ]
+      ],
     },
     {
       title: "Backend & Databases",
@@ -66,7 +81,7 @@ export const portfolioData: PortfolioData = {
         { name: "GraphQL", icon: SiGraphql, color: "#E10098" },
         { name: "Firebase", icon: SiFirebase, color: "#FFCA28" },
         { name: "JWT", icon: SiJsonwebtokens, color: "#FFFFFF" },
-      ]
+      ],
     },
     {
       title: "Frontend",
@@ -79,7 +94,7 @@ export const portfolioData: PortfolioData = {
         { name: "Material UI", icon: SiMui, color: "#007FFF" },
         { name: "DaisyUI", icon: FaLayerGroup, color: "#00B4A2" },
         { name: "Zod", icon: FaCheckCircle, color: "#FFFFFF" },
-      ]
+      ],
     },
     {
       title: "Architecture & Messaging",
@@ -87,7 +102,7 @@ export const portfolioData: PortfolioData = {
         { name: "Kafka", icon: SiApachekafka, color: "#FFFFFF" },
         { name: "RabbitMQ", icon: SiRabbitmq, color: "#FF6600" },
         { name: "Microservices", icon: SiDocker, color: "#FF6B00" },
-      ]
+      ],
     },
     {
       title: "DevOps & Cloud",
@@ -98,7 +113,7 @@ export const portfolioData: PortfolioData = {
         { name: "Nginx", icon: SiNginx, color: "#009639" },
         { name: "Vercel", icon: SiVercel, color: "#FFFFFF" },
         { name: "Render", icon: SiRender, color: "#0466C8" },
-      ]
+      ],
     },
     {
       title: "Tools & Payments",
@@ -108,7 +123,7 @@ export const portfolioData: PortfolioData = {
         { name: "Postman", icon: SiPostman, color: "#FF6C37" },
         { name: "VS Code", icon: FaCode, color: "#007ACC" },
         { name: "Figma", icon: SiFigma, color: "#F24E1E" },
-      ]
+      ],
     },
     {
       title: "Interpersonal",
@@ -117,49 +132,65 @@ export const portfolioData: PortfolioData = {
         { name: "Communication", icon: FaComments, color: "#FF5722" },
         { name: "Teamwork", icon: FaHandshake, color: "#9C27B0" },
         { name: "Time Management", icon: FaClock, color: "#4CAF50" },
-      ]
-    }
+      ],
+    },
   ],
   projects: [
     {
       title: "Enterprise SaaS Core",
-      description: "High-performance multi-tenant SaaS foundation utilizing microservices, distributed caching, and automated scaling on AWS.",
+      description:
+        "High-performance multi-tenant SaaS foundation utilizing microservices, distributed caching, and automated scaling on AWS.",
       image: "/projects/saas.png",
       liveLink: "https://example.com",
       frontendLink: "https://github.com/shariyerShazan",
       backendLink: "https://github.com/shariyerShazan",
-      tags: ["Microservices", "NestJS", "AWS", "Infrastructure"]
+      tags: ["Microservices", "NestJS", "AWS", "Infrastructure"],
     },
     {
       title: "Real-time Fintech Engine",
-      description: "Low-latency financial transaction handler with real-time analytics, Stripe integration, and WebSocket event streaming.",
+      description:
+        "Low-latency financial transaction handler with real-time analytics, Stripe integration, and WebSocket event streaming.",
       image: "/projects/fintech.png",
       liveLink: "https://example.com",
       frontendLink: "https://github.com/shariyerShazan",
       backendLink: "https://github.com/shariyerShazan",
-      tags: ["FinTech", "WebSockets", "Go", "Redis"]
-    }
+      tags: ["FinTech", "WebSockets", "Go", "Redis"],
+    },
   ],
   certificates: [
     {
       title: "AWS Certified Solutions Architect – Associate",
       issuer: "Amazon Web Services",
       date: "2024",
-      description: "Validation of expertise in designing and deploying scalable systems on AWS platform.",
-      fileUrl: "/certificates/placeholder.pdf"
+      description:
+        "Validation of expertise in designing and deploying scalable systems on AWS platform.",
+      fileUrl: "/certificates/placeholder.pdf",
     },
     {
       title: "Certified Kubernetes Administrator (CKA)",
       issuer: "CNCF",
       date: "2024",
-      description: "Demonstrating proficiency in managing production-grade Kubernetes clusters.",
-      fileUrl: "/certificates/placeholder.pdf"
-    }
+      description:
+        "Demonstrating proficiency in managing production-grade Kubernetes clusters.",
+      fileUrl: "/certificates/placeholder.pdf",
+    },
   ],
   socials: [
-    { name: "LinkedIn", href: "https://www.linkedin.com/in/shariyerShazan", icon: FaLinkedin },
-    { name: "GitHub", href: "https://github.com/shariyerShazan", icon: FaGithub },
-    { name: "Email", href: "mailto:shariyershazan1@gmail.com", icon: FaEnvelope },
+    {
+      name: "LinkedIn",
+      href: "https://www.linkedin.com/in/shariyerShazan",
+      icon: FaLinkedin,
+    },
+    {
+      name: "GitHub",
+      href: "https://github.com/shariyerShazan",
+      icon: FaGithub,
+    },
+    {
+      name: "Email",
+      href: "mailto:shariyershazan1@gmail.com",
+      icon: FaEnvelope,
+    },
     { name: "Twitter", href: "https://x.com/SJan_1293", icon: FaTwitter },
-  ]
+  ],
 };
