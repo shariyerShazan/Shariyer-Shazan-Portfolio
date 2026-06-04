@@ -1,0 +1,122 @@
+@import "tailwindcss";
+@import "aos/dist/aos.css";
+
+@theme {
+  --color-brand-bg: #0a0f1d;
+  --color-brand-cyan: #00f0ff;
+  --color-brand-purple: #7C3AED;
+  --color-brand-metallic: #94a3b8;
+  --color-brand-metallic-light: #cbd5e1;
+  --color-brand-metallic-dark: #475569;
+  --font-sans: var(--font-inter);
+  --font-outfit: var(--font-outfit);
+}
+
+:root {
+  --background: var(--color-brand-bg);
+  --foreground: #f8fafc;
+}
+
+body {
+  background-color: var(--background);
+  color: var(--foreground);
+  overflow-x: hidden;
+  scroll-behavior: smooth;
+}
+
+/* Railway Border Utilities */
+.railway-border {
+  position: fixed;
+  pointer-events: none;
+  z-index: 50;
+}
+
+.railway-outer {
+  top: 10px; bottom: 10px; left: 10px; right: 10px;
+  border: 1px solid var(--color-brand-metallic-dark);
+  opacity: 0.6;
+}
+
+.railway-middle {
+  top: 18px; bottom: 18px; left: 18px; right: 18px;
+  border: 2px dashed rgba(148, 163, 184, 0.2);
+}
+
+.railway-inner {
+  top: 26px; bottom: 26px; left: 26px; right: 26px;
+  border: 1px solid rgba(0, 240, 255, 0.4);
+  box-shadow: 0 0 10px rgba(0, 240, 255, 0.1), inset 0 0 10px rgba(0, 240, 255, 0.1);
+}
+
+/* Intersecting horizontal/vertical corner overlaps */
+.railway-cross-topLeft, .railway-cross-topRight,
+.railway-cross-bottomLeft, .railway-cross-bottomRight {
+  position: fixed;
+  width: 32px;
+  height: 32px;
+  border: 1px solid var(--color-brand-cyan);
+  z-index: 51;
+  pointer-events: none;
+  opacity: 0.8;
+}
+.railway-cross-topLeft { top: 10px; left: 10px; border-right: none; border-bottom: none; }
+.railway-cross-topRight { top: 10px; right: 10px; border-left: none; border-bottom: none; }
+.railway-cross-bottomLeft { bottom: 10px; left: 10px; border-right: none; border-top: none; }
+.railway-cross-bottomRight { bottom: 10px; right: 10px; border-left: none; border-top: none; }
+
+
+/* Background Grid / Circuit */
+.bg-circuit {
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  background-image: 
+    linear-gradient(rgba(0, 240, 255, 0.04) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0, 240, 255, 0.04) 1px, transparent 1px);
+  background-size: 40px 40px;
+  opacity: 0.7;
+}
+
+.bg-circuit::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle at center, transparent 0%, #0a0f1d 80%);
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+}
+::-webkit-scrollbar-track {
+  background: var(--color-brand-bg);
+}
+::-webkit-scrollbar-thumb {
+  background: var(--color-brand-metallic-dark);
+  border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--color-brand-cyan);
+}
+
+@keyframes scan {
+  from { top: 0; }
+  to { top: 100%; }
+}
+
+.animate-scan {
+  animation: scan 3s linear infinite;
+}
+
+.bg-grid-pattern {
+  background-image: 
+    linear-gradient(rgba(0, 240, 255, 0.05) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0, 240, 255, 0.05) 1px, transparent 1px);
+  background-size: 20px 20px;
+}
+
+@layer base {
+  h1, h2, h3, h4, h5, h6 {
+    @apply text-white font-bold tracking-tight;
+  }
+}
