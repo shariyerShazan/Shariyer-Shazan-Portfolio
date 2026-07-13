@@ -5,13 +5,19 @@ export async function POST(req: Request) {
   try {
     const { name, email, type, message } = await req.json();
 
-    // Configure your transporter (Environment variables should be used here)
+    // Sanitize variables in case the .env configuration wraps values in literal quotes
+    const smtpHost = (process.env.SMTP_HOST || "smtp.example.com").replace(/^["']|["']$/g, "");
+    const smtpPortVal = process.env.SMTP_PORT ? String(process.env.SMTP_PORT).replace(/^["']|["']$/g, "") : "587";
+    const smtpPort = Number(smtpPortVal) || 587;
+    const smtpUser = (process.env.SMTP_USER || "").replace(/^["']|["']$/g, "");
+    const smtpPass = (process.env.SMTP_PASS || "").replace(/^["']|["']$/g, "");
+
     const transporter = nodemailer.createTransport({
-      host: process.env.SMTP_HOST || "smtp.example.com",
-      port: Number(process.env.SMTP_PORT) || 587,
+      host: smtpHost,
+      port: smtpPort,
       auth: {
-        user: process.env.SMTP_USER,
-        pass: process.env.SMTP_PASS,
+        user: smtpUser,
+        pass: smtpPass,
       },
     });
 
@@ -32,10 +38,9 @@ export async function POST(req: Request) {
       `,
     };
 
-    // If environment variables are missing, we simulate success for demo purposes
-    // IN PRODUCTION: Ensure env variables are set
-    if (!process.env.SMTP_USER || !process.env.SMTP_PASS) {
-      console.log("SMTP Credentials missing. Form data received:", { name, email, type, message });
+    // If environment variables are missing or use default demo placeholders, simulate success
+    if (!smtpUser || !smtpPass || smtpHost === "smtp.example.com") {
+      console.log("SMTP Credentials missing or placeholder host detected. Form details received:", { name, email, type, message });
       return NextResponse.json({ message: "Simulated success (Dev Mode)" }, { status: 200 });
     }
 

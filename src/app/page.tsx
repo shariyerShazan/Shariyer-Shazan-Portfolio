@@ -8,6 +8,7 @@ import Projects from "@/components/sections/Projects";
 import Education from "@/components/sections/Education";
 import Contact from "@/components/sections/Contact";
 import { AOSInit } from "@/components/AOSInit";
+import { portfolioData } from "@/config/portfolioData";
 
 export default function Home() {
   return (
@@ -21,7 +22,7 @@ export default function Home() {
       <Contact />
       
       <footer className="py-12 text-center text-slate-500 font-mono text-sm">
-        <p>&copy; {new Date().getFullYear()} Shariyer Shazan. Built with Next.js & Tailwind CSS.</p>
+        <p>&copy; {new Date().getFullYear()} {portfolioData.name}. Built with Next.js & Tailwind CSS.</p>
       </footer>
     </div>
   );

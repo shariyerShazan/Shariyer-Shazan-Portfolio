@@ -9,12 +9,14 @@ export interface Education {
   school: string;
   degree: string;
   period: string;
+  location?: string;
 }
 
 export interface Experience {
   company: string;
   role: string;
   period: string;
+  location?: string;
   description: string[];
   tech?: string[];
 }
@@ -33,11 +35,14 @@ export interface TechCategory {
 export interface Project {
   title: string;
   description: string;
-  image: string;
-  liveLink: string;
-  frontendLink: string;
+  image?: string;
+  liveLink?: string;
+  frontendLink?: string;
   backendLink?: string;
+  swaggerLink?: string;
   tags: string[];
+  isConfidential?: boolean;
+  highlights?: string[];
 }
 
 export interface SocialLink {
@@ -52,12 +57,17 @@ export interface Certificate {
   date: string;
   description?: string;
   link?: string;
-  fileUrl?: string; // Consistent with fahim-portfolio
+  fileUrl?: string;
 }
 
 export interface PortfolioData {
   name: string;
   role: string;
+  roles: string[];
+  location: string;
+  resumeLink: string;
+  careerObjective: string;
+  languages: string[];
   education: Education[];
   about: string;
   experience: Experience[];

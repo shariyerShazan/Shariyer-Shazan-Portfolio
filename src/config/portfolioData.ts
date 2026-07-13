@@ -5,55 +5,114 @@ import {
   SiJsonwebtokens, SiDocker, SiGithubactions,
   SiNginx, SiVercel, SiRender, SiReact, SiNextdotjs, SiTailwindcss,
   SiRedux, SiMui, SiShadcnui, SiStripe,
-  SiFirebase, SiPostman, SiFigma
+  SiFirebase, SiPostman, SiFigma, SiSwagger, SiCloudinary, SiMongoose,
 } from "react-icons/si";
-import { 
-  FaGithub, FaLinkedin, FaTwitter, FaEnvelope, FaAws, 
-  FaUsers, FaComments, FaHandshake, FaClock, FaCode, FaLayerGroup, FaCheckCircle
+import {
+  FaGithub, FaLinkedin, FaTwitter, FaEnvelope, FaAws,
+  FaUsers, FaComments, FaHandshake, FaClock, FaCode, FaLayerGroup, FaCheckCircle,
+  FaFacebook, FaInstagram, FaLinux, FaTerminal, FaCreditCard,
 } from "react-icons/fa";
+import { TbNetwork } from "react-icons/tb";
 import { PortfolioData } from "@/types/portfolio";
 
 export const portfolioData: PortfolioData = {
   name: "Shariyer Shazan",
-  role: "Backend Architect | Full Stack Developer",
+  role: "Backend Engineer | Distributed Systems & Microservices",
+  roles: [
+    "distributed systems",
+    "event-driven microservices",
+    "high-performance APIs",
+    "scalable backend architectures",
+    "secure payment integrations",
+  ],
+  location: "Tejgaon, Dhaka, Bangladesh",
+  resumeLink:
+    "https://drive.google.com/file/d/1vq9T0M7qWBFi7xLagAcx9nojvnApvJyQ/view?usp=sharing",
+  careerObjective:
+    "Backend Engineer specializing in robust distributed architectures, high-throughput microservices, and Clean APIs. Proven expertise in building enterprise-grade monorepo engines utilizing gRPC communication networks, Kafka event streams, multi-cluster Redis caching, and replicated database hubs.",
+  languages: [
+    "English (Fluent)",
+    "Bangla (Native)",
+    "Hindi (Conversational)",
+    "Urdu (Conversational)",
+  ],
+  about:
+    "I am a Backend Engineer focused on designing production-minded server architectures. Drawing from deep experience engineering scaled microservice cores—exemplified by Waave's high-performance gRPC pipelines, message streaming patterns (Kafka), PostgreSQL primary-replica pools, and MongoDB replica clusters—I construct bulletproof backend systems prioritizing speed, strict transaction isolation, and developer-friendly REST/Swagger hubs.",
   education: [
     {
       school: "Southeast University",
-      degree: "B.Sc. in Computer Science",
-      period: "2022 - Present",
+      degree: "B.Sc. in Computer Science and Engineering",
+      period: "2025 – Present",
+      location: "Dhaka, Bangladesh",
+    },
+    {
+      school: "BAF Shaheen College",
+      degree: "Higher Secondary Certificate (HSC)",
+      period: "2022 – 2024",
+      location: "Dhaka, Bangladesh",
     },
   ],
-  about:
-    "A performance-driven engineer architecting high-availability backends and scalable microservices. Specialized in constructing resilient infrastructures using NestJS, Go, and AWS, while bridgeing the gap with pixel-perfect frontend experiences.",
   experience: [
     {
-      company: "Softvence Agency",
-      role: "Full-Stack Developer",
+      company: "Betopia",
+      role: "Full Stack Developer (Backend-Focused)",
       period: "AUG 2025 – PRESENT",
+      location: "Dhaka, Bangladesh",
       description: [
-        "Architecting scalable RESTful APIs and Microservices using Node.js, NestJS, and TypeScript.",
-        "Managing distributed systems with Redis caching and real-time WebSocket communication.",
-        "Implementing secure FinTech flows with Stripe and automated billing structures.",
-        "Orchestrating containerized deployments via Docker, Nginx, and AWS EC2/S3 pipelines.",
+        "Engineered the backend for a health & weight-management platform covering 5+ body metrics, subscription-gated provider access, and secure payment processing.",
+        "Delivered an AI meal-recommendation engine (3 input modes: text, voice, image) generating 3 daily targets — calorie, protein, water — plus a provider marketplace and admin panel driving 2 revenue streams.",
+        "Shipped 3 production full-stack applications (Node.js, NestJS, PostgreSQL, MongoDB) with Socket.IO and Stripe, and streamlined CI/CD (Docker + GitHub Actions) on AWS across all projects.",
       ],
       tech: [
         "NestJS",
-        "NodeJs",
-        "Docker",
-        "AWS",
+        "Node.js",
+        "TypeScript",
+        "PostgreSQL",
+        "MongoDB",
+        "Prisma",
+        "Mongoose",
         "Redis",
         "Kafka",
-        "PostgreSQL",
-        "Prisma",
-        "MongoDB",
-        "Mongoose",
-        "WebSockets",
-        "Socket.io",
-        "WebRTC",
+        "gRPC",
+        "Socket.IO",
+        "Stripe",
+        "Docker",
+        "AWS",
+        "GitHub Actions",
       ],
     },
   ],
   techStack: [
+    {
+      title: "Backend & Databases",
+      items: [
+        { name: "NestJS", icon: SiNestjs, color: "#E0234E" },
+        { name: "Node.js", icon: SiNodedotjs, color: "#339933" },
+        { name: "Express.js", icon: SiExpress, color: "#FFFFFF" },
+        { name: "Kafka", icon: SiApachekafka, color: "#FFFFFF" },
+        { name: "gRPC", icon: TbNetwork, color: "#244c5a" },
+        { name: "Redis", icon: SiRedis, color: "#DC382D" },
+        { name: "Socket.IO", icon: SiSocketdotio, color: "#FFFFFF" },
+        { name: "PostgreSQL", icon: SiPostgresql, color: "#4169E1" },
+        { name: "Prisma", icon: SiPrisma, color: "#2D3748" },
+        { name: "MongoDB", icon: SiMongodb, color: "#47A248" },
+        { name: "Mongoose", icon: SiMongoose, color: "#880000" },
+        { name: "MySQL", icon: SiMysql, color: "#4479A1" },
+        { name: "GraphQL", icon: SiGraphql, color: "#E10098" },
+        { name: "Swagger", icon: SiSwagger, color: "#85EA2D" },
+        { name: "JWT", icon: SiJsonwebtokens, color: "#FFFFFF" },
+        { name: "Firebase", icon: SiFirebase, color: "#FFCA28" },
+      ],
+    },
+    {
+      title: "Architecture & Messaging",
+      items: [
+        { name: "Microservices", icon: SiDocker, color: "#FF6B00" },
+        { name: "Kafka", icon: SiApachekafka, color: "#FFFFFF" },
+        { name: "gRPC", icon: TbNetwork, color: "#244c5a" },
+        { name: "RabbitMQ", icon: SiRabbitmq, color: "#FF6600" },
+      ],
+    },
     {
       title: "Core Languages",
       items: [
@@ -66,30 +125,25 @@ export const portfolioData: PortfolioData = {
       ],
     },
     {
-      title: "Backend & Databases",
+      title: "DevOps & Cloud",
       items: [
-        { name: "NestJS", icon: SiNestjs, color: "#E0234E" },
-        { name: "Redis", icon: SiRedis, color: "#DC382D" },
-        { name: "Node.js", icon: SiNodedotjs, color: "#339933" },
-        { name: "Express.js", icon: SiExpress, color: "#FFFFFF" },
-        // { name: "GoFiber", icon: SiGo, color: "#00ADD8" },
-        { name: "Socket.IO", icon: SiSocketdotio, color: "#FFFFFF" },
-        { name: "MongoDB", icon: SiMongodb, color: "#47A248" },
-        { name: "PostgreSQL", icon: SiPostgresql, color: "#4169E1" },
-        { name: "Prisma", icon: SiPrisma, color: "#2D3748" },
-        { name: "MySQL", icon: SiMysql, color: "#4479A1" },
-        { name: "GraphQL", icon: SiGraphql, color: "#E10098" },
-        { name: "Firebase", icon: SiFirebase, color: "#FFCA28" },
-        { name: "JWT", icon: SiJsonwebtokens, color: "#FFFFFF" },
+        { name: "Docker", icon: SiDocker, color: "#2496ED" },
+        { name: "AWS", icon: FaAws, color: "#FF9900" },
+        { name: "Linux", icon: FaLinux, color: "#FCC624" },
+        { name: "Shell Scripting", icon: FaTerminal, color: "#FFFFFF" },
+        { name: "GitHub Actions", icon: SiGithubactions, color: "#2088FF" },
+        { name: "Nginx", icon: SiNginx, color: "#009639" },
+        { name: "Vercel", icon: SiVercel, color: "#FFFFFF" },
+        { name: "Render", icon: SiRender, color: "#0466C8" },
       ],
     },
     {
       title: "Frontend",
       items: [
-        { name: "Next.js", icon: SiNextdotjs, color: "#FFFFFF" },
         { name: "React", icon: SiReact, color: "#61DAFB" },
-        { name: "TailwindCSS", icon: SiTailwindcss, color: "#06B6D4" },
+        { name: "Next.js", icon: SiNextdotjs, color: "#FFFFFF" },
         { name: "Redux", icon: SiRedux, color: "#764ABC" },
+        { name: "TailwindCSS", icon: SiTailwindcss, color: "#06B6D4" },
         { name: "ShadcnUI", icon: SiShadcnui, color: "#FFFFFF" },
         { name: "Material UI", icon: SiMui, color: "#007FFF" },
         { name: "DaisyUI", icon: FaLayerGroup, color: "#00B4A2" },
@@ -97,28 +151,16 @@ export const portfolioData: PortfolioData = {
       ],
     },
     {
-      title: "Architecture & Messaging",
-      items: [
-        { name: "Kafka", icon: SiApachekafka, color: "#FFFFFF" },
-        { name: "RabbitMQ", icon: SiRabbitmq, color: "#FF6600" },
-        { name: "Microservices", icon: SiDocker, color: "#FF6B00" },
-      ],
-    },
-    {
-      title: "DevOps & Cloud",
-      items: [
-        { name: "Docker", icon: SiDocker, color: "#2496ED" },
-        { name: "AWS", icon: FaAws, color: "#FF9900" },
-        { name: "CI/CD", icon: SiGithubactions, color: "#FFFFFF" },
-        { name: "Nginx", icon: SiNginx, color: "#009639" },
-        { name: "Vercel", icon: SiVercel, color: "#FFFFFF" },
-        { name: "Render", icon: SiRender, color: "#0466C8" },
-      ],
-    },
-    {
-      title: "Tools & Payments",
+      title: "Payment Systems",
       items: [
         { name: "Stripe", icon: SiStripe, color: "#635BFF" },
+        { name: "SSLCommerz", icon: FaCreditCard, color: "#005C9E" },
+        { name: "Cloudinary", icon: SiCloudinary, color: "#3448C5" },
+      ],
+    },
+    {
+      title: "Tools & Platforms",
+      items: [
         { name: "Git", icon: FaGithub, color: "#F05032" },
         { name: "Postman", icon: SiPostman, color: "#FF6C37" },
         { name: "VS Code", icon: FaCode, color: "#007ACC" },
@@ -126,7 +168,7 @@ export const portfolioData: PortfolioData = {
       ],
     },
     {
-      title: "Interpersonal",
+      title: "Interpersonal Skills",
       items: [
         { name: "Leadership", icon: FaUsers, color: "#007BFF" },
         { name: "Communication", icon: FaComments, color: "#FF5722" },
@@ -137,44 +179,81 @@ export const portfolioData: PortfolioData = {
   ],
   projects: [
     {
-      title: "Enterprise SaaS Core",
+      title: "Waave — Enterprise Microservices Social Platform",
       description:
-        "High-performance multi-tenant SaaS foundation utilizing microservices, distributed caching, and automated scaling on AWS.",
-      image: "/projects/saas.png",
-      liveLink: "https://example.com",
-      frontendLink: "https://github.com/shariyerShazan",
-      backendLink: "https://github.com/shariyerShazan",
-      tags: ["Microservices", "NestJS", "AWS", "Infrastructure"],
+        "Engineered a high-performance, event-driven social platform using a NestJS monorepo. Built synchronous service communication using gRPC (libs/proto-schema contracts) and decoupled asynchronous domain events (OTP verification, signup setups, follows, post engagement) via Apache Kafka. Provisioned independent database layers with Redis caching, PostgreSQL/Prisma, and MongoDB/Mongoose.",
+      highlights: [
+        "Distributed Services: API Gateway, Auth, User Profile, Media Processing, Notification, Post Lifecycle, and Feed Assembly services.",
+        "Event-Driven Workflows: Decoupled domain interactions using Kafka event orchestration (e.g. user.registered triggers automatic profile creation and notification dispatch).",
+        "High-Performance Feed System: Feed-service utilizes Redis-backed timeline caches with celebrity-buffered read paths and trending score calculations.",
+        "Media Processing Pipeline: Async image processing (variants generated via sharp) with local storage adapters and Mongo metadata indexes.",
+        "Upcoming Architectures: Chat Service (real-time WebSockets/Socket.IO and bilateral logging) and Marketplace Service (transaction processing and custom buyer/seller dashboards)."
+      ],
+      backendLink: "https://github.com/shariyerShazan/Waave-SocialMedia-Backend-Microservices",
+      swaggerLink: "https://github.com/shariyerShazan/Waave-SocialMedia-Backend-Microservices", // Show Swagger button
+      tags: [
+        "NestJS",
+        "Apache Kafka",
+        "gRPC",
+        "PostgreSQL",
+        "MongoDB",
+        "Redis",
+        "Prisma",
+        "Mongoose",
+        "Docker",
+      ],
     },
     {
-      title: "Real-time Fintech Engine",
+      title: "AI-Powered Health & Weight Management",
       description:
-        "Low-latency financial transaction handler with real-time analytics, Stripe integration, and WebSocket event streaming.",
-      image: "/projects/fintech.png",
-      liveLink: "https://example.com",
-      frontendLink: "https://github.com/shariyerShazan",
-      backendLink: "https://github.com/shariyerShazan",
-      tags: ["FinTech", "WebSockets", "Go", "Redis"],
+        "Established user profiles based on 5+ health metrics with subscription-tiered access to certified providers. Created an AI meal-recognition engine accepting text, voice, and image input to auto-generate 3 daily nutrition targets.",
+      highlights: [
+        "5+ health metrics: weight, height, age, body type, activity level",
+        "AI meal-recognition engine: text, voice, and image input modes",
+        "3 daily nutrition targets: calorie, protein, and water intake",
+        "Admin dashboard overseeing 2 revenue channels: client subscriptions and provider commissions",
+      ],
+      tags: [
+        "NestJS",
+        "PostgreSQL",
+        "Prisma",
+        "MongoDB",
+        "AI/ML",
+        "Stripe",
+        "Socket.IO",
+      ],
+      isConfidential: true,
+    },
+    {
+      title: "Finn — Real-Time Auction & Classified Ads Marketplace",
+      description:
+        "A premium, NestJS-based monolithic auction and classified marketplace platform. Built with a full-featured bidding system, real-time messaging, map-based geospatial ad search, and Stripe Connect integration for automated platform fee splitting.",
+      highlights: [
+        "Dual Purchase Option: Support for immediate Fixed Price checkouts and live, time-based auctions and bidding.",
+        "Real-Time Chat Engine: Bidirectional user-to-user Socket.io messaging with active presence, image sharing, and block lists.",
+        "Stripe Connect Payments: Automatic 10% platform commission fee deduction and direct merchant split payout onboarding.",
+        "Geospatial Cataloging: Map-based search queries leveraging Leaflet locations plotting to discover neighborhood listings.",
+        "Secure JWT & OTP Auth: Multi-tier authorization (User, Seller, Admin) backed by SMTP email validation OTP checks.",
+      ],
+      frontendLink: "https://github.com/shariyerShazan/Finn-Frontend-Reactjs-Marketplaces",
+      backendLink: "https://github.com/shariyerShazan/Finn-Nestjs-Marketplace-Backend",
+      liveLink: "https://shazan-ad-marketplace-project.onrender.com",
+      swaggerLink: "https://shazan-ad-marketplace-project.onrender.com/docs",
+      tags: [
+        "NestJS",
+        "PostgreSQL",
+        "Prisma ORM",
+        "Socket.IO",
+        "Stripe Connect",
+        "Cloudinary API",
+        "React",
+        "Redux Toolkit",
+        "TypeScript",
+        "Tailwind CSS",
+      ],
     },
   ],
-  certificates: [
-    {
-      title: "AWS Certified Solutions Architect – Associate",
-      issuer: "Amazon Web Services",
-      date: "2024",
-      description:
-        "Validation of expertise in designing and deploying scalable systems on AWS platform.",
-      fileUrl: "/certificates/placeholder.pdf",
-    },
-    {
-      title: "Certified Kubernetes Administrator (CKA)",
-      issuer: "CNCF",
-      date: "2024",
-      description:
-        "Demonstrating proficiency in managing production-grade Kubernetes clusters.",
-      fileUrl: "/certificates/placeholder.pdf",
-    },
-  ],
+  certificates: [],
   socials: [
     {
       name: "LinkedIn",
@@ -192,5 +271,15 @@ export const portfolioData: PortfolioData = {
       icon: FaEnvelope,
     },
     { name: "Twitter", href: "https://x.com/SJan_1293", icon: FaTwitter },
+    {
+      name: "Facebook",
+      href: "https://www.facebook.com/darling.shazan",
+      icon: FaFacebook,
+    },
+    {
+      name: "Instagram",
+      href: "https://www.instagram.com/shariyer.shazan/",
+      icon: FaInstagram,
+    },
   ],
 };

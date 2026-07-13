@@ -8,7 +8,7 @@ const TechStack = () => {
     <section id="tech" className="py-24 px-6 min-h-screen flex flex-col justify-center">
       <div className="max-w-4xl mx-auto w-full">
         <h2 className="text-3xl md:text-5xl font-bold text-white mb-16 flex items-center gap-4" data-aos="fade-right">
-          <span className="text-[#00f0ff] font-mono text-2xl md:text-4xl">04.</span>
+          <span className="text-[#00f0ff] font-mono text-2xl md:text-4xl">01.</span>
           Technical Arsenal
           <div className="h-[1px] flex-grow bg-gradient-to-r from-[#475569] to-transparent ml-4"></div>
         </h2>
