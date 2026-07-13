@@ -10,7 +10,7 @@ const inter = Inter({ subsets: ["latin"], variable: "--font-inter" });
 const outfit = Outfit({ subsets: ["latin"], variable: "--font-outfit" });
 
 export const metadata: Metadata = {
-  title: "Shariyer Shazan | Backend & DevOps Architect",
+  title: "Shariyer Shazan | Backend Engineer (Node.js, NestJS, Microservices)",
   description: "Senior Portfolio of Shariyer Shazan - Building scalable enterprise backends and robust CI/CD pipelines.",
 };
 

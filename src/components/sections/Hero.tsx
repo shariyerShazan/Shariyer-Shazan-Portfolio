@@ -14,33 +14,32 @@ const Hero = () => {
 
   useEffect(() => {
     const roles = portfolioData.roles || [portfolioData.role];
+    const fullText = roles[roleIndex];
     let timer: NodeJS.Timeout;
-    
-    const handleTyping = () => {
-      const fullText = roles[roleIndex];
-      if (!isDeleting) {
-        const nextText = fullText.substring(0, currentText.length + 1);
-        setCurrentText(nextText);
-        if (nextText === fullText) {
-          timer = setTimeout(() => setIsDeleting(true), 2000);
-        }
+
+    if (!isDeleting) {
+      if (currentText !== fullText) {
+        timer = setTimeout(() => {
+          setCurrentText(fullText.substring(0, currentText.length + 1));
+        }, 80);
       } else {
-        const nextText = fullText.substring(0, currentText.length - 1);
-        setCurrentText(nextText);
-        if (nextText === "") {
+        // Pause for 10 seconds at full text state before deletion
+        timer = setTimeout(() => {
+          setIsDeleting(true);
+        }, 10000);
+      }
+    } else {
+      if (currentText !== "") {
+        timer = setTimeout(() => {
+          setCurrentText(fullText.substring(0, currentText.length - 1));
+        }, 40);
+      } else {
+        // Pause briefly at empty state before changing to next role
+        timer = setTimeout(() => {
           setIsDeleting(false);
           setRoleIndex((prev) => (prev + 1) % roles.length);
-        }
+        }, 300);
       }
-    };
-
-    const speed = isDeleting ? 40 : 80;
-    if (isDeleting && currentText === (portfolioData.roles || [portfolioData.role])[roleIndex]) {
-      // Just wait at the full text state
-    } else if (!isDeleting && currentText === "") {
-      timer = setTimeout(handleTyping, 300); // brief pause before starting typing
-    } else {
-      timer = setTimeout(handleTyping, speed);
     }
 
     return () => clearTimeout(timer);
@@ -69,9 +68,14 @@ const Hero = () => {
             </div>
           </div>
 
-          <h1 className="text-4xl md:text-6xl xl:text-7xl font-bold text-white mb-4 leading-tight">
+          <h1 className="text-4xl md:text-6xl xl:text-7xl font-bold text-white mb-3 leading-tight">
             {portfolioData.name}
           </h1>
+
+          {/* Static Professional Title */}
+          <p className="text-base md:text-xl font-mono text-[#00f0ff] mb-6 font-semibold tracking-wide">
+            {portfolioData.role}
+          </p>
 
           <div className="h-10 md:h-12 mb-8 flex items-center">
             <h2 className="text-xl md:text-3xl font-bold text-[#94a3b8]">
@@ -80,7 +84,19 @@ const Hero = () => {
           </div>
 
           <p className="text-sm md:text-base text-[#cbd5e1] leading-relaxed max-w-2xl mb-10 text-justify font-sans">
-            {portfolioData.about}
+            {portfolioData.about.split("Waave").map((part, index, arr) => (
+              <React.Fragment key={index}>
+                {part}
+                {index < arr.length - 1 && (
+                  <a
+                    href="#projects"
+                    className="text-[#00f0ff] hover:underline underline-offset-4 font-semibold transition-all duration-300"
+                  >
+                    Waave
+                  </a>
+                )}
+              </React.Fragment>
+            ))}
           </p>
 
           <div className="flex flex-wrap gap-4 items-center">

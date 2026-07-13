@@ -17,19 +17,19 @@ import { PortfolioData } from "@/types/portfolio";
 
 export const portfolioData: PortfolioData = {
   name: "Shariyer Shazan",
-  role: "Backend Engineer | Distributed Systems & Microservices",
+  role: "Backend Engineer (Node.js, NestJS, Microservices)",
   roles: [
     "distributed systems",
-    "event-driven microservices",
+    "microservice architecture",
+    "event-driven systems",
+    "backend infrastructure",
     "high-performance APIs",
-    "scalable backend architectures",
-    "secure payment integrations",
   ],
   location: "Tejgaon, Dhaka, Bangladesh",
   resumeLink:
     "https://drive.google.com/file/d/1vq9T0M7qWBFi7xLagAcx9nojvnApvJyQ/view?usp=sharing",
   careerObjective:
-    "Backend Engineer specializing in robust distributed architectures, high-throughput microservices, and Clean APIs. Proven expertise in building enterprise-grade monorepo engines utilizing gRPC communication networks, Kafka event streams, multi-cluster Redis caching, and replicated database hubs.",
+    "I am a Backend Engineer focused on building production-ready backend systems and distributed architectures. I enjoy developing scalable services using NestJS, Node.js, gRPC, Kafka, PostgreSQL, MongoDB, Redis, and Docker. Through projects like Waave, I have designed microservice architectures, asynchronous event-driven workflows, and high-performance APIs with a strong focus on reliability, maintainability, and developer experience.",
   languages: [
     "English (Fluent)",
     "Bangla (Native)",
@@ -37,7 +37,7 @@ export const portfolioData: PortfolioData = {
     "Urdu (Conversational)",
   ],
   about:
-    "I am a Backend Engineer focused on designing production-minded server architectures. Drawing from deep experience engineering scaled microservice cores—exemplified by Waave's high-performance gRPC pipelines, message streaming patterns (Kafka), PostgreSQL primary-replica pools, and MongoDB replica clusters—I construct bulletproof backend systems prioritizing speed, strict transaction isolation, and developer-friendly REST/Swagger hubs.",
+    "I am a Backend Engineer focused on designing production-minded server architectures. I enjoy building scalable backend systems using NestJS, Node.js, gRPC, Kafka, PostgreSQL, MongoDB, Redis, and Docker. Through projects like Waave, I've designed microservice architectures, asynchronous event-driven workflows, and performant APIs with a strong focus on reliability, maintainability, and developer experience.",
   education: [
     {
       school: "Southeast University",

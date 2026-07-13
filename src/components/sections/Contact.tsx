@@ -181,16 +181,35 @@ const Contact = () => {
                   </div>
                 </div>
 
-                <div className="space-y-2">
-                  <label htmlFor="subject" className="text-xs font-mono text-slate-400 uppercase tracking-wider">Subject</label>
-                  <input 
-                    type="text" 
-                    id="subject" 
-                    name="subject" 
-                    required 
-                    placeholder="e.g. System Integration / Engineering Workroad"
-                    className="w-full bg-slate-950/80 border border-slate-800/80 focus:border-[#00f0ff]/65 rounded-xl px-4 py-3 text-sm text-white focus:outline-none focus:ring-1 focus:ring-[#00f0ff]/20 placeholder-slate-700 transition-all font-sans"
-                  />
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  <div className="space-y-2">
+                    <label htmlFor="type" className="text-xs font-mono text-slate-400 uppercase tracking-wider">Inquiry Type</label>
+                    <select
+                      id="type"
+                      name="type"
+                      required
+                      defaultValue=""
+                      className="w-full bg-slate-950/80 border border-slate-800/80 focus:border-[#00f0ff]/65 rounded-xl px-4 py-3 text-sm text-white focus:outline-none focus:ring-1 focus:ring-[#00f0ff]/20 transition-all font-sans cursor-pointer"
+                    >
+                      <option value="" disabled className="bg-slate-950 text-slate-500">Select inquiry type...</option>
+                      <option value="Full-Time Role" className="bg-slate-950 text-white">Full-Time Role</option>
+                      <option value="Contract / Freelance" className="bg-slate-950 text-white">Contract / Freelance</option>
+                      <option value="System Design Consult" className="bg-slate-950 text-white">System Design Consult</option>
+                      <option value="General Collaboration" className="bg-slate-950 text-white">General Collaboration</option>
+                      <option value="Other" className="bg-slate-950 text-white">Other</option>
+                    </select>
+                  </div>
+                  <div className="space-y-2">
+                    <label htmlFor="subject" className="text-xs font-mono text-slate-400 uppercase tracking-wider">Subject</label>
+                    <input 
+                      type="text" 
+                      id="subject" 
+                      name="subject" 
+                      required 
+                      placeholder="e.g. System Integration Details"
+                      className="w-full bg-slate-950/80 border border-slate-800/80 focus:border-[#00f0ff]/65 rounded-xl px-4 py-3 text-sm text-white focus:outline-none focus:ring-1 focus:ring-[#00f0ff]/20 placeholder-slate-700 transition-all font-sans"
+                    />
+                  </div>
                 </div>
 
                 <div className="space-y-2">
