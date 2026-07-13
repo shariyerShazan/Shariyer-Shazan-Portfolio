@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/set-state-in-effect */
 "use client";
 
 import React, { useState, useEffect, useRef } from "react";
@@ -16,8 +17,6 @@ import {
   FiServer,
   FiInfo,
   FiChevronRight,
-  FiDatabase,
-  FiFolder,
 } from "react-icons/fi";
 
 interface ServiceNode {
@@ -514,7 +513,7 @@ export const WaaveArchitecture = () => {
         <div className="mb-6 p-4 bg-[#0a0f1d] border border-slate-800/80 rounded-xl flex items-start gap-3">
           <FiInfo className="text-[#00f0ff] w-5 h-5 flex-shrink-0 mt-0.5" />
           <div className="text-xs md:text-sm text-[#cbd5e1] leading-relaxed font-sans">
-            This module models Shariyer's backend architecture. Click nodes on the <strong>Map</strong> block 
+            This module models Shariyer&apos;s backend architecture. Click nodes on the <strong>Map</strong> block 
             to inspect ports configurations and internal workspaces, or initialize a <strong>Request Simulator</strong> 
             to watch gRPC & Kafka data streams.
           </div>
