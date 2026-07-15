@@ -4,6 +4,7 @@ import React, { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { cn } from "./ui/Button";
 import { HiMenuAlt3, HiX } from "react-icons/hi";
+import { useGameMode } from "@/context/GameModeContext";
 
 const NAV_LINKS = [
   { name: "Home", href: "#home" },
@@ -18,6 +19,7 @@ const Navbar = () => {
   const [activeHash, setActiveHash] = useState("#home");
   const [scrolled, setScrolled] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
+  const { isGameActive, setIsGameActive } = useGameMode();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -57,18 +59,40 @@ const Navbar = () => {
         className={cn(
           "fixed top-4 md:top-8 left-1/2 -translate-x-1/2 z-[60] w-[90%] max-w-5xl rounded-full border transition-all duration-300",
           scrolled 
-            ? "bg-[#0a0f1d]/80 backdrop-blur-md border-gray-800 shadow-2xl py-3" 
+            ? "bg-[#0a0f1d]/85 backdrop-blur-md border-gray-800 shadow-2xl py-3" 
             : "bg-transparent border-transparent py-5"
         )}
       >
         <nav className="flex items-center justify-between px-6 md:px-8">
-          <div className="text-xl font-bold text-[#f8fafc] tracking-widest cursor-pointer" onClick={() => window.scrollTo({top: 0, behavior: 'smooth'})}>
-            <span className="text-[#00f0ff]">&lt;</span>
-            Shazan<span className="text-[#00f0ff]">/&gt;</span>
+          <div className="flex items-center gap-3 md:gap-4">
+            <div className="text-xl font-bold text-[#f8fafc] tracking-widest cursor-pointer" onClick={() => window.scrollTo({top: 0, behavior: 'smooth'})}>
+              <span className="text-[#00f0ff]">&lt;</span>
+              Shazan<span className="text-[#00f0ff]">/&gt;</span>
+            </div>
+
+            {/* Game Mode switch button */}
+            <button
+              onClick={() => setIsGameActive(!isGameActive)}
+              className={cn(
+                "flex items-center gap-1.5 px-3 py-1 text-[10px] font-mono font-bold uppercase tracking-wider rounded border transition-all duration-300 cursor-pointer shadow-sm relative overflow-hidden",
+                isGameActive
+                  ? "bg-[#00f0ff]/10 border-[#00f0ff]/80 text-[#00f0ff] shadow-[0_0_10px_rgba(0,240,255,0.2)]"
+                  : "bg-slate-950/70 border-slate-700/80 text-slate-400 hover:text-slate-200 hover:border-slate-500"
+              )}
+            >
+              <span className={cn(
+                "w-1.5 h-1.5 rounded-full inline-block animate-pulse",
+                isGameActive ? "bg-[#00f0ff]" : "bg-slate-500"
+              )} />
+              GAME MODE
+            </button>
           </div>
 
           {/* Desktop Nav */}
-          <ul className="hidden lg:flex items-center gap-2 text-xs xl:text-sm">
+          <ul className={cn(
+            "hidden lg:flex items-center gap-2 text-xs xl:text-sm transition-all duration-300",
+            isGameActive ? "opacity-0 pointer-events-none" : "opacity-100"
+          )}>
             {NAV_LINKS.map((link) => (
               <li key={link.name}>
                 <a
@@ -93,12 +117,14 @@ const Navbar = () => {
           </ul>
 
           {/* Mobile Toggle */}
-          <button 
-            className="lg:hidden text-2xl text-[#00f0ff] p-1 cursor-pointer"
-            onClick={() => setIsOpen(!isOpen)}
-          >
-            {isOpen ? <HiX /> : <HiMenuAlt3 />}
-          </button>
+          {!isGameActive && (
+            <button 
+              className="lg:hidden text-2xl text-[#00f0ff] p-1 cursor-pointer"
+              onClick={() => setIsOpen(!isOpen)}
+            >
+              {isOpen ? <HiX /> : <HiMenuAlt3 />}
+            </button>
+          )}
         </nav>
       </motion.header>
 

@@ -24,6 +24,8 @@ body {
   scroll-behavior: smooth;
 }
 
+
+
 /* Railway Border Utilities */
 .railway-border {
   position: fixed;
@@ -119,4 +121,14 @@ body {
   h1, h2, h3, h4, h5, h6 {
     @apply text-white font-bold tracking-tight;
   }
+}
+
+/* Custom Cursor Hide Override for ASCII portrait */
+body.no-custom-cursor {
+  cursor: crosshair !important;
+}
+
+body.no-custom-cursor .custom-cursor {
+  opacity: 0 !important;
+  visibility: hidden !important;
 }

@@ -6,6 +6,7 @@ import { Button } from "../ui/Button";
 import { portfolioData } from "../../config/portfolioData";
 import { FaLinkedin, FaDownload, FaMapMarkerAlt } from "react-icons/fa";
 import Image from "next/image";
+import { AsciiImage } from "../ui/AsciiImage";
 
 const Hero = () => {
   const [roleIndex, setRoleIndex] = useState(0);
@@ -162,24 +163,21 @@ const Hero = () => {
           className="lg:col-span-5 flex justify-center lg:justify-end"
           data-aos="fade-left"
         >
-          <div className="relative w-64 h-64 md:w-80 md:h-80 xl:w-96 xl:h-96">
+          <div
+            className="relative w-64 h-64 md:w-80 md:h-80 xl:w-96 xl:h-96"
+            onMouseEnter={() => {
+              if (typeof document !== "undefined") document.body.classList.add("no-custom-cursor");
+            }}
+            onMouseLeave={() => {
+              if (typeof document !== "undefined") document.body.classList.remove("no-custom-cursor");
+            }}
+          >
             {/* Geometric Background Shapes */}
             <div className="absolute -inset-4 border border-[#00f0ff]/20 rounded-2xl rotate-6 animate-pulse"></div>
             <div className="absolute -inset-4 border border-[#7C3AED]/20 rounded-2xl -rotate-3"></div>
 
-            {/* The Image Container */}
-            <div className="relative w-full h-full rounded-2xl overflow-hidden border-2 border-[#1e293b] shadow-2xl group">
-              <div className="absolute inset-0 bg-[#00f0ff]/10 mix-blend-overlay group-hover:bg-transparent transition-colors duration-500"></div>
-              <Image
-                src={profilePic}
-                alt={portfolioData.name}
-                className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
-                priority
-              />
-
-              {/* Overlay scanning effect */}
-              <div className="absolute top-0 left-0 w-full h-1 bg-[#00f0ff] opacity-40 animate-scan"></div>
-            </div>
+            {/* Dynamic Interactive ASCII Canvas Component */}
+            <AsciiImage src="/profile.jpg" />
           </div>
         </div>
       </div>

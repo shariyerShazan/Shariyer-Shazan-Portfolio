@@ -72,6 +72,26 @@ const Contact = () => {
 
               {/* Direct Info Cards */}
               <div className="space-y-3 pt-2">
+                {/* Systems Operator Profile Card */}
+                <div className="flex items-center gap-4 p-4 rounded-xl bg-[#0f172a]/35 border border-[#1e293b]/70 hover:border-[#00f0ff]/40 transition-all duration-300 group hover:bg-[#00f0ff]/5">
+                  <div className="relative w-14 h-14 rounded-full overflow-hidden border border-[#00f0ff]/30 flex-shrink-0">
+                    <img 
+                      src="/profile.jpg" 
+                      alt="Shariyer Shazan" 
+                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                    />
+                  </div>
+                  <div>
+                    <div className="text-[9px] font-mono text-slate-500 uppercase tracking-widest">// SYSTEM ADMINISTRATOR</div>
+                    <div className="text-xs md:text-sm font-semibold text-white font-mono group-hover:text-[#00f0ff] transition-colors">
+                      {portfolioData.name}
+                    </div>
+                    <div className="text-[10px] text-slate-400 font-sans mt-0.5">
+                      Distributed Systems & Backend Architect
+                    </div>
+                  </div>
+                </div>
+
                 <a 
                   href="mailto:shariyershazan1@gmail.com"
                   className="flex items-center gap-4 p-4 rounded-xl bg-[#0f172a]/35 border border-[#1e293b]/70 hover:border-[#00f0ff]/40 transition-all duration-300 group hover:bg-[#00f0ff]/5"
