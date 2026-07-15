@@ -8,7 +8,8 @@ type TabType = "stripe" | "auction" | "chat";
 
 export function FinnVisualizer() {
   const [activeTab, setActiveTab] = useState<TabType>("stripe");
-  const [hoveredNode, setHoveredNode] = useState<string | null>(null);
+  const [selectedStripeNode, setSelectedStripeNode] = useState<string>("buyer");
+  const [selectedAuctionNode, setSelectedAuctionNode] = useState<string>("auctionInit");
 
   const renderStripeFlow = () => {
     return (
@@ -33,14 +34,17 @@ export function FinnVisualizer() {
           
           {/* Step 1: Buyer Checkout */}
           <div 
-            className="lg:col-span-3 p-4 rounded-xl bg-slate-950 border border-slate-800 transition-all duration-300 hover:border-emerald-500/50 cursor-pointer"
-            onMouseEnter={() => setHoveredNode("buyer")}
-            onMouseLeave={() => setHoveredNode(null)}
+            className={`lg:col-span-3 p-4 rounded-xl bg-slate-950 transition-all duration-300 cursor-pointer ${
+              selectedStripeNode === "buyer"
+                ? "border-2 border-emerald-500 bg-emerald-500/5 shadow-[0_0_12px_rgba(16,185,129,0.15)]"
+                : "border border-slate-800 hover:border-emerald-500/50"
+            }`}
+            onClick={() => setSelectedStripeNode("buyer")}
           >
             <div className="text-[10px] font-mono text-emerald-400 mb-1">STEP 01 // BUYER</div>
             <div className="text-xs font-bold text-white mb-1">Buy Now Clicked</div>
             <div className="text-[10px] text-slate-400">Buyer initiates purchase of $100. Tokenized card submitted to Stripe.</div>
-            <div className={`mt-2 font-mono text-[9px] text-slate-500 ${hoveredNode === "buyer" ? "text-emerald-400" : ""}`}>
+            <div className={`mt-2 font-mono text-[9px] text-slate-500 transition-colors ${selectedStripeNode === "buyer" ? "text-emerald-400 font-semibold" : ""}`}>
               POST /payments/create-intent
             </div>
           </div>
@@ -51,9 +55,12 @@ export function FinnVisualizer() {
 
           {/* Step 2: NestJS Monolith Orchestrator */}
           <div 
-            className="lg:col-span-4 p-4 rounded-xl bg-slate-950 border border-slate-800 relative group transition-all duration-300 hover:border-[#00f0ff]/50 cursor-pointer"
-            onMouseEnter={() => setHoveredNode("monolith")}
-            onMouseLeave={() => setHoveredNode(null)}
+            className={`lg:col-span-4 p-4 rounded-xl bg-slate-950 relative group transition-all duration-300 cursor-pointer ${
+              selectedStripeNode === "monolith"
+                ? "border-2 border-[#00f0ff] bg-[#00f0ff]/5 shadow-[0_0_12px_rgba(0,240,255,0.15)]"
+                : "border border-slate-800 hover:border-[#00f0ff]/50"
+            }`}
+            onClick={() => setSelectedStripeNode("monolith")}
           >
             <div className="text-[10px] font-mono text-[#00f0ff] mb-1">STEP 02 // NESTJS MONOLITH</div>
             <div className="text-xs font-bold text-white mb-1">PaymentIntent Generator</div>
@@ -61,7 +68,7 @@ export function FinnVisualizer() {
             <div className="absolute top-2 right-2 flex gap-1">
               <FiServer className="text-slate-500 text-xs" />
             </div>
-            <div className={`mt-2 font-mono text-[9px] text-slate-500 ${hoveredNode === "monolith" ? "text-[#00f0ff]" : ""}`}>
+            <div className={`mt-2 font-mono text-[9px] text-slate-500 transition-colors ${selectedStripeNode === "monolith" ? "text-[#00f0ff] font-semibold" : ""}`}>
               stripe.paymentIntents.create()
             </div>
           </div>
@@ -75,9 +82,12 @@ export function FinnVisualizer() {
             
             {/* Box A: Platform Fee */}
             <div 
-              className="p-3 rounded-lg bg-slate-950 border border-slate-800 hover:border-cyan-500/40 cursor-pointer transition-all"
-              onMouseEnter={() => setHoveredNode("platFee")}
-              onMouseLeave={() => setHoveredNode(null)}
+              className={`p-3 rounded-lg bg-slate-950 cursor-pointer transition-all ${
+                selectedStripeNode === "platFee"
+                  ? "border-2 border-cyan-500 bg-cyan-500/5 shadow-[0_0_10px_rgba(6,182,212,0.15)]"
+                  : "border border-slate-800 hover:border-cyan-500/40"
+              }`}
+              onClick={() => setSelectedStripeNode("platFee")}
             >
               <div className="text-[9px] font-mono text-cyan-400">PLATFORM REVENUE (10%)</div>
               <div className="text-xs font-semibold text-white">$10.00</div>
@@ -86,9 +96,12 @@ export function FinnVisualizer() {
 
             {/* Box B: Seller Payout */}
             <div 
-              className="p-3 rounded-lg bg-slate-950 border border-slate-800 hover:border-purple-500/40 cursor-pointer transition-all"
-              onMouseEnter={() => setHoveredNode("sellerPayout")}
-              onMouseLeave={() => setHoveredNode(null)}
+              className={`p-3 rounded-lg bg-slate-950 cursor-pointer transition-all ${
+                selectedStripeNode === "sellerPayout"
+                  ? "border-2 border-purple-500 bg-purple-500/5 shadow-[0_0_10px_rgba(168,85,247,0.15)]"
+                  : "border border-slate-800 hover:border-purple-500/40"
+              }`}
+              onClick={() => setSelectedStripeNode("sellerPayout")}
             >
               <div className="text-[9px] font-mono text-purple-400">VENDORS SPLIT PAYOUT (90%)</div>
               <div className="text-xs font-semibold text-white">$90.00</div>
@@ -101,33 +114,28 @@ export function FinnVisualizer() {
 
         {/* Dynamic Detail Card */}
         <div className="p-4 rounded-xl bg-slate-950 border border-slate-800/80 font-mono text-[10px] leading-relaxed text-slate-400">
-          {hoveredNode === "buyer" && (
+          {selectedStripeNode === "buyer" && (
             <div>
               <span className="text-emerald-400 font-bold block mb-1">CLIENT GATEWAY INITIATION //</span>
               The React frontend builds payment headers and collects payment tokens. It handles 3D-secure card authentication flows natively inside Stripe Checkout Elements wrappers, keeping client servers free from PCI-DSS regulatory liabilities.
             </div>
           )}
-          {hoveredNode === "monolith" && (
+          {selectedStripeNode === "monolith" && (
             <div>
               <span className="text-[#00f0ff] font-bold block mb-1">STRIPE CONNECT METADATA //</span>
               The backend references `application_fee_amount: 1000` (representing 10% of $100.00 expressed as minor units) and `on_behalf_of: seller_stripe_account_id`. Webhook controller parses `payment_intent.succeeded` to release ads to the buyer and trigger transactional emails.
             </div>
           )}
-          {hoveredNode === "platFee" && (
+          {selectedStripeNode === "platFee" && (
             <div>
               <span className="text-cyan-400 font-bold block mb-1">PLATFORM SPLIT REVENUE //</span>
               NestJS isolates 10% fees dynamically. This fee covers payment gateway integrations, database indexing overheads, and notification dispatch server expenses. Locked in USD/EUR instantly.
             </div>
           )}
-          {hoveredNode === "sellerPayout" && (
+          {selectedStripeNode === "sellerPayout" && (
             <div>
               <span className="text-purple-400 font-bold block mb-1">SELLER EXPRESS VERIFICATION //</span>
               Sellers undergo Stripe Connect express onboarding to provide banking routing details. All payouts bypass platform escrow checks entirely, processing automatically.
-            </div>
-          )}
-          {!hoveredNode && (
-            <div className="text-slate-500 text-center italic py-1">
-              Hover over pipeline nodes to view runtime system telemetry and database actions.
             </div>
           )}
         </div>
@@ -157,52 +165,67 @@ export function FinnVisualizer() {
         <div className="grid grid-cols-1 md:grid-cols-5 gap-3">
           
           <div 
-            className="p-3.5 rounded-xl bg-slate-950 border border-slate-900 hover:border-slate-700 transition-all cursor-pointer text-center"
-            onMouseEnter={() => setHoveredNode("auctionInit")}
-            onMouseLeave={() => setHoveredNode(null)}
+            className={`p-3.5 rounded-xl bg-slate-950 transition-all cursor-pointer text-center ${
+              selectedAuctionNode === "auctionInit"
+                ? "border-2 border-slate-400 bg-slate-400/5 shadow-[0_0_12px_rgba(148,163,184,0.15)]"
+                : "border border-slate-900 hover:border-slate-800"
+            }`}
+            onClick={() => setSelectedAuctionNode("auctionInit")}
           >
             <div className="text-[9px] font-mono text-slate-500 mb-1">STATE 01</div>
-            <div className="text-xs font-semibold text-white">Create Auction</div>
+            <div className="text-xs font-semibold text-white font-semibold">Create Auction</div>
             <div className="text-[9px] text-[#cbd5e1]/65 mt-2">`AdType = AUCTION`, base price & end time.</div>
           </div>
 
           <div 
-            className="p-3.5 rounded-xl bg-slate-950 border border-slate-900 hover:border-slate-700 transition-all cursor-pointer text-center"
-            onMouseEnter={() => setHoveredNode("biddingOpen")}
-            onMouseLeave={() => setHoveredNode(null)}
+            className={`p-3.5 rounded-xl bg-slate-950 transition-all cursor-pointer text-center ${
+              selectedAuctionNode === "biddingOpen"
+                ? "border-2 border-pink-500 bg-pink-500/5 shadow-[0_0_12px_rgba(236,72,153,0.15)] animate-pulse"
+                : "border border-slate-900 hover:border-slate-800"
+            }`}
+            onClick={() => setSelectedAuctionNode("biddingOpen")}
           >
             <div className="text-[9px] font-mono text-pink-400 mb-1">STATE 02</div>
-            <div className="text-xs font-semibold text-white">Active Bidding</div>
+            <div className="text-xs font-semibold text-white font-semibold">Active Bidding</div>
             <div className="text-[9px] text-[#cbd5e1]/65 mt-2">Bids accepted. Socket.io broadcasts new bids.</div>
           </div>
 
           <div 
-            className="p-3.5 rounded-xl bg-slate-950 border border-slate-900 hover:border-slate-700 transition-all cursor-pointer text-center"
-            onMouseEnter={() => setHoveredNode("bidValidate")}
-            onMouseLeave={() => setHoveredNode(null)}
+            className={`p-3.5 rounded-xl bg-slate-950 transition-all cursor-pointer text-center ${
+              selectedAuctionNode === "bidValidate"
+                ? "border-2 border-amber-500 bg-amber-500/5 shadow-[0_0_12px_rgba(245,158,11,0.15)]"
+                : "border border-slate-900 hover:border-slate-800"
+            }`}
+            onClick={() => setSelectedAuctionNode("bidValidate")}
           >
             <div className="text-[9px] font-mono text-amber-500 mb-1">STATE 03</div>
-            <div className="text-xs font-semibold text-white">Bid Validation</div>
+            <div className="text-xs font-semibold text-white font-semibold">Bid Validation</div>
             <div className="text-[9px] text-[#cbd5e1]/65 mt-2">Validates bid &gt; high bid. Prevents concurrency.</div>
           </div>
 
           <div 
-            className="p-3.5 rounded-xl bg-slate-950 border border-slate-900 hover:border-slate-700 transition-all cursor-pointer text-center"
-            onMouseEnter={() => setHoveredNode("timerExpire")}
-            onMouseLeave={() => setHoveredNode(null)}
+            className={`p-3.5 rounded-xl bg-slate-950 transition-all cursor-pointer text-center ${
+              selectedAuctionNode === "timerExpire"
+                ? "border-2 border-rose-500 bg-rose-500/5 shadow-[0_0_12px_rgba(244,63,94,0.15)]"
+                : "border border-slate-900 hover:border-slate-800"
+            }`}
+            onClick={() => setSelectedAuctionNode("timerExpire")}
           >
             <div className="text-[9px] font-mono text-rose-500 mb-1">STATE 04</div>
-            <div className="text-xs font-semibold text-white">Timer Expired</div>
+            <div className="text-xs font-semibold text-white font-semibold">Timer Expired</div>
             <div className="text-[9px] text-[#cbd5e1]/65 mt-2">Scheduler triggers check: marks block closed.</div>
           </div>
 
           <div 
-            className="p-3.5 rounded-xl bg-slate-950 border border-slate-900 hover:border-slate-700 transition-all cursor-pointer text-center"
-            onMouseEnter={() => setHoveredNode("settlement")}
-            onMouseLeave={() => setHoveredNode(null)}
+            className={`p-3.5 rounded-xl bg-slate-950 transition-all cursor-pointer text-center ${
+              selectedAuctionNode === "settlement"
+                ? "border-2 border-emerald-500 bg-emerald-500/5 shadow-[0_0_12px_rgba(16,185,129,0.15)]"
+                : "border border-slate-900 hover:border-emerald-500/30"
+            }`}
+            onClick={() => setSelectedAuctionNode("settlement")}
           >
             <div className="text-[9px] font-mono text-emerald-400 mb-1">STATE 05</div>
-            <div className="text-xs font-semibold text-white">Settlement</div>
+            <div className="text-xs font-semibold text-white font-semibold">Settlement</div>
             <div className="text-[9px] text-[#cbd5e1]/65 mt-2">Binds winning bidder, triggers invoice payment.</div>
           </div>
 
@@ -210,39 +233,34 @@ export function FinnVisualizer() {
 
         {/* state explanatory logs */}
         <div className="p-4 rounded-xl bg-slate-950 border border-slate-800/80 font-mono text-[10px] leading-relaxed text-slate-400">
-          {hoveredNode === "auctionInit" && (
+          {selectedAuctionNode === "auctionInit" && (
             <div>
               <span className="text-slate-400 font-bold block mb-1">INITIATING AUCTION AD //</span>
               NestJS validation pipelines block listings if basePrice is less than $1 or if the configured endTime is set to less than 1 hour or more than 30 days in the future.
             </div>
           )}
-          {hoveredNode === "biddingOpen" && (
+          {selectedAuctionNode === "biddingOpen" && (
             <div>
               <span className="text-pink-400 font-bold block mb-1">REAL-TIME BID BROADCASING //</span>
               Each successful bid emits broad alerts to all clients viewing that specific listing in real-time. Prevents page loads for updates.
             </div>
           )}
-          {hoveredNode === "bidValidate" && (
+          {selectedAuctionNode === "bidValidate" && (
             <div>
               <span className="text-amber-500 font-bold block mb-1">CONCURRENCY & TRANSACTION ISOLATION //</span>
               The validation logic executes inside a Prisma Transaction (`prisma.$transaction`) with strict serializable limits. This prevents two bids from claiming the same rank within millisecond race conditions.
             </div>
           )}
-          {hoveredNode === "timerExpire" && (
+          {selectedAuctionNode === "timerExpire" && (
             <div>
               <span className="text-rose-500 font-bold block mb-1">NESTJS CRON SCHEDULER //</span>
               A recurrent cron service checks active auctions. If endTime is less than or equal to Now, it updates the state target, sets `isSold = true`, and emits alerts: `auction.ended`.
             </div>
           )}
-          {hoveredNode === "settlement" && (
+          {selectedAuctionNode === "settlement" && (
             <div>
               <span className="text-emerald-400 font-bold block mb-1">TRANSACTION BINDINGS PAYMENT INTENT //</span>
               Links the `buyerId` of the highest bidder to the `Ad` record. Generates a Stripe checkout intent for the final winning bid, ensuring secure settlement.
-            </div>
-          )}
-          {!hoveredNode && (
-            <div className="text-slate-500 text-center italic py-1">
-              Hover over state blocks to inspect runtime engine validation constraints.
             </div>
           )}
         </div>
