@@ -12,8 +12,15 @@ interface Particle {
   normY: number; // normalized coordinate (0 to 1)
   vx: number;
   vy: number;
-  originalColor: string; // Real colors for high-legibility facial features mapping
-  themeColor: string; // Portfolio themed matrix colors
+  // Real colors (RGB values)
+  r: number;
+  g: number;
+  b: number;
+  // Theme colors (RGBA values)
+  tr: number;
+  tg: number;
+  tb: number;
+  ta: number;
   char: string;
   brightness: number;
 }
@@ -66,6 +73,7 @@ export const AsciiImage: React.FC<AsciiImageProps> = ({
   const startTimeRef = useRef<number | null>(null);
   const [isSettled, setIsSettled] = useState(false);
   const isSettledRef = useRef(false);
+  const colorProgressRef = useRef<number>(colorMode === "original" ? 1.0 : 0.0);
 
   const [viewMode, setViewMode] = useState<"ascii" | "original">("ascii");
   const [colorModeState, setColorModeState] = useState<"original" | "theme">(colorMode);
@@ -73,6 +81,14 @@ export const AsciiImage: React.FC<AsciiImageProps> = ({
     width: 384,
     height: 384,
   });
+
+  // Automatically toggle color scheme every 10 seconds smoothly
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setColorModeState((prev) => (prev === "theme" ? "original" : "theme"));
+    }, 5000);
+    return () => clearInterval(interval);
+  }, []);
 
   // Handle Resize and get bounding dims
   useEffect(() => {
@@ -212,7 +228,7 @@ export const AsciiImage: React.FC<AsciiImageProps> = ({
           const charIdx = Math.floor(contrastBrightness * (charsPreset.length - 1));
           const char = charsPreset[charIdx];
 
-          // Store original colors boosted/equalized for dark background visibility
+           // Store original colors boosted/equalized for dark background visibility
           const scale = Math.max(1.35, 112 / (brightness || 1));
           const adjR = Math.min(255, Math.floor(r * scale));
           const adjG = Math.min(255, Math.floor(g * scale));
@@ -223,11 +239,9 @@ export const AsciiImage: React.FC<AsciiImageProps> = ({
           const satR = Math.min(255, Math.max(0, Math.floor(avg + (adjR - avg) * 1.25)));
           const satG = Math.min(255, Math.max(0, Math.floor(avg + (adjG - avg) * 1.25)));
           const satB = Math.min(255, Math.max(0, Math.floor(avg + (adjB - avg) * 1.25)));
-          const originalColor = `rgb(${satR}, ${satG}, ${satB})`;
           
           // Store theme colors mapped to boosted opacity curve
           const opacity = Math.min(1.0, (brightness / 255) * 0.55 + 0.45);
-          const themeColorVal = `rgba(${themeRgb.r}, ${themeRgb.g}, ${themeRgb.b}, ${opacity.toFixed(2)})`;
 
           newParticles.push({
             x: 0,
@@ -238,8 +252,13 @@ export const AsciiImage: React.FC<AsciiImageProps> = ({
             normY,
             vx: 0,
             vy: 0,
-            originalColor,
-            themeColor: themeColorVal,
+            r: satR,
+            g: satG,
+            b: satB,
+            tr: themeRgb.r,
+            tg: themeRgb.g,
+            tb: themeRgb.b,
+            ta: opacity,
             char,
             brightness,
           });
@@ -289,6 +308,17 @@ export const AsciiImage: React.FC<AsciiImageProps> = ({
 
       const particles = particlesRef.current;
       const mouse = mouseRef.current;
+
+      // Smoothly transition color progress toward target (1.0 for original, 0.0 for theme)
+      const targetProgress = colorModeState === "original" ? 1.0 : 0.0;
+      const progressDiff = targetProgress - colorProgressRef.current;
+      if (Math.abs(progressDiff) > 0.001) {
+        colorProgressRef.current += Math.sign(progressDiff) * 0.015; // smooth speed ~1.1s duration
+        colorProgressRef.current = Math.max(0.0, Math.min(1.0, colorProgressRef.current));
+      } else {
+        colorProgressRef.current = targetProgress;
+      }
+      const progress = colorProgressRef.current;
 
       // --- Atom phase timing ---
       const ATOM_DURATION_MS = 4500; // 4.5 seconds of chaotic atom movement
@@ -372,8 +402,13 @@ export const AsciiImage: React.FC<AsciiImageProps> = ({
           p.vy = 0;
         }
 
-        // Draw particle representation characters based on chosen color view
-        ctx.fillStyle = colorModeState === "theme" ? p.themeColor : p.originalColor;
+        // Smoothly interpolate RGB and Alpha values
+        const rVal = Math.round(p.tr + (p.r - p.tr) * progress);
+        const gVal = Math.round(p.tg + (p.g - p.tg) * progress);
+        const bVal = Math.round(p.tb + (p.b - p.tb) * progress);
+        const aVal = p.ta + (1.0 - p.ta) * progress;
+
+        ctx.fillStyle = `rgba(${rVal}, ${gVal}, ${bVal}, ${aVal.toFixed(2)})`;
         ctx.fillText(p.char, p.x, p.y);
       }
 

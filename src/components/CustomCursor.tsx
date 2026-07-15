@@ -11,7 +11,7 @@ const CustomCursor = () => {
   const mouseX = useMotionValue(0);
   const mouseY = useMotionValue(0);
 
-  const springConfig = { stiffness: 80, damping: 18, mass: 1.2 };
+  const springConfig = { stiffness: 200, damping: 55, mass: 0.85 };
   const cursorX = useSpring(mouseX, springConfig);
   const cursorY = useSpring(mouseY, springConfig);
 
@@ -67,7 +67,7 @@ const CustomCursor = () => {
       animate={{
         scale: isHovered ? 1.8 : 1,
       }}
-      className={`custom-cursor fixed top-0 left-0 w-8 h-8 rounded-full border-2 border-[#7C3AED] pointer-events-none z-[9999] will-change-transform transition-all duration-150 ${
+      className={`custom-cursor fixed top-0 left-0 w-8 h-8 rounded-full border-2 border-[#7C3AED] pointer-events-none z-[9999] will-change-transform transition-opacity duration-200 ${
         isVisible && !isHidden ? "opacity-100 scale-100" : "opacity-0 scale-50"
       }`}
     >
