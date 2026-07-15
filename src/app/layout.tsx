@@ -31,7 +31,7 @@ export default function RootLayout({
           <CustomCursor />
           <Navbar />
           <FrameBorder />
-          <main className="relative z-10">
+          <main className="relative z-10 px-9">
             {children}
           </main>
         </GameModeProvider>

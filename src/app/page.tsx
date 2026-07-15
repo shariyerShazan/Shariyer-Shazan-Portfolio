@@ -27,8 +27,13 @@ export default function Home() {
       
       {isGameActive && <GameMode />}
       
-      <footer className="py-12 text-center text-slate-500 font-mono text-sm flex justify-center w-full">
-        <p>&copy; {new Date().getFullYear()} {portfolioData.name}. Built with Next.js & Tailwind CSS.</p>
+      <footer className="py-12 text-center font-mono text-xs flex flex-col items-center gap-2 w-full">
+        <p className="text-slate-400 tracking-widest uppercase text-[10px]">
+          &copy; {new Date().getFullYear()} {portfolioData.name} &mdash; Backend Engineer &amp; Systems Architect
+        </p>
+        <p className="text-slate-600 text-[9px] tracking-wider">
+          Crafting scalable APIs, distributed systems &amp; real-time architectures.
+        </p>
       </footer>
     </div>
   );

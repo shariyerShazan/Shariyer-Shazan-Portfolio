@@ -62,6 +62,10 @@ export const AsciiImage: React.FC<AsciiImageProps> = ({
   const imageLoadedRef = useRef<boolean>(false);
   const mouseRef = useRef<{ x: number; y: number }>({ x: -9999, y: -9999 });
   const animationFrameIdRef = useRef<number | null>(null);
+  // Atom phase: tracks when the page-load scatter animation ends (4.5 seconds)
+  const startTimeRef = useRef<number | null>(null);
+  const [isSettled, setIsSettled] = useState(false);
+  const isSettledRef = useRef(false);
 
   const [viewMode, setViewMode] = useState<"ascii" | "original">("ascii");
   const [colorModeState, setColorModeState] = useState<"original" | "theme">(colorMode);
@@ -253,10 +257,17 @@ export const AsciiImage: React.FC<AsciiImageProps> = ({
         const targetY = part.normY * height;
         part.targetX = targetX;
         part.targetY = targetY;
-        // Introduce random starting offsets to fly-in smoothly on page load
-        part.x = targetX + (Math.random() - 0.5) * 40;
-        part.y = targetY + (Math.random() - 0.5) * 40;
+        // Gentle atom scatter — orbiting but not too wild
+        const angle = Math.random() * Math.PI * 2;
+        const dist = 40 + Math.random() * 80;
+        part.x = targetX + Math.cos(angle) * dist;
+        part.y = targetY + Math.sin(angle) * dist;
+        // Mild initial velocity
+        part.vx = (Math.random() - 0.5) * 2;
+        part.vy = (Math.random() - 0.5) * 2;
       });
+      // Record when particles were initialized so we can track the atom phase
+      startTimeRef.current = Date.now();
     };
   }, [src, gridResolution, themeColor, dimensions.width, dimensions.height]);
 
@@ -279,44 +290,82 @@ export const AsciiImage: React.FC<AsciiImageProps> = ({
       const particles = particlesRef.current;
       const mouse = mouseRef.current;
 
+      // --- Atom phase timing ---
+      const ATOM_DURATION_MS = 4500; // 4.5 seconds of chaotic atom movement
+      const now = Date.now();
+      const elapsed = startTimeRef.current !== null ? now - startTimeRef.current : ATOM_DURATION_MS + 1;
+      const inAtomPhase = elapsed < ATOM_DURATION_MS;
+      // Progress 0→1 over the atom phase (used for easing spring/friction transitions)
+      const atomProgress = Math.min(1, elapsed / ATOM_DURATION_MS);
+      // Ease function: slow start then accelerates settle
+      const eased = atomProgress * atomProgress * (3 - 2 * atomProgress);
+
+      // Mark settled once atom phase ends
+      if (!inAtomPhase && !isSettledRef.current) {
+        isSettledRef.current = true;
+        setIsSettled(true);
+      }
+
+      // During atom phase: use very loose spring and almost no friction for chaotic motion.
+      // After atom phase: use normal tight physics.
+      const activeSpring = inAtomPhase
+        ? springStrength * 0.1 + eased * springStrength * 0.9   // gradually tighten
+        : springStrength;
+      const activeFriction = inAtomPhase
+        ? 0.97 - eased * (0.97 - friction)                       // gradually add friction
+        : friction;
+
+      // Hover parameters: noticeable but not extreme
+      const activeMouseRadius = isSettledRef.current ? mouseRadius * 1.4 : mouseRadius * 0.4;
+      const activePushStrength = isSettledRef.current ? pushStrength * 1.8 : pushStrength * 0.2;
+
       for (let i = 0; i < particles.length; i++) {
         const p = particles[i];
+
+        // --- Atom phase gentle orbital forces ---
+        if (inAtomPhase) {
+          // Mild orbital swirl — subtle, not chaotic
+          const orbitStrength = (1 - eased) * 0.3;
+          const dxTarget = p.targetX - p.x;
+          const dyTarget = p.targetY - p.y;
+          // Perpendicular push for gentle orbital spin
+          p.vx += -dyTarget * orbitStrength * 0.001;
+          p.vy += dxTarget * orbitStrength * 0.001;
+          // Very subtle jitter
+          p.vx += (Math.random() - 0.5) * (1 - eased) * 0.08;
+          p.vy += (Math.random() - 0.5) * (1 - eased) * 0.08;
+        }
 
         // 1. Calculate repulsion forces relative to the current cursor coordinates
         const dxMouse = p.x - mouse.x;
         const dyMouse = p.y - mouse.y;
         const distMouse = Math.sqrt(dxMouse * dxMouse + dyMouse * dyMouse);
 
-        let pushX = 0;
-        let pushY = 0;
-
-        if (distMouse < mouseRadius) {
+        if (distMouse < activeMouseRadius) {
           // Inversely proportional magnitude: closer is stronger repel strength
-          const force = (mouseRadius - distMouse) / mouseRadius;
+          const force = Math.pow((activeMouseRadius - distMouse) / activeMouseRadius, 1.4);
           const angle = Math.atan2(dyMouse, dxMouse);
-          pushX = Math.cos(angle) * force * pushStrength * 80;
-          pushY = Math.sin(angle) * force * pushStrength * 80;
-          
-          p.vx += pushX;
-          p.vy += pushY;
+          p.vx += Math.cos(angle) * force * activePushStrength * 120;
+          p.vy += Math.sin(angle) * force * activePushStrength * 120;
         }
 
         // 2. Gravitational spring force dragging it back home to target
         const dxTarget = p.targetX - p.x;
         const dyTarget = p.targetY - p.y;
-        p.vx += dxTarget * springStrength;
-        p.vy += dyTarget * springStrength;
+        p.vx += dxTarget * activeSpring;
+        p.vy += dyTarget * activeSpring;
 
         // Apply friction
-        p.vx *= friction;
-        p.vy *= friction;
+        p.vx *= activeFriction;
+        p.vy *= activeFriction;
 
         // Apply velocities
         p.x += p.vx;
         p.y += p.vy;
 
         // Optimization: snap if speeds and distances are microscopic to save CPU jitter
-        if (Math.abs(p.vx) < 0.01 && Math.abs(p.vy) < 0.01 && Math.abs(dxTarget) < 0.1 && Math.abs(dyTarget) < 0.1) {
+        // Only snap after atom phase is done
+        if (!inAtomPhase && Math.abs(p.vx) < 0.01 && Math.abs(p.vy) < 0.01 && Math.abs(dxTarget) < 0.1 && Math.abs(dyTarget) < 0.1) {
           p.x = p.targetX;
           p.y = p.targetY;
           p.vx = 0;
@@ -403,7 +452,11 @@ export const AsciiImage: React.FC<AsciiImageProps> = ({
   return (
     <div
       ref={containerRef}
-      className="relative w-full h-full rounded-2xl overflow-hidden border border-slate-800/80 bg-[#070b14]/50 shadow-2xl group cursor-crosshair select-none"
+      className={`relative w-full h-full rounded-2xl overflow-hidden border bg-[#070b14]/50 shadow-2xl group cursor-crosshair select-none transition-all duration-1000 ${
+        isSettled
+          ? "border-[#00f0ff]/30 shadow-[0_0_20px_rgba(0,240,255,0.08)]"
+          : "border-slate-800/80"
+      }`}
       data-no-circle-cursor="true"
     >
       {/* 1. ASCII Renderer Canvas */}

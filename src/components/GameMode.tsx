@@ -3,6 +3,19 @@
 import React, { useEffect, useRef, useState } from "react";
 import { useGameMode } from "@/context/GameModeContext";
 import { HiX } from "react-icons/hi";
+import {
+  SiNestjs,
+  SiNodedotjs,
+  SiRedis,
+  SiApachekafka,
+  SiDocker,
+  SiPostgresql,
+  SiMongodb,
+  SiMongoose,
+  SiGithubactions,
+} from "react-icons/si";
+import { FaAws, FaTerminal, FaBomb } from "react-icons/fa";
+import { TbNetwork } from "react-icons/tb";
 
 // Synthesize retro audio bloops dynamically
 const playBeep = (freq: number, duration: number, type: OscillatorType = "sine", gainVal = 0.05) => {
@@ -38,8 +51,12 @@ interface Collectible {
   x: number;
   y: number;
   label: string;
+  icon: string;
+  iconKey: string;
+  color: string;
   collected: boolean;
   pulseOffset: number;
+  type: "skill" | "grenade" | "deploy";
 }
 
 interface Particle {
@@ -52,11 +69,40 @@ interface Particle {
   alpha: number;
 }
 
-const TECH_NODES = [
-  "NestJS", "Node.js", "gRPC", "Kafka",
-  "Redis", "Docker", "Postgres", "MongoDB",
-  "Mongoose", "CI/CD", "AWS", "PM2"
+// Skill nodes with emoji fallbacks and matching react-icon naming keys
+const TECH_NODES: { label: string; icon: string; color: string; iconKey: string }[] = [
+  { label: "NestJS",   icon: "🐱", color: "#E0234E", iconKey: "NestJS" },
+  { label: "Node.js",  icon: "💚", color: "#68A063", iconKey: "Node.js" },
+  { label: "gRPC",     icon: "⚡", color: "#244C5A", iconKey: "gRPC" },
+  { label: "Kafka",    icon: "📨", color: "#231F20", iconKey: "Kafka" },
+  { label: "Redis",    icon: "🔴", color: "#DC382D", iconKey: "Redis" },
+  { label: "Docker",   icon: "🐳", color: "#0db7ed", iconKey: "Docker" },
+  { label: "Postgres", icon: "🐘", color: "#336791", iconKey: "Postgres" },
+  { label: "MongoDB",  icon: "🍃", color: "#4DB33D", iconKey: "MongoDB" },
+  { label: "Mongoose", icon: "🍀", color: "#880000", iconKey: "Mongoose" },
+  { label: "CI/CD",    icon: "🔄", color: "#F05133", iconKey: "CI/CD" },
+  { label: "AWS",      icon: "☁️",  color: "#FF9900", iconKey: "AWS" },
+  { label: "PM2",      icon: "⚙️",  color: "#2B037A", iconKey: "PM2" },
 ];
+
+const getIconComponent = (key: string) => {
+  switch (key) {
+    case "NestJS": return SiNestjs;
+    case "Node.js": return SiNodedotjs;
+    case "gRPC": return TbNetwork;
+    case "Kafka": return SiApachekafka;
+    case "Redis": return SiRedis;
+    case "Docker": return SiDocker;
+    case "Postgres": return SiPostgresql;
+    case "MongoDB": return SiMongodb;
+    case "Mongoose": return SiMongoose;
+    case "CI/CD": return SiGithubactions;
+    case "AWS": return FaAws;
+    case "PM2": return FaTerminal;
+    case "grenade": return FaBomb;
+    default: return null;
+  }
+};
 
 export const GameMode: React.FC = () => {
   const { isGameActive, setIsGameActive } = useGameMode();
@@ -65,11 +111,13 @@ export const GameMode: React.FC = () => {
   const containerRef = useRef<HTMLDivElement | null>(null);
   const requestRef = useRef<number | null>(null);
 
-  // Stats
+  // States
   const [score, setScore] = useState(0);
   const [highScore, setHighScore] = useState(0);
   const [servicesConnected, setServicesConnected] = useState<string[]>([]);
-  const [gameState, setGameState] = useState<"playing" | "victory">("playing");
+  const [gameState, setGameState] = useState<"playing" | "victory" | "gameover">("playing");
+  const [gameStarted, setGameStarted] = useState(false);
+  const [collectedCount, setCollectedCount] = useState(0); // Trigger React re-renders on coin collection
 
   // Low gravity, easy controls physics parameters
   const playerRef = useRef({
@@ -87,6 +135,8 @@ export const GameMode: React.FC = () => {
   const collectiblesRef = useRef<Collectible[]>([]);
   const particlesRef = useRef<Particle[]>([]);
   const documentHeightRef = useRef<number>(2000);
+  // Camera auto-scroll position — advances independently of player
+  const cameraScrollRef = useRef<number>(0);
 
   // Generate platforms all down the entire website page height
   const generateLevel = (width: number) => {
@@ -101,48 +151,92 @@ export const GameMode: React.FC = () => {
     );
     documentHeightRef.current = docHeight;
 
-    // Generous, easy platform dimensions
-    const platformWidth = 180;
-    const verticalGap = 160;
+    // Generous, easy platform dimensions — wide and closely spaced
+    const platformWidth = 220;
+    const verticalGap = 90; // Much closer platforms — easier to jump between
 
-    // 1st platform: fixed top-left coordinate as requested, cleared below the HUD
-    list.push({ x: 80, y: 260, w: platformWidth, h: 8 });
+    // 1st platform: always starts at the left edge
+    list.push({ x: 40, y: 260, w: platformWidth, h: 8 });
 
     // Start rendering platforms cascading downwards starting from next level
     let currentY = 260 + verticalGap;
     let index = 0;
 
+    // Snake/zigzag pattern: 5 positions across, left→right, then right→left
+    const STEPS = 5; // 5 horizontal positions per direction
+    const margin = 40;
+    const usableWidth = width - platformWidth - margin * 2;
+    const stepSize = usableWidth / (STEPS - 1);
+
+    let goingRight = true;
+    // Start at step 1 so 2nd platform is already stepped right from the manually-placed 1st
+    let loopStepIndex = 1;
+
     while (currentY < docHeight - 120) {
-      // Alternate left, center, right to cover the width
-      const maxColX = width - platformWidth - 60;
-      const x = 50 + Math.random() * maxColX;
-      
+      // Compute the x position for this step
+      const normalizedStep = goingRight ? loopStepIndex : (STEPS - 1 - loopStepIndex);
+      const x = margin + Math.round(stepSize * normalizedStep);
+
       list.push({ x, y: currentY, w: platformWidth, h: 8 });
 
-      // Add floating collectibles
-      if (Math.random() < 0.6) {
-        const label = TECH_NODES[index % TECH_NODES.length];
+      // --- ONE token per platform: 75% skill coin, 25% grenade ---
+      // Token floats ABOVE platform so player can walk under; must jump to collect
+      const TOKEN_HOVER = 42; // px above platform surface
+      const tokenX = x + platformWidth / 2; // centered on platform
+      const tokenY = currentY - TOKEN_HOVER;
+
+      if (Math.random() < 0.25) {
+        // Grenade
         colls.push({
-          x: x + platformWidth / 2,
-          y: currentY - 25,
-          label,
+          x: tokenX,
+          y: tokenY,
+          label: "GRENADE",
+          icon: "💣",
+          iconKey: "grenade",
+          color: "#ea285a",
           collected: false,
           pulseOffset: Math.random() * 10,
+          type: "grenade",
+        });
+      } else {
+        // Skill coin
+        const node = TECH_NODES[index % TECH_NODES.length];
+        colls.push({
+          x: tokenX,
+          y: tokenY,
+          label: node.label,
+          icon: node.icon,
+          iconKey: node.iconKey,
+          color: node.color,
+          collected: false,
+          pulseOffset: Math.random() * 10,
+          type: "skill",
         });
         index++;
+      }
+
+      // Advance step — reset to 1 (not 0) on flip to avoid repeating edge positions
+      loopStepIndex++;
+      if (loopStepIndex >= STEPS) {
+        goingRight = !goingRight;
+        loopStepIndex = 1; // skip 0 to prevent duplicate at edge
       }
 
       currentY += verticalGap;
     }
 
-    // Portal deployment platform at very bottom of document near footer
+    // Portal deployment platform — centered at the bottom
     list.push({ x: width / 2 - 120, y: docHeight - 80, w: 240, h: 12 });
     colls.push({
       x: width / 2,
-      y: docHeight - 110,
-      label: "⚡ PRODUCTION DEPLOY ⚡",
+      y: docHeight - 125,
+      label: "DEPLOY",
+      icon: "⚡",
+      iconKey: "deploy",
+      color: "#EAB308",
       collected: false,
       pulseOffset: 0,
+      type: "deploy",
     });
 
     platformsRef.current = list;
@@ -155,6 +249,21 @@ export const GameMode: React.FC = () => {
       const stored = localStorage.getItem("shazan_game_highscore");
       if (stored) setHighScore(parseInt(stored, 10));
     }
+  }, []);
+
+  useEffect(() => {
+    // Disable smooth scrolling when game is active to allow instant rendering
+    const originalScrollBehavior = document.documentElement.style.scrollBehavior;
+    document.documentElement.style.scrollBehavior = "auto";
+    
+    // Also scroll to top on mount
+    window.scrollTo({ top: 0, behavior: "instant" } as any);
+    cameraScrollRef.current = 0;
+
+    return () => {
+      // Restore scroll behavior on exit
+      document.documentElement.style.scrollBehavior = originalScrollBehavior;
+    };
   }, []);
 
   useEffect(() => {
@@ -179,6 +288,11 @@ export const GameMode: React.FC = () => {
         e.preventDefault();
       }
       keysRef.current[e.code] = true;
+
+      // Start scrolling on any active control input
+      if (["Space", "ArrowUp", "ArrowLeft", "ArrowRight", "KeyW", "KeyA", "KeyD"].includes(e.code)) {
+        setGameStarted(true);
+      }
     };
 
     const handleKeyUp = (e: KeyboardEvent) => {
@@ -210,7 +324,7 @@ export const GameMode: React.FC = () => {
         return;
       }
 
-      // 1. UPDATE PHYSICS
+      // 1. UPDATE PHYSICS — only when playing
       if (gameState === "playing") {
         const player = playerRef.current;
 
@@ -247,16 +361,11 @@ export const GameMode: React.FC = () => {
         if (player.x + player.width < 0) player.x = window.innerWidth;
         if (player.x > window.innerWidth) player.x = -player.width;
 
-        // Clamping to doc limits
+        // Clamping: only prevent going above the top
         const docHeight = documentHeightRef.current;
         if (player.y < 50) {
           player.y = 50;
           player.vy = 0;
-        }
-        if (player.y > docHeight - 40) {
-          player.y = docHeight - 40;
-          player.vy = 0;
-          player.onGround = true; // Landed at bottom ground of the website page
         }
 
         // Check platforms collision
@@ -276,21 +385,22 @@ export const GameMode: React.FC = () => {
           }
         }
 
-        // Check collectibles
+        // Check collectibles — token floats ABOVE platform; simple AABB touch
         const collectibles = collectiblesRef.current;
         for (const c of collectibles) {
           if (!c.collected) {
-            const range = 24;
-            if (player.x + player.width > c.x - range && 
-                player.x < c.x + range && 
-                player.y + player.height > c.y - range && 
-                player.y < c.y - 4) {
-              
-              c.collected = true;
+            // Coin radius = 14px. Collect if player bounding box overlaps coin area.
+            const coinR = 14;
+            const px1 = player.x + 4,   px2 = player.x + player.width - 4;
+            const py1 = player.y,        py2 = player.y + player.height;
+            const cx1 = c.x - coinR,     cx2 = c.x + coinR;
+            const cy1 = c.y - coinR,     cy2 = c.y + coinR;
 
-              const isDeployment = c.label.includes("DEPLOY");
-              if (isDeployment) {
-                // Victory Deployed!
+            if (px2 > cx1 && px1 < cx2 && py2 > cy1 && py1 < cy2) {
+              c.collected = true;
+              setCollectedCount((prev) => prev + 1);
+
+              if (c.type === "deploy") {
                 setGameState("victory");
                 playBeep(523.2, 0.1, "square", 0.05);
                 setTimeout(() => playBeep(659.3, 0.1, "square", 0.05), 80);
@@ -299,7 +409,23 @@ export const GameMode: React.FC = () => {
                 continue;
               }
 
-              // Normal node collect
+              if (c.type === "grenade") {
+                setGameState("gameover");
+                playBeep(80, 0.5, "sawtooth", 0.12);
+                for (let i = 0; i < 20; i++) {
+                  particlesRef.current.push({
+                    x: c.x, y: c.y,
+                    vx: (Math.random() - 0.5) * 12,
+                    vy: (Math.random() - 0.5) * 12 - 2,
+                    color: i % 2 === 0 ? "#ea285a" : "#ff6b00",
+                    size: 3 + Math.random() * 5,
+                    alpha: 1.0,
+                  });
+                }
+                continue;
+              }
+
+              // Skill coin collected
               setScore((prev) => {
                 const ns = prev + 100;
                 if (ns > highScore) {
@@ -308,20 +434,16 @@ export const GameMode: React.FC = () => {
                 }
                 return ns;
               });
-
               setServicesConnected((prev) => [...prev, c.label]);
-              playBeep(800, 0.04, "sine", 0.03);
-              setTimeout(() => playBeep(1200, 0.08, "sine", 0.03), 40);
-
-              // Spawn particles
-              for (let i = 0; i < 10; i++) {
+              playBeep(900, 0.04, "sine", 0.03);
+              setTimeout(() => playBeep(1400, 0.08, "sine", 0.03), 40);
+              for (let i = 0; i < 12; i++) {
                 particlesRef.current.push({
-                  x: c.x,
-                  y: c.y,
-                  vx: (Math.random() - 0.5) * 5,
-                  vy: (Math.random() - 0.5) * 5 - 1,
-                  color: "#10B981",
-                  size: 2 + Math.random() * 2,
+                  x: c.x, y: c.y,
+                  vx: (Math.random() - 0.5) * 6,
+                  vy: (Math.random() - 0.5) * 6 - 1,
+                  color: c.color,
+                  size: 2 + Math.random() * 3,
                   alpha: 1.0,
                 });
               }
@@ -329,14 +451,25 @@ export const GameMode: React.FC = () => {
           }
         }
 
-        // SMOOTH SCROLL TRACKING: Intercept window scroll position to follow player coordinates
-        const targetScrollY = player.y - window.innerHeight / 2;
-        const currentScrollY = window.scrollY;
-        
-        // Smoothly adjust scroll position of the browser view
-        const scrollDelta = targetScrollY - currentScrollY;
-        if (Math.abs(scrollDelta) > 1) {
-          window.scrollTo(0, currentScrollY + scrollDelta * 0.065);
+        // CAMERA AUTO-SCROLL: only scroll down when game has started
+        if (gameStarted) {
+          const CAMERA_SPEED = 0.65; // px per frame
+          cameraScrollRef.current = Math.min(
+            cameraScrollRef.current + CAMERA_SPEED,
+            documentHeightRef.current - window.innerHeight + 60
+          );
+          window.scrollTo(0, cameraScrollRef.current);
+        } else {
+          window.scrollTo(0, 0);
+          cameraScrollRef.current = 0;
+        }
+
+        // GAME OVER: player fell below the camera's visible bottom (touched the 'ground')
+        const viewportBottom = cameraScrollRef.current + window.innerHeight;
+        if (player.y > viewportBottom - 10) {
+          setGameState("gameover");
+          playBeep(200, 0.3, "sawtooth", 0.06);
+          setTimeout(() => playBeep(140, 0.5, "sawtooth", 0.06), 150);
         }
       }
 
@@ -352,6 +485,11 @@ export const GameMode: React.FC = () => {
       ctx.clearRect(0, 0, canvas.width, canvas.height);
       const scrollY = window.scrollY;
 
+      // Sync CSS scroll variable for absolute DOM collectibles rendering
+      if (containerRef.current) {
+        containerRef.current.style.setProperty("--game-scroll-y", `${scrollY}px`);
+      }
+
       // Draw Platforms
       const platforms = platformsRef.current;
       platforms.forEach((p) => {
@@ -359,64 +497,26 @@ export const GameMode: React.FC = () => {
         // Don't draw if outside viewport
         if (drawY + p.h < 0 || drawY > canvas.height) return;
 
-        // Glowing platform line
+        // Glowing platform line — #ea285a color
         ctx.shadowBlur = 6;
-        ctx.shadowColor = "#00f0ff";
-        ctx.strokeStyle = "rgba(0, 240, 255, 0.7)";
+        ctx.shadowColor = "#ea285a";
+        ctx.strokeStyle = "rgba(234, 40, 90, 0.85)";
         ctx.lineWidth = 3;
         ctx.beginPath();
         ctx.moveTo(p.x, drawY);
         ctx.lineTo(p.x + p.w, drawY);
         ctx.stroke();
 
-        // Platform tech dash line
+        // Platform dash line
         ctx.shadowBlur = 0;
         ctx.setLineDash([3, 4]);
-        ctx.strokeStyle = "rgba(0, 240, 255, 0.3)";
+        ctx.strokeStyle = "rgba(234, 40, 90, 0.35)";
         ctx.lineWidth = 1;
         ctx.beginPath();
         ctx.moveTo(p.x, drawY + 4);
         ctx.lineTo(p.x + p.w, drawY + 4);
         ctx.stroke();
         ctx.setLineDash([]);
-      });
-
-      // Draw Collectibles
-      const collectibles = collectiblesRef.current;
-      collectibles.forEach((c) => {
-        if (c.collected) return;
-        const drawY = c.y - scrollY;
-        if (drawY + 40 < 0 || drawY - 40 > canvas.height) return;
-
-        const pulse = Math.sin((Date.now() / 180) + c.pulseOffset) * 2;
-        ctx.font = "bold 9px monospace";
-        ctx.textAlign = "center";
-        
-        if (c.label.includes("DEPLOY")) {
-          // Yellow glow Deploy badge
-          ctx.shadowBlur = 10;
-          ctx.shadowColor = "#EAB308";
-          ctx.fillStyle = "#EAB308";
-          ctx.font = "bold 11px monospace";
-          ctx.fillText(c.label, c.x, drawY + pulse);
-          
-          ctx.strokeStyle = "#EAB308";
-          ctx.lineWidth = 1.5;
-          ctx.strokeRect(c.x - 85, drawY - 12 + pulse, 170, 18);
-        } else {
-          // Standard green tech badge
-          ctx.shadowBlur = 5;
-          ctx.shadowColor = "#10B981";
-          ctx.fillStyle = "#10B981";
-          
-          const labelWidth = ctx.measureText(c.label).width;
-          ctx.fillText(c.label, c.x, drawY + pulse);
-          
-          ctx.strokeStyle = "rgba(16, 185, 129, 0.5)";
-          ctx.lineWidth = 1;
-          ctx.strokeRect(c.x - (labelWidth / 2) - 4, drawY - 9 + pulse, labelWidth + 8, 12);
-        }
-        ctx.shadowBlur = 0;
       });
 
       // Draw particles
@@ -446,7 +546,7 @@ export const GameMode: React.FC = () => {
     return () => {
       if (requestRef.current) cancelAnimationFrame(requestRef.current);
     };
-  }, [gameState, highScore]);
+  }, [gameState, highScore, gameStarted]);
 
   // Restart game utility
   const resetGame = () => {
@@ -459,11 +559,14 @@ export const GameMode: React.FC = () => {
       height: 20,
       onGround: true,
     };
+    cameraScrollRef.current = 0; // Reset camera to top
     setScore(0);
     setServicesConnected([]);
     setGameState("playing");
+    setGameStarted(false);
+    setCollectedCount(0);
     particlesRef.current = [];
-    window.scrollTo({ top: 0, behavior: "smooth" });
+    window.scrollTo({ top: 0, behavior: "instant" } as any);
     generateLevel(window.innerWidth);
     
     playBeep(440, 0.1, "triangle", 0.04);
@@ -476,8 +579,69 @@ export const GameMode: React.FC = () => {
       ref={containerRef}
       className="fixed inset-0 pointer-events-none z-45 overflow-hidden"
     >
+      <style dangerouslySetInnerHTML={{ __html: `
+        @keyframes floatSlow {
+          0%, 100% { transform: translateY(0px); }
+          50% { transform: translateY(-5px); }
+        }
+        .game-float-icon {
+          animation: floatSlow 2.2s ease-in-out infinite;
+        }
+      `}} />
+
       {/* Viewport canvas overlays */}
       <canvas ref={canvasRef} className="absolute inset-0 w-full h-full block pointer-events-none" />
+
+      {/* Absolute-positioned HTML/SVG Collectibles using real react-icons */}
+      <div className="absolute inset-0 pointer-events-none overflow-hidden select-none">
+        {collectiblesRef.current.map((c, index) => {
+          if (c.collected) return null;
+          const IconComponent = getIconComponent(c.iconKey);
+
+          return (
+            <div
+              key={index}
+              style={{
+                position: "absolute",
+                left: `${c.x}px`,
+                top: `calc(${c.y}px - var(--game-scroll-y, 0px))`,
+                transform: "translate(-50%, -50%)",
+                pointerEvents: "auto",
+                transition: "opacity 0.2s ease",
+              }}
+              className="flex flex-col items-center select-none"
+            >
+              {/* Glowing ring/badge around icon */}
+              <div
+                className="w-10 h-10 rounded-full flex items-center justify-center border border-2 shadow-lg game-float-icon backdrop-blur-sm"
+                style={{
+                  borderColor: c.color,
+                  boxShadow: `0 0 14px ${c.color}6b`,
+                  backgroundColor: `${c.color}22`,
+                  animationDelay: `${c.pulseOffset * 0.15}s`,
+                }}
+              >
+                {IconComponent ? (
+                  <IconComponent className="text-lg" style={{ color: c.color }} />
+                ) : (
+                  <span className="text-base">{c.icon}</span>
+                )}
+              </div>
+
+              {/* Label */}
+              <span
+                className="text-[8px] font-mono font-bold mt-1 px-1 bg-[#0a0f1d]/90 rounded border border-slate-800 shadow-sm uppercase tracking-wider block"
+                style={{
+                  color: c.color,
+                  textShadow: `0 0 4px ${c.color}a0`,
+                }}
+              >
+                {c.label}
+              </span>
+            </div>
+          );
+        })}
+      </div>
 
       {/* Screen HUD - Slightly moved down to avoid overlapping the logo */}
       <div className="absolute top-20 md:top-24 left-8 font-mono z-10 pointer-events-none flex flex-col gap-1 text-[10px] md:text-sm">
@@ -529,6 +693,27 @@ export const GameMode: React.FC = () => {
         </button>
       </div>
 
+      {/* Start Game screen / Space to start prompt */}
+      {!gameStarted && gameState === "playing" && (
+        <div className="absolute inset-0 bg-[#070b14]/50 backdrop-blur-xs z-25 flex flex-col items-center justify-center text-center p-6 font-mono pointer-events-auto">
+          <div className="max-w-xs border border-[#00f0ff]/30 p-6 rounded-lg bg-[#0a0f1d]/90 shadow-[0_0_30px_rgba(0,240,255,0.15)] animate-pulse">
+            <h3 className="text-[#00f0ff] text-sm font-bold tracking-widest mb-3">SYSTEM READY</h3>
+            <p className="text-[10px] text-slate-400 mb-5 leading-relaxed">
+              Auto-scroll descending pipeline is ready to compile. Collect real-time skill badges and avoid grenades.
+            </p>
+            <button
+              onClick={() => setGameStarted(true)}
+              className="w-full py-2 bg-[#00f0ff] hover:bg-[#00d0df] text-[#0a0f1d] font-bold text-xs uppercase transition-all shadow-[0_0_10px_rgba(0,240,255,0.2)] hover:shadow-[0_0_15px_rgba(0,240,255,0.4)] cursor-pointer"
+            >
+              START COMPILING
+            </button>
+            <div className="text-[8px] text-slate-500 mt-2 font-mono">
+              (OR PRESS SPACE/ARROW TO START)
+            </div>
+          </div>
+        </div>
+      )}
+
       {/* Victory Screen Modal Overlay */}
       {gameState === "victory" && (
         <div className="absolute inset-0 bg-[#070b14]/75 backdrop-blur-sm z-30 flex flex-col items-center justify-center text-center p-6 font-mono pointer-events-auto">
@@ -554,6 +739,37 @@ export const GameMode: React.FC = () => {
                 className="px-5 py-2.5 bg-[#EAB308] hover:bg-[#CA8A04] text-slate-950 font-bold text-xs uppercase hover:shadow-[0_0_12px_rgba(234,179,8,0.3)] transition-all cursor-pointer"
               >
                 Explore Portfolio
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Game Over Screen Modal */}
+      {gameState === "gameover" && (
+        <div className="absolute inset-0 bg-[#070b14]/80 backdrop-blur-sm z-30 flex flex-col items-center justify-center text-center p-6 font-mono pointer-events-auto">
+          <div className="max-w-md border border-[#ea285a]/40 p-6 rounded-lg bg-[#0a0f1d] shadow-[0_0_35px_rgba(234,40,90,0.25)]">
+            <h2 className="text-[#ea285a] text-lg font-bold tracking-widest mb-2">💀 PROCESS TERMINATED</h2>
+            <p className="text-xs text-slate-400 mb-4 leading-relaxed">
+              The service crashed. Your <span className="text-[#00f0ff] font-bold">&lt;/&gt;</span> container either hit a <span className="text-[#ea285a] font-bold">💣 grenade</span> or fell off the platform grid.
+            </p>
+            <div className="text-xs text-slate-500 mb-6 text-left border border-slate-800 bg-[#070b14]/90 p-3 rounded leading-relaxed">
+              <span className="text-[#ea285a] font-bold">&gt; AVOID:</span> 💣 grenades on platforms — they kill instantly.<br />
+              <span className="text-[#ea285a] font-bold">&gt; SCORE LOGGED:</span> <span className="text-slate-200 font-bold">{score}</span><br />
+              <span className="text-slate-600 font-bold">&gt; RESTART TO REDEPLOY...</span>
+            </div>
+            <div className="flex gap-4 items-center justify-center">
+              <button
+                onClick={() => setIsGameActive(false)}
+                className="px-4 py-2 border border-slate-700 hover:border-[#ea285a]/50 text-slate-300 font-bold text-xs uppercase hover:bg-[#ea285a]/5 transition-all cursor-pointer"
+              >
+                Exit
+              </button>
+              <button
+                onClick={resetGame}
+                className="px-5 py-2.5 bg-[#ea285a] hover:bg-[#c41e48] text-white font-bold text-xs uppercase shadow-[0_0_12px_rgba(234,40,90,0.3)] hover:shadow-[0_0_20px_rgba(234,40,90,0.5)] transition-all cursor-pointer"
+              >
+                ↺ Restart
               </button>
             </div>
           </div>

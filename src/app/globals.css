@@ -30,7 +30,7 @@ body {
 .railway-border {
   position: fixed;
   pointer-events: none;
-  z-index: 50;
+  z-index: 100;
 }
 
 .railway-outer {
@@ -57,7 +57,7 @@ body {
   width: 32px;
   height: 32px;
   border: 1px solid var(--color-brand-cyan);
-  z-index: 51;
+  z-index: 101;
   pointer-events: none;
   opacity: 0.8;
 }
