@@ -183,11 +183,12 @@ export const portfolioData: PortfolioData = {
       description:
         "Engineered a high-performance, event-driven social platform using a NestJS monorepo. Built synchronous service communication using gRPC (libs/proto-schema contracts) and decoupled asynchronous domain events (OTP verification, signup setups, follows, post engagement) via Apache Kafka. Provisioned independent database layers with Redis caching, PostgreSQL/Prisma, and MongoDB/Mongoose.",
       highlights: [
-        "Distributed Services: API Gateway, Auth, User Profile, Media Processing, Notification, Post Lifecycle, and Feed Assembly services.",
+        "Distributed Services: API Gateway, Auth, User Profile, Media Processing, Notification, Post Lifecycle, Feed Assembly, and Chat Service.",
+        "Real-Time Chat Engine: Chat service coordinates private messaging and group chats over Socket.IO WebSockets, session caches in Redis registry, and stores logs in multi-node MongoDB replica sets.",
         "Event-Driven Workflows: Decoupled domain interactions using Kafka event orchestration (e.g. user.registered triggers automatic profile creation and notification dispatch).",
         "High-Performance Feed System: Feed-service utilizes Redis-backed timeline caches with celebrity-buffered read paths and trending score calculations.",
         "Media Processing Pipeline: Async image processing (variants generated via sharp) with local storage adapters and Mongo metadata indexes.",
-        "Upcoming Architectures: Chat Service (real-time WebSockets/Socket.IO and bilateral logging) and Marketplace Service (transaction processing and custom buyer/seller dashboards)."
+        "Upcoming Architectures: Marketplace Service (transaction processing and custom buyer/seller dashboards)."
       ],
       backendLink: "https://github.com/shariyerShazan/Waave-SocialMedia-Backend-Microservices",
       swaggerLink: "https://github.com/shariyerShazan/Waave-SocialMedia-Backend-Microservices", // Show Swagger button

@@ -1,7 +1,7 @@
 /* eslint-disable react-hooks/set-state-in-effect */
 "use client";
 
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState } from "react";
 import { SiPostgresql, SiMongodb, SiRedis, SiApachekafka } from "react-icons/si";
 import {
   FiCpu,
@@ -17,6 +17,8 @@ import {
   FiServer,
   FiInfo,
   FiChevronRight,
+  FiPlay,
+  FiSquare,
 } from "react-icons/fi";
 
 interface ServiceNode {
@@ -212,16 +214,18 @@ const SERVICES_DATA: ServiceNode[] = [
     id: "chat-service",
     name: "Chat Service",
     icon: FiMessageSquare,
-    type: "upcoming",
-    port: "gRPC 3005",
-    langTech: "NestJS / WebSockets",
-    database: "MongoDB (Bilateral Dialogues)",
+    type: "service",
+    port: "gRPC 3005 | HTTP 4005",
+    langTech: "NestJS / Socket.IO",
+    database: "MongoDB & Redis Cache",
     responsibilities: [
-      "Handles live chat messaging using Socket.IO server modules",
-      "Aggregates conversation logs, unread notification counts, and status indicators",
+      "Manages direct 1-on-1 private messaging and group chats with admin scopes and custom details.",
+      "Establishes real-time connection using Socket.IO server modules and session cache indicators in Redis.",
+      "Implements real-time messaging, emoji reactions, message recall, and unread conversation alerts.",
+      "Exposes gRPC endpoints to retrieve conversation details and histories from the API Gateway.",
     ],
     dirPath: "apps/chat-service",
-    activeColor: "border-slate-700 text-slate-500 bg-slate-800/10 border-dashed",
+    activeColor: "border-fuchsia-500 text-fuchsia-400 bg-fuchsia-500/10 shadow-[0_0_15px_rgba(217,70,239,0.3)]",
   },
   {
     id: "marketplace",
@@ -287,7 +291,7 @@ const SERVICES_DATA: ServiceNode[] = [
     type: "infra",
     langTech: "NoSQL Replica Sets",
     responsibilities: [
-      "Deploys 3-member MongoDB Replica Sets for Media (media-rs) and Notification (notification-rs) databases to prevent data loss.",
+      "Deploys 3-member MongoDB Replica Sets for Media (media-rs), Notification (notification-rs), and Chat (chat-rs) databases to prevent data loss.",
       "Stores unstructured media item records, format sizes, and transactional emails trace indexes.",
       "Orchestrates dynamic replica set elections via replica-init entrypoint containers.",
     ],
@@ -386,100 +390,79 @@ const REQUEST_FLOWS: RequestFlow[] = [
       },
     ],
   },
+  {
+    id: "chat",
+    name: "Real-Time Chat & Broadcast",
+    description: "Client WebSocket handshake -> auth verify -> session cached in Redis -> message emitted -> saved to MongoDB -> service-level gRPC profile/media enrichment -> WebSocket broadcast via Socket.IO & Kafka fallback alerts.",
+    steps: [
+      {
+        log: "Client establishes Socket.IO handshake connection: ws://localhost:4005 with signed JWT credentials.",
+        activeNodes: ["client", "chat-service"],
+      },
+      {
+        log: "Chat Service validates JWT signature, tracks user status ('online') in Redis, and joins corresponding live conversation rooms.",
+        activeNodes: ["chat-service", "redis"],
+      },
+      {
+        log: "Client sends message via WebSocket channel: 'sendMessage' payload mapping text and attached media IDs.",
+        activeNodes: ["client", "chat-service"],
+      },
+      {
+        log: "Chat Service resolves media URLs (gRPC to Media Service) and sender profile details (gRPC to User Service).",
+        activeNodes: ["chat-service", "user-service", "media-service"],
+      },
+      {
+        log: "Chat Service writes transaction record to MongoDB database, updating unread conversation indexes counters.",
+        activeNodes: ["chat-service", "mongodb"],
+      },
+      {
+        log: "Chat Service broadcasts message payload over Socket.IO to connected users. For offline users, it publishes a Kafka alert trigger.",
+        activeNodes: ["chat-service", "kafka"],
+      },
+      {
+        log: "Notification Service consumes the Kafka event, persisting history list in MongoDB to deliver a real-time push alert or email courier.",
+        activeNodes: ["notification-service", "kafka", "mongodb"],
+      },
+      {
+        log: "Message delivery and offline push notification flows complete successfully.",
+        activeNodes: ["client"],
+      },
+    ],
+  },
+];
+
+const CONSOLE_LOGS: string[] = [
+  "=== SYSTEM CONTAINER AUDIT JOURNAL ===",
+  "[SYSTEM] [03:00:15] Initializing docker-compose microservices stack...",
+  "[SYSTEM] [03:00:18] Network waave_default created successfully (driver: bridge).",
+  "[INFRA]  [03:00:20] Postgres base instance online. Hot-standby replication slots initialized.",
+  "[INFRA]  [03:00:22] MongoDB primary nodes initialized. Running elections for media-rs/notification-rs/chat-rs replica sets...",
+  "[INFRA]  [03:00:22]  └─ media-rs replica set: PRIMARY online.",
+  "[INFRA]  [03:00:23]  └─ notification-rs replica set: PRIMARY online.",
+  "[INFRA]  [03:00:24]  └─ chat-rs replica set: PRIMARY online.",
+  "[INFRA]  [03:00:25] Redis key-value cache cluster online (7 isolated databases configured on ports 6379-6385).",
+  "[INFRA]  [03:00:28] Kafka KRaft brokers online on port 9092. Creating topics: user.registered, post.created, chat.message...",
+  "[SYSTEM] [03:00:32] Kafka topics created successfully. Registry dashboard online at http://localhost:8080.",
+  "[CORE]   [03:00:35] api-gateway container started on port 4000. Redis rate-limit checks online.",
+  "[CORE]   [03:00:37] auth-service started. gRPC 3001 | HTTP 4001 online. auth_db (Postgres) connected.",
+  "[CORE]   [03:00:38] user-service started. gRPC 3002 | HTTP 4002 online. user_db (Postgres) connected.",
+  "[CORE]   [03:00:39] post-service started. gRPC 3003 | HTTP 4003 online. post_db (Postgres) connected.",
+  "[CORE]   [03:00:41] feed-service started. gRPC 3004 | HTTP 4004 online. Redis Timeline Cache connected.",
+  "[CORE]   [03:00:42] chat-service started. gRPC 3005 | HTTP 4005 online. Socket.IO Gateway established.",
+  "[CORE]   [03:00:44] media-service started. gRPC 3009 | HTTP 4009 online. Storage volume /data/temp mapped.",
+  "[CORE]   [03:00:46] notification-service started. gRPC 3010 | HTTP 4010 online. SMTP client connected.",
+  "[SYSTEM] [03:00:48] All 8 microservices registered. Healthchecks: 100% PASSING.",
+  "[SYSTEM] [03:01:00] Kafka Consumer Groups synchronized. Listening for domain event triggers...",
+  "=========================================================================",
+  "=== DOCKER CONTAINER ENVIRONMENT STATUS: ALL SYSTEMS OPERATIONAL ==="
 ];
 
 export const WaaveArchitecture = () => {
   const [selectedNodeId, setSelectedNodeId] = useState<string>("gateway");
-  const [activeSimulationId, setActiveSimulationId] = useState<string | null>(null);
-  const [currentStepIndex, setCurrentStepIndex] = useState<number>(-1);
-  const [isPlaying, setIsPlaying] = useState<boolean>(false);
-  const [consoleLogs, setConsoleLogs] = useState<string[]>([
-    "=== SYSTEM VERIFICATION IN PROGRESS ===",
-    "[SYSTEM] Architecture modules status: READY",
-    "[SYSTEM] Select any service node below to explore its environment properties,",
-    "[SYSTEM] Or choose a request simulation to examine the internal data pipeline.",
-  ]);
-
-  const terminalEndRef = useRef<HTMLDivElement>(null);
   const selectedNode = SERVICES_DATA.find((n) => n.id === selectedNodeId) || SERVICES_DATA[1];
 
-  useEffect(() => {
-    if (terminalEndRef.current) {
-      terminalEndRef.current.scrollIntoView({ behavior: "smooth" });
-    }
-  }, [consoleLogs]);
-
-  useEffect(() => {
-    if (!isPlaying || activeSimulationId === null) return;
-
-    const flow = REQUEST_FLOWS.find((f) => f.id === activeSimulationId);
-    if (!flow) {
-      setIsPlaying(false);
-      return;
-    }
-
-    if (currentStepIndex < flow.steps.length - 1) {
-      const nextIndex = currentStepIndex + 1;
-      const timer = setTimeout(() => {
-        setCurrentStepIndex(nextIndex);
-        const step = flow.steps[nextIndex];
-        const timestamp = new Date().toLocaleTimeString();
-        setConsoleLogs((prev) => [
-          ...prev,
-          `[${timestamp}] [STEP ${nextIndex + 1}/${flow.steps.length}] ${step.log}`,
-        ]);
-        
-        if (step.activeNodes.length > 0) {
-          const mainNode = step.activeNodes[0];
-          if (mainNode !== "client") {
-            setSelectedNodeId(mainNode);
-          }
-        }
-      }, 2400);
-
-      return () => clearTimeout(timer);
-    } else {
-      setIsPlaying(false);
-      setConsoleLogs((prev) => [
-        ...prev,
-        `[SYSTEM] Simulation '${flow.name}' complete. Broker and nodes status returned to idle.`,
-      ]);
-    }
-  }, [isPlaying, currentStepIndex, activeSimulationId]);
-
-  const handleStartSimulation = (flowId: string) => {
-    const flow = REQUEST_FLOWS.find((f) => f.id === flowId);
-    if (!flow) return;
-
-    setActiveSimulationId(flowId);
-    setCurrentStepIndex(0);
-    setIsPlaying(true);
-    setConsoleLogs([
-      "============================================================",
-      `[SYSTEM] STARTING PIPELINE: ${flow.name.toUpperCase()}`,
-      "============================================================",
-      `[${new Date().toLocaleTimeString()}] [STEP 1/${flow.steps.length}] ${flow.steps[0].log}`,
-    ]);
-  };
-
-  const handleStopSimulation = () => {
-    setIsPlaying(false);
-    setActiveSimulationId(null);
-    setCurrentStepIndex(-1);
-    setConsoleLogs((prev) => [...prev, "[SYSTEM] Simulation aborted by administrator. Logs flushed."]);
-  };
-
-  const getActiveNodesInStep = (): string[] => {
-    if (activeSimulationId === null || currentStepIndex === -1) return [];
-    const flow = REQUEST_FLOWS.find((f) => f.id === activeSimulationId);
-    if (!flow || !flow.steps[currentStepIndex]) return [];
-    return flow.steps[currentStepIndex].activeNodes;
-  };
-
-  const activeNodes = getActiveNodesInStep();
-  
   return (
-    <div className="w-full bg-[#070b13]/95 border border-[#1e293b] rounded-2xl overflow-hidden shadow-2xl relative text-left">
+    <div className="w-full bg-[#070b13]/95 border border-[#1e293b] rounded-2xl overflow-hidden shadow-2xl relative text-left" onClick={(e) => e.stopPropagation()} onMouseDownCapture={(e) => e.preventDefault()}>
       <div className="h-[3px] w-full bg-gradient-to-r from-cyan-500 via-indigo-500 to-amber-500 animate-pulse"></div>
 
       <div className="p-5 md:p-8">
@@ -540,16 +523,20 @@ export const WaaveArchitecture = () => {
               
               {/* Row 1: Client -> Ingress */}
               <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
-                <button
+                <button type="button"
                   onClick={() => setSelectedNodeId("client")}
-                  className={`w-full sm:w-44 p-3.5 rounded-xl border flex flex-col items-center gap-1 transition-all duration-300 ${
-                    activeNodes.includes("client")
+                  className={`w-full sm:w-44 p-3.5 rounded-xl border flex flex-col items-center gap-1 transition-all duration-300 relative ${
+                    selectedNodeId === "client"
                       ? SERVICES_DATA.find((n) => n.id === "client")?.activeColor
-                      : selectedNodeId === "client"
-                      ? "border-[#00f0ff] text-white bg-slate-800/20"
                       : "border-slate-800 text-slate-400 bg-slate-900/50 hover:border-slate-700"
                   }`}
                 >
+                  {selectedNodeId === "client" && (
+                    <span className="absolute -top-1 -right-1 flex h-2 w-2">
+                      <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+                      <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
+                    </span>
+                  )}
                   <FiUser className="text-xl" />
                   <span className="text-xs font-bold font-sans">Web Client</span>
                   <span className="text-[8px] font-mono opacity-50">Next.js UI</span>
@@ -557,17 +544,15 @@ export const WaaveArchitecture = () => {
                 
                 <FiChevronRight className="hidden sm:block text-slate-600 text-lg" />
                 
-                <button
+                <button type="button"
                   onClick={() => setSelectedNodeId("gateway")}
                   className={`w-full sm:w-48 p-3.5 rounded-xl border flex flex-col items-center gap-1 transition-all duration-300 relative ${
-                    activeNodes.includes("gateway")
+                    selectedNodeId === "gateway"
                       ? SERVICES_DATA.find((n) => n.id === "gateway")?.activeColor
-                      : selectedNodeId === "gateway"
-                      ? "border-[#00f0ff] text-white bg-slate-800/20"
                       : "border-slate-800 text-slate-400 bg-slate-900/50 hover:border-slate-700"
                   }`}
                 >
-                  {activeNodes.includes("gateway") && (
+                  {selectedNodeId === "gateway" && (
                     <span className="absolute -top-1 -right-1 flex h-2 w-2">
                       <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-cyan-400 opacity-75"></span>
                       <span className="relative inline-flex rounded-full h-2 w-2 bg-cyan-500"></span>
@@ -581,19 +566,23 @@ export const WaaveArchitecture = () => {
 
               {/* Row 2: Shared Cache Hub */}
               <div className="flex justify-center border-y border-[#1e293b]/30 py-4 my-2">
-                <button
+                <button type="button"
                   onClick={() => setSelectedNodeId("redis")}
-                  className={`px-6 py-2.5 rounded-xl border flex items-center gap-3 transition-all duration-300 ${
-                    activeNodes.includes("redis")
+                  className={`px-6 py-2.5 rounded-xl border flex items-center gap-3 transition-all duration-300 relative ${
+                    selectedNodeId === "redis"
                       ? SERVICES_DATA.find((n) => n.id === "redis")?.activeColor
-                      : selectedNodeId === "redis"
-                      ? "border-red-500 text-white bg-slate-800/20"
                       : "border-slate-800 text-slate-400 bg-slate-900/50 hover:border-slate-700"
                   }`}
                 >
+                  {selectedNodeId === "redis" && (
+                    <span className="absolute top-2 right-2 flex h-1.5 w-1.5">
+                      <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-405 opacity-75"></span>
+                      <span className="relative inline-flex rounded-full h-1.5 w-1.5 bg-red-500"></span>
+                    </span>
+                  )}
                   <SiRedis className="text-lg text-red-500" />
                   <div className="text-left font-sans">
-                    <div className="text-xs font-bold">Redis Cluster</div>
+                    <div className="text-xs font-bold text-white">Redis Cluster</div>
                     <div className="text-[8px] font-mono opacity-50">Shared caching, TTL rate-limiting & feed storage</div>
                   </div>
                 </button>
@@ -603,22 +592,19 @@ export const WaaveArchitecture = () => {
               <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
                 {SERVICES_DATA.filter((n) => n.type === "service" || n.type === "upcoming").map((node) => {
                   const Icon = node.icon;
-                  const isActive = activeNodes.includes(node.id);
                   const isSelected = selectedNodeId === node.id;
                   
                   return (
-                    <button
+                    <button type="button"
                       key={node.id}
                       onClick={() => setSelectedNodeId(node.id)}
                       className={`p-3 rounded-xl border flex flex-col items-start text-left transition-all duration-300 relative ${
-                        isActive
+                        isSelected
                           ? node.activeColor
-                          : isSelected
-                          ? "border-[#00f0ff] text-white bg-slate-800/20"
                           : "border-slate-800 text-slate-400 bg-slate-900/50 hover:border-slate-700"
                       }`}
                     >
-                      {isActive && (
+                      {isSelected && (
                         <span className="absolute top-2 right-2 flex h-2 w-2">
                           <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-white opacity-75"></span>
                           <span className="relative inline-flex rounded-full h-2 w-2 bg-white"></span>
@@ -654,46 +640,58 @@ export const WaaveArchitecture = () => {
               </span>
               
               <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
-                <button
+                <button type="button"
                   onClick={() => setSelectedNodeId("kafka")}
-                  className={`p-3.5 rounded-xl border flex flex-col items-center gap-1 transition-all duration-300 ${
-                    activeNodes.includes("kafka")
+                  className={`p-3.5 rounded-xl border flex flex-col items-center gap-1 transition-all duration-300 relative ${
+                    selectedNodeId === "kafka"
                       ? SERVICES_DATA.find((n) => n.id === "kafka")?.activeColor
-                      : selectedNodeId === "kafka"
-                      ? "border-orange-500 text-white bg-slate-800/20"
                       : "border-slate-800 text-slate-400 bg-slate-900/50 hover:border-slate-700"
                   }`}
                 >
+                  {selectedNodeId === "kafka" && (
+                    <span className="absolute top-2 right-2 flex h-1.5 w-1.5">
+                      <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-orange-400 opacity-75"></span>
+                      <span className="relative inline-flex rounded-full h-1.5 w-1.5 bg-orange-500"></span>
+                    </span>
+                  )}
                   <SiApachekafka className="text-lg text-orange-500" />
                   <span className="text-xs font-bold font-sans">Kafka Broker</span>
                   <span className="text-[8px] font-mono opacity-50">Async broker</span>
                 </button>
 
-                <button
+                <button type="button"
                   onClick={() => setSelectedNodeId("postgres")}
-                  className={`p-3.5 rounded-xl border flex flex-col items-center gap-1 transition-all duration-300 ${
-                    activeNodes.includes("postgres")
+                  className={`p-3.5 rounded-xl border flex flex-col items-center gap-1 transition-all duration-300 relative ${
+                    selectedNodeId === "postgres"
                       ? SERVICES_DATA.find((n) => n.id === "postgres")?.activeColor
-                      : selectedNodeId === "postgres"
-                      ? "border-blue-500 text-white bg-slate-800/20"
                       : "border-slate-800 text-slate-400 bg-slate-900/50 hover:border-slate-700"
                   }`}
                 >
+                  {selectedNodeId === "postgres" && (
+                    <span className="absolute top-2 right-2 flex h-1.5 w-1.5">
+                      <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-blue-400 opacity-75"></span>
+                      <span className="relative inline-flex rounded-full h-1.5 w-1.5 bg-blue-500"></span>
+                    </span>
+                  )}
                   <SiPostgresql className="text-lg text-blue-500" />
                   <span className="text-xs font-bold font-sans">PostgreSQL</span>
                   <span className="text-[8px] font-mono opacity-50">ACID SQL</span>
                 </button>
 
-                <button
+                <button type="button"
                   onClick={() => setSelectedNodeId("mongodb")}
-                  className={`p-3.5 rounded-xl border flex flex-col items-center gap-1 transition-all duration-300 ${
-                    activeNodes.includes("mongodb")
+                  className={`p-3.5 rounded-xl border flex flex-col items-center gap-1 transition-all duration-305 relative ${
+                    selectedNodeId === "mongodb"
                       ? SERVICES_DATA.find((n) => n.id === "mongodb")?.activeColor
-                      : selectedNodeId === "mongodb"
-                      ? "border-emerald-600 text-white bg-slate-800/20"
                       : "border-slate-800 text-slate-400 bg-slate-900/50 hover:border-slate-700"
                   }`}
                 >
+                  {selectedNodeId === "mongodb" && (
+                    <span className="absolute top-2 right-2 flex h-1.5 w-1.5">
+                      <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+                      <span className="relative inline-flex rounded-full h-1.5 w-1.5 bg-emerald-500"></span>
+                    </span>
+                  )}
                   <SiMongodb className="text-lg text-emerald-500" />
                   <span className="text-xs font-bold font-sans">MongoDB</span>
                   <span className="text-[8px] font-mono opacity-50">NoSQL Store</span>
@@ -705,14 +703,13 @@ export const WaaveArchitecture = () => {
                 </div>
               </div>
             </div>
-
           </div>
 
           {/* INSPECTIONS & ACTIONS SIDEBAR */}
-          <div className="lg:col-span-4">
+          <div className="lg:col-span-4 flex flex-col gap-6">
             
             {/* NODE SPECS CARD */}
-            <div className="bg-[#0b101c]/40 rounded-xl p-5 border border-[#1e293b] h-full flex flex-col justify-between">
+            <div className="bg-[#0b101c]/40 rounded-xl p-5 border border-[#1e293b] flex flex-col justify-between">
               <div>
                 <div className="flex items-center gap-2 mb-4 border-b border-[#1e293b]/40 pb-2">
                   <FiServer className="text-[#00f0ff] text-sm" />
@@ -743,7 +740,7 @@ export const WaaveArchitecture = () => {
                       <span className="text-white text-right">{selectedNode.langTech}</span>
                     </div>
                     {selectedNode.database && (
-                      <div className="flex justify-between py-1 border-b border-slate-900">
+                      <div className="flex justify-between py-1 border-b border-slate-900/80">
                         <span className="text-[#94a3b8]">Backing DB:</span>
                         <span className="text-emerald-400 text-right">{selectedNode.database}</span>
                       </div>
@@ -803,6 +800,61 @@ export const WaaveArchitecture = () => {
               </div>
             </div>
 
+            {/* CONTAINER REGISTRY MONITOR CARD */}
+            <div className="bg-[#0b101c]/40 rounded-xl p-5 border border-[#1e293b] flex flex-col justify-between">
+              <div>
+                <div className="flex items-center justify-between mb-4 border-b border-[#1e293b]/40 pb-2">
+                  <div className="flex items-center gap-2">
+                    <FiServer className="text-[#00f0ff] text-sm" />
+                    <h4 className="text-xs font-mono text-[#94a3b8] uppercase tracking-wider">
+                      Container Registry
+                    </h4>
+                  </div>
+                  <span className="text-[9px] font-mono bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 px-1.5 py-0.5 rounded">
+                    8/8 ONLINE
+                  </span>
+                </div>
+
+                <div className="space-y-2 max-h-[300px] overflow-y-auto pr-1 scrollbar-thin">
+                  {SERVICES_DATA.filter((node) => node.type === "service" || node.type === "gateway").map((node) => {
+                    const isSelected = selectedNodeId === node.id;
+                    return (
+                      <button type="button"
+                        key={node.id}
+                        onClick={() => setSelectedNodeId(node.id)}
+                        className={`w-full p-2 rounded-lg border flex items-center justify-between text-left transition-all duration-300 font-sans cursor-pointer ${
+                          isSelected
+                            ? "border-[#00f0ff]/50 bg-[#00f0ff]/5 shadow-[0_0_12px_rgba(0,240,255,0.08)]"
+                            : "border-slate-800/80 bg-slate-900/10 hover:border-slate-700"
+                        }`}
+                      >
+                        <div className="flex items-center gap-2">
+                          <span className="flex h-1.5 w-1.5 relative">
+                            <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+                            <span className="relative inline-flex rounded-full h-1.5 w-1.5 bg-emerald-500"></span>
+                          </span>
+                          <div className="flex flex-col">
+                            <span className="text-[11px] font-bold text-white font-sans">{node.name}</span>
+                            <span className="text-[8px] font-mono text-slate-500 line-clamp-1">{node.dirPath}</span>
+                          </div>
+                        </div>
+                        <div className="text-right">
+                          <div className="text-[9px] font-mono text-[#00f0ff] font-medium">
+                            {node.port ? node.port.split("|")[0].trim().replace("gRPC ", "") : "N/A"}
+                          </div>
+                          <span className="text-[7.5px] font-mono text-slate-500">
+                            {node.id === "gateway" ? "8ms latency" :
+                             node.id === "feed-service" ? "4ms latency" :
+                             node.id === "chat-service" ? "11ms latency" : "14ms latency"}
+                          </span>
+                        </div>
+                      </button>
+                    );
+                  })}
+                </div>
+              </div>
+            </div>
+
           </div>
 
         </div>
@@ -824,16 +876,14 @@ export const WaaveArchitecture = () => {
           </div>
 
           <div className="flex-grow font-mono text-[11px] leading-relaxed text-[#22c55e] scrollbar-thin overflow-y-auto space-y-1 relative z-10 pr-2">
-            {consoleLogs.map((log, i) => {
+            {CONSOLE_LOGS.map((log: string, i: number) => {
               const isSystem = log.startsWith("[SYSTEM]") || log.startsWith("==");
-              
               return (
                 <div key={i} className={isSystem ? "text-[#00f0ff]" : "text-emerald-400"}>
                   {log}
                 </div>
               );
             })}
-            <div ref={terminalEndRef} />
           </div>
         </div>
 

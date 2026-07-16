@@ -122,6 +122,8 @@ const Projects = () => {
                     <div className="flex flex-wrap gap-2">
                       {isWaave && (
                         <button 
+                          type="button"
+                          onMouseDown={(e) => e.preventDefault()}
                           onClick={() => setShowWaaveArch(!showWaaveArch)}
                           className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-mono transition-all cursor-pointer border ${
                             showWaaveArch 
@@ -135,6 +137,8 @@ const Projects = () => {
                       )}
                       {isFinn && (
                         <button 
+                          type="button"
+                          onMouseDown={(e) => e.preventDefault()}
                           onClick={() => setShowFinnArch(!showFinnArch)}
                           className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-mono transition-all cursor-pointer border ${
                             showFinnArch 
@@ -201,8 +205,9 @@ const Projects = () => {
                         exit={{ opacity: 0, height: 0 }}
                         transition={{ duration: 0.4, ease: "easeInOut" }}
                         className="w-full overflow-hidden mt-4 max-w-4xl mx-auto"
+                        onClick={(e) => e.stopPropagation()}
                       >
-                        <div className="pb-6">
+                        <div className="pb-6" onClick={(e) => e.stopPropagation()}>
                           <WaaveArchitecture />
                         </div>
                       </motion.div>
@@ -219,8 +224,9 @@ const Projects = () => {
                         exit={{ opacity: 0, height: 0 }}
                         transition={{ duration: 0.4, ease: "easeInOut" }}
                         className="w-full overflow-hidden mt-4 max-w-4xl mx-auto"
+                        onClick={(e) => e.stopPropagation()}
                       >
-                        <div className="pb-6">
+                        <div className="pb-6" onClick={(e) => e.stopPropagation()}>
                           <FinnVisualizer />
                         </div>
                       </motion.div>
