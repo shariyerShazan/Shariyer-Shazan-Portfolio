@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
+import Image from "next/image";
 import { Button } from "../ui/Button";
 import { FiSend, FiMail, FiMapPin, FiTerminal, FiActivity, FiCheckCircle, FiAlertTriangle } from "react-icons/fi";
 import { portfolioData } from "../../config/portfolioData";
@@ -75,9 +76,11 @@ const Contact = () => {
                 {/* Systems Operator Profile Card */}
                 <div className="flex items-center gap-4 p-4 rounded-xl bg-[#0f172a]/35 border border-[#1e293b]/70 hover:border-[#00f0ff]/40 transition-all duration-300 group hover:bg-[#00f0ff]/5">
                   <div className="relative w-14 h-14 rounded-full overflow-hidden border border-[#00f0ff]/30 flex-shrink-0">
-                    <img 
+                    <Image 
                       src="/profile.jpg" 
-                      alt="Shariyer Shazan" 
+                      alt="Shariyer Shazan Profile Photo" 
+                      width={56}
+                      height={56}
                       className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
                     />
                   </div>

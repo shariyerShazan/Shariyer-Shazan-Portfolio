@@ -510,9 +510,12 @@ export const AsciiImage: React.FC<AsciiImageProps> = ({
         }`}
       >
         <div className="absolute inset-0 bg-[#00f0ff]/10 mix-blend-overlay z-10 pointer-events-none"></div>
-        <img
+        <Image
           src={src}
-          alt="Shariyer Shazan Profile"
+          alt="Md Shariyer Shazan - Backend Engineer & Systems Architect Profile Photo"
+          width={384}
+          height={384}
+          priority
           className="w-full h-full object-cover"
         />
       </div>
