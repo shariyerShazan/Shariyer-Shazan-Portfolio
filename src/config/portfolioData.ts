@@ -1,7 +1,9 @@
 import {
   SiTypescript, SiGo, SiJavascript, SiPython, SiCplusplus, SiC,
   SiNodedotjs, SiExpress, SiNestjs, SiPostgresql, SiMongodb, SiMysql,
-  SiPrisma, SiRedis, SiApachekafka, SiRabbitmq, SiSocketdotio, SiGraphql,
+  SiPrisma, SiRedis, SiApachekafka,
+  //  SiRabbitmq,
+    SiSocketdotio, SiGraphql,
   SiJsonwebtokens, SiDocker, SiGithubactions,
   SiNginx, SiVercel, SiRender, SiReact, SiNextdotjs, SiTailwindcss,
   SiRedux, SiMui, SiShadcnui, SiStripe,
@@ -110,7 +112,7 @@ export const portfolioData: PortfolioData = {
         { name: "Microservices", icon: SiDocker, color: "#FF6B00" },
         { name: "Kafka", icon: SiApachekafka, color: "#FFFFFF" },
         { name: "gRPC", icon: TbNetwork, color: "#244c5a" },
-        { name: "RabbitMQ", icon: SiRabbitmq, color: "#FF6600" },
+        // { name: "RabbitMQ", icon: SiRabbitmq, color: "#FF6600" },
       ],
     },
     {
@@ -188,10 +190,12 @@ export const portfolioData: PortfolioData = {
         "Event-Driven Workflows: Decoupled domain interactions using Kafka event orchestration (e.g. user.registered triggers automatic profile creation and notification dispatch).",
         "High-Performance Feed System: Feed-service utilizes Redis-backed timeline caches with celebrity-buffered read paths and trending score calculations.",
         "Media Processing Pipeline: Async image processing (variants generated via sharp) with local storage adapters and Mongo metadata indexes.",
-        "Upcoming Architectures: Marketplace Service (transaction processing and custom buyer/seller dashboards)."
+        "Upcoming Architectures: Marketplace Service (transaction processing and custom buyer/seller dashboards).",
       ],
-      backendLink: "https://github.com/shariyerShazan/Waave-SocialMedia-Backend-Microservices",
-      swaggerLink: "https://github.com/shariyerShazan/Waave-SocialMedia-Backend-Microservices", // Show Swagger button
+      backendLink:
+        "https://github.com/shariyerShazan/Waave-SocialMedia-Backend-Microservices",
+      swaggerLink:
+        "https://github.com/shariyerShazan/Waave-SocialMedia-Backend-Microservices", // Show Swagger button
       tags: [
         "NestJS",
         "Apache Kafka",
@@ -236,8 +240,10 @@ export const portfolioData: PortfolioData = {
         "Geospatial Cataloging: Map-based search queries leveraging Leaflet locations plotting to discover neighborhood listings.",
         "Secure JWT & OTP Auth: Multi-tier authorization (User, Seller, Admin) backed by SMTP email validation OTP checks.",
       ],
-      frontendLink: "https://github.com/shariyerShazan/Finn-Frontend-Reactjs-Marketplaces",
-      backendLink: "https://github.com/shariyerShazan/Finn-Nestjs-Marketplace-Backend",
+      frontendLink:
+        "https://github.com/shariyerShazan/Finn-Frontend-Reactjs-Marketplaces",
+      backendLink:
+        "https://github.com/shariyerShazan/Finn-Nestjs-Marketplace-Backend",
       liveLink: "https://shazan-ad-marketplace-project.onrender.com",
       swaggerLink: "https://shazan-ad-marketplace-project.onrender.com/docs",
       tags: [
@@ -258,7 +264,7 @@ export const portfolioData: PortfolioData = {
   socials: [
     {
       name: "LinkedIn",
-      href: "https://www.linkedin.com/in/shariyerShazan",
+      href: "https://www.linkedin.com/in/md-shariyershazan",
       icon: FaLinkedin,
     },
     {
