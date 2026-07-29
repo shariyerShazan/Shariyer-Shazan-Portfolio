@@ -8,12 +8,12 @@ import {
   SiNginx, SiCaddy, SiVercel, SiRender, SiReact, SiNextdotjs, SiTailwindcss,
   SiRedux, SiMui, SiShadcnui, SiStripe,
   SiFirebase, SiPostman, SiFigma, SiSwagger, SiCloudinary, SiMongoose,
-  SiLangchain, SiOpenai, SiOllama, SiAnthropic, SiKong,
+  SiLangchain, SiOpenai, SiOllama, SiAnthropic, SiKong, SiRazorpay,
 } from "react-icons/si";
 import {
   FaGithub, FaLinkedin, FaTwitter, FaEnvelope, FaAws,
   FaUsers, FaComments, FaHandshake, FaClock, FaCode, FaLayerGroup, FaCheckCircle,
-  FaFacebook, FaInstagram, FaLinux, FaTerminal, FaCreditCard,
+  FaFacebook, FaInstagram, FaLinux, FaTerminal, FaCreditCard, FaRocket,
 } from "react-icons/fa";
 import { TbNetwork, TbApi } from "react-icons/tb";
 import { FiGitBranch, FiServer } from "react-icons/fi";
@@ -119,6 +119,8 @@ export const portfolioData: PortfolioData = {
         { name: "Linux", icon: FaLinux, color: "#FCC624" },
         { name: "Shell Scripting", icon: FaTerminal, color: "#FFFFFF" },
         { name: "GitHub Actions", icon: SiGithubactions, color: "#2088FF" },
+        { name: "CI/CD", icon: FaRocket, color: "#FC6D26" },
+        { name: "Cloudinary", icon: SiCloudinary, color: "#3448C5" },
         { name: "Nginx", icon: SiNginx, color: "#009639" },
         { name: "Caddy", icon: SiCaddy, color: "#00A2EE" },
         { name: "Vercel", icon: SiVercel, color: "#FFFFFF" },
@@ -173,11 +175,12 @@ export const portfolioData: PortfolioData = {
       ],
     },
     {
-      title: "Payment Systems",
+      title: "Payments",
       items: [
         { name: "Stripe", icon: SiStripe, color: "#635BFF" },
         { name: "SSLCommerz", icon: FaCreditCard, color: "#005C9E" },
-        { name: "Cloudinary", icon: SiCloudinary, color: "#3448C5" },
+        { name: "Razorpay", icon: SiRazorpay, color: "#3395FF" },
+        { name: "Trustap", icon: FaHandshake, color: "#00B5B8" },
       ],
     },
     {
