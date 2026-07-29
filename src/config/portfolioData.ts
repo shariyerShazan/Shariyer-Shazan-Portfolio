@@ -8,6 +8,7 @@ import {
   SiNginx, SiVercel, SiRender, SiReact, SiNextdotjs, SiTailwindcss,
   SiRedux, SiMui, SiShadcnui, SiStripe,
   SiFirebase, SiPostman, SiFigma, SiSwagger, SiCloudinary, SiMongoose,
+  SiLangchain, SiOpenai, SiOllama, SiAnthropic,
 } from "react-icons/si";
 import {
   FaGithub, FaLinkedin, FaTwitter, FaEnvelope, FaAws,
@@ -116,6 +117,16 @@ export const portfolioData: PortfolioData = {
       ],
     },
     {
+      title: "AI & LLM Integration",
+      items: [
+        { name: "LangChain", icon: SiLangchain, color: "#12C465" },
+        { name: "OpenAI", icon: SiOpenai, color: "#00A67E" },
+        { name: "Ollama", icon: SiOllama, color: "#FFFFFF" },
+        { name: "Model Context Protocol (MCP)", icon: TbNetwork, color: "#00f0ff" },
+        { name: "Claude", icon: SiAnthropic, color: "#D97757" },
+      ],
+    },
+    {
       title: "Core Languages",
       items: [
         { name: "TypeScript", icon: SiTypescript, color: "#3178C6" },
@@ -183,19 +194,19 @@ export const portfolioData: PortfolioData = {
     {
       title: "Waave — Enterprise Microservices Social Platform",
       description:
-        "Engineered a high-performance, event-driven social platform using a NestJS monorepo. Built synchronous service communication using gRPC (libs/proto-schema contracts) and decoupled asynchronous domain events (OTP verification, signup setups, follows, post engagement) via Apache Kafka. Provisioned independent database layers with Redis caching, PostgreSQL/Prisma, and MongoDB/Mongoose.",
+        "Engineered a high-performance, production-minded NestJS microservices platform. Implemented synchronous gRPC service communication and decoupled asynchronous domain events (OTP validation, signup flows, feeds rebuilding) via Apache Kafka. Designed 10 distributed services including a Double Ratchet end-to-end encrypted (E2EE) chat service and an autonomous AI Agent integration using the Model Context Protocol (MCP) standards. Managed multi-tier isolated Redis caches, PostgreSQL/Prisma SQL replication, and MongoDB/Mongoose NoSQL replica sets.",
       highlights: [
-        "Distributed Services: API Gateway, Auth, User Profile, Media Processing, Notification, Post Lifecycle, Feed Assembly, and Chat Service.",
-        "Real-Time Chat Engine: Chat service coordinates private messaging and group chats over Socket.IO WebSockets, session caches in Redis registry, and stores logs in multi-node MongoDB replica sets.",
-        "Event-Driven Workflows: Decoupled domain interactions using Kafka event orchestration (e.g. user.registered triggers automatic profile creation and notification dispatch).",
-        "High-Performance Feed System: Feed-service utilizes Redis-backed timeline caches with celebrity-buffered read paths and trending score calculations.",
-        "Media Processing Pipeline: Async image processing (variants generated via sharp) with local storage adapters and Mongo metadata indexes.",
-        "Upcoming Architectures: Marketplace Service (transaction processing and custom buyer/seller dashboards).",
+        "10 Distributed Services: Exposes REST ingress via API Gateway routing to downstream Auth, User Profile, Post, Feed, Chat, E2EE Chat, Media, Notification, and MCP services.",
+        "End-to-End Encrypted Chat: Chat engine securing private/group messages via Double Ratchet envelopes, ephemeral pre-keys, and client-encrypted attachments stored in PostgreSQL.",
+        "Autonomous AI Agent (MCP): Integrated LLM capabilities with platform services (User, Post, Feed, Chat) via OpenAI Agent client and Model Context Protocol (MCP) tool servers.",
+        "High-Performance Feed System: Feed service leverages stateless Redis key lists for user timelines with celebrity-buffered read paths and trending sorted sets.",
+        "Dockerized Infrastructure: Multi-container setup orchestrating primary-replica databases, Apache Kafka event brokers, and 7 isolated Redis cache containers.",
+        "Media Variant Pipeline: Automated asset conversion converting source image uploads to optimized thumbnail/medium copies stored with MongoDB metadata indices.",
       ],
       backendLink:
-        "https://github.com/shariyerShazan/Waave-SocialMedia-Backend-Microservices",
+        "https://github.com/shariyerShazan/my-product",
       swaggerLink:
-        "https://github.com/shariyerShazan/Waave-SocialMedia-Backend-Microservices", // Show Swagger button
+        "https://github.com/shariyerShazan/my-product", // Show Swagger button
       tags: [
         "NestJS",
         "Apache Kafka",
@@ -203,8 +214,8 @@ export const portfolioData: PortfolioData = {
         "PostgreSQL",
         "MongoDB",
         "Redis",
-        "Prisma",
-        "Mongoose",
+        "Double Ratchet",
+        "MCP (Model Context Protocol)",
         "Docker",
       ],
     },

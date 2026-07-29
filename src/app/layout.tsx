@@ -18,6 +18,9 @@ export const metadata: Metadata = {
     default: "Shariyer Shazan | Backend Engineer & Systems Architect",
     template: "%s | Shariyer Shazan"
   },
+  verification: {
+    google: "google1d6343d8e9a74899",
+  },
   description: "Senior portfolio of Md Shariyer Shazan. Professional Full Stack Developer (Backend Focused) specializing in Node.js, NestJS, TypeScript, Kafka, gRPC, and Microservices.",
   alternates: {
     canonical: "/",
@@ -66,7 +69,7 @@ export const metadata: Metadata = {
     siteName: "Shariyer Shazan Portfolio",
     images: [
       {
-        url: "/profile.jpg",
+        url: "/og-image.png",
         width: 1200,
         height: 630,
         alt: "Md Shariyer Shazan - Backend Engineer & Systems Architect Portfolio",
@@ -78,7 +81,7 @@ export const metadata: Metadata = {
     title: "Shariyer Shazan | Backend Engineer & Systems Architect",
     description: "Professional portfolio of Md Shariyer Shazan, Backend Engineer specializing in NestJS, Kafka, gRPC, Node.js, and scaling distributed microservices.",
     creator: "@SJan_1293",
-    images: ["/profile.jpg"],
+    images: ["/og-image.png"],
   },
 };
 
@@ -136,7 +139,15 @@ const jsonLd = {
         "AWS",
         "CI/CD",
         "REST APIs",
-        "WebSockets"
+        "WebSockets",
+        "Model Context Protocol",
+        "Double Ratchet",
+        "Language Models",
+        "LangChain",
+        "OpenAI",
+        "Ollama",
+        "Claude",
+        "System Integration Auditing"
       ],
       "sameAs": [
         "https://www.linkedin.com/in/shariyerShazan",
@@ -175,11 +186,11 @@ const jsonLd = {
       "name": "Waave",
       "applicationCategory": "SocialNetworkingApplication",
       "operatingSystem": "All",
-      "description": "Enterprise microservices social platform engineered using a NestJS monorepo, Kafka event orchestration, Redis timeline caching, and gRPC communication.",
+      "description": "Enterprise-grade NestJS microservices platform featuring 10 services, gRPC/Kafka messaging, Redis caching, Double Ratchet E2EE Chat, and Model Context Protocol (MCP) AI Agents.",
       "creator": {
         "@id": `${siteUrl}/#person`
       },
-      "downloadUrl": "https://github.com/shariyerShazan/Waave-SocialMedia-Backend-Microservices"
+      "downloadUrl": "https://github.com/shariyerShazan/my-product"
     },
     {
       "@type": "SoftwareApplication",
@@ -192,6 +203,20 @@ const jsonLd = {
         "@id": `${siteUrl}/#person`
       },
       "downloadUrl": "https://github.com/shariyerShazan/Finn-Nestjs-Marketplace-Backend"
+    },
+    {
+      "@type": "Service",
+      "@id": `${siteUrl}/#seo-audit-service`,
+      "name": "Technical SEO & System Architecture Audit",
+      "serviceType": "SEO & Performance Audits",
+      "description": "Comprehensive technical SEO analysis, code review, performance optimization, and architectural auditing for high-load web applications and distributed systems.",
+      "provider": {
+        "@id": `${siteUrl}/#person`
+      },
+      "areaServed": {
+        "@type": "Country",
+        "name": "Worldwide"
+      }
     }
   ]
 };

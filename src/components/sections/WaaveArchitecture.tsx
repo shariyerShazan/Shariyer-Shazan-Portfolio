@@ -19,6 +19,7 @@ import {
   FiChevronRight,
   FiPlay,
   FiSquare,
+  FiLock,
 } from "react-icons/fi";
 
 interface ServiceNode {
@@ -228,19 +229,37 @@ const SERVICES_DATA: ServiceNode[] = [
     activeColor: "border-fuchsia-500 text-fuchsia-400 bg-fuchsia-500/10 shadow-[0_0_15px_rgba(217,70,239,0.3)]",
   },
   {
-    id: "marketplace",
-    name: "Marketplace",
-    icon: FiShoppingBag,
-    type: "upcoming",
-    port: "gRPC 3006",
-    langTech: "NestJS / Stripe API",
-    database: "PostgreSQL (Trades / Listings)",
+    id: "e2ee-chat-service",
+    name: "E2EE Chat Service",
+    icon: FiLock,
+    type: "service",
+    port: "gRPC 3006 | HTTP 4006",
+    langTech: "NestJS / Prisma ORM / Double Ratchet",
+    database: "PostgreSQL (E2EE Chat DB)",
     responsibilities: [
-      "Supports classified lists, listings indexes, pricing, and transactions security",
-      "Coordinates checkouts and processes payment confirmations via Stripe SDK",
+      "Drives high-security direct and group messaging encrypted payloads routing",
+      "Persists client-encrypted pre-keys and ephemeral key registries",
+      "Stores device-specific message envelopes with ciphertext, iv, and auth tags",
+      "Tracks encrypted message attachments and sender key distributions",
     ],
-    dirPath: "apps/marketplace-service",
-    activeColor: "border-slate-700 text-slate-500 bg-slate-800/10 border-dashed",
+    dirPath: "apps/e2ee-chat-service",
+    activeColor: "border-rose-500 text-rose-400 bg-rose-500/10 shadow-[0_0_15px_rgba(244,63,94,0.3)]",
+  },
+  {
+    id: "mcp-service",
+    name: "MCP Service",
+    icon: FiCpu,
+    type: "service",
+    port: "gRPC 3011 | HTTP 4011",
+    langTech: "NestJS / SSE / OpenAI Agent",
+    responsibilities: [
+      "Integrates LLM models with platform endpoints via Model Context Protocol (MCP) standards",
+      "Registers Zod parameter functions mapping platform services to LLM capabilities",
+      "Coordinates OpenAI agent execution loops (max 8 iterations) and logs execution traces",
+      "Provides SSE transport layer to expose platform tool schemas to autonomous agents",
+    ],
+    dirPath: "apps/mcp-service",
+    activeColor: "border-teal-500 text-teal-400 bg-teal-500/10 shadow-[0_0_15px_rgba(20,184,166,0.3)]",
   },
   {
     id: "kafka",
@@ -449,9 +468,11 @@ const CONSOLE_LOGS: string[] = [
   "[CORE]   [03:00:39] post-service started. gRPC 3003 | HTTP 4003 online. post_db (Postgres) connected.",
   "[CORE]   [03:00:41] feed-service started. gRPC 3004 | HTTP 4004 online. Redis Timeline Cache connected.",
   "[CORE]   [03:00:42] chat-service started. gRPC 3005 | HTTP 4005 online. Socket.IO Gateway established.",
+  "[CORE]   [03:00:43] e2ee-chat-service started. gRPC 3006 | HTTP 4006 online. E2EE database (Postgres) connected.",
   "[CORE]   [03:00:44] media-service started. gRPC 3009 | HTTP 4009 online. Storage volume /data/temp mapped.",
   "[CORE]   [03:00:46] notification-service started. gRPC 3010 | HTTP 4010 online. SMTP client connected.",
-  "[SYSTEM] [03:00:48] All 8 microservices registered. Healthchecks: 100% PASSING.",
+  "[CORE]   [03:00:47] mcp-service started. gRPC 3011 | HTTP 4011 online. OpenAI Agent client online.",
+  "[SYSTEM] [03:00:49] All 10 microservices registered. Healthchecks: 100% PASSING.",
   "[SYSTEM] [03:01:00] Kafka Consumer Groups synchronized. Listening for domain event triggers...",
   "=========================================================================",
   "=== DOCKER CONTAINER ENVIRONMENT STATUS: ALL SYSTEMS OPERATIONAL ==="
@@ -811,7 +832,7 @@ export const WaaveArchitecture = () => {
                     </h4>
                   </div>
                   <span className="text-[9px] font-mono bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 px-1.5 py-0.5 rounded">
-                    8/8 ONLINE
+                    10/10 ONLINE
                   </span>
                 </div>
 
