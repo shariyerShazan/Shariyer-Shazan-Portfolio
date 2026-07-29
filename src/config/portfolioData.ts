@@ -3,7 +3,7 @@ import {
   SiNodedotjs, SiExpress, SiNestjs, SiPostgresql, SiMongodb, SiMysql,
   SiPrisma, SiRedis, SiApachekafka,
   //  SiRabbitmq,
-    SiSocketdotio, SiGraphql,
+  SiSocketdotio, SiGraphql,
   SiJsonwebtokens, SiDocker, SiGithubactions,
   SiNginx, SiVercel, SiRender, SiReact, SiNextdotjs, SiTailwindcss,
   SiRedux, SiMui, SiShadcnui, SiStripe,
@@ -107,36 +107,8 @@ export const portfolioData: PortfolioData = {
         { name: "Firebase", icon: SiFirebase, color: "#FFCA28" },
       ],
     },
-    {
-      title: "Architecture & Messaging",
-      items: [
-        { name: "Microservices", icon: SiDocker, color: "#FF6B00" },
-        { name: "Kafka", icon: SiApachekafka, color: "#FFFFFF" },
-        { name: "gRPC", icon: TbNetwork, color: "#244c5a" },
-        // { name: "RabbitMQ", icon: SiRabbitmq, color: "#FF6600" },
-      ],
-    },
-    {
-      title: "AI & LLM Integration",
-      items: [
-        { name: "LangChain", icon: SiLangchain, color: "#12C465" },
-        { name: "OpenAI", icon: SiOpenai, color: "#00A67E" },
-        { name: "Ollama", icon: SiOllama, color: "#FFFFFF" },
-        { name: "Model Context Protocol (MCP)", icon: TbNetwork, color: "#00f0ff" },
-        { name: "Claude", icon: SiAnthropic, color: "#D97757" },
-      ],
-    },
-    {
-      title: "Core Languages",
-      items: [
-        { name: "TypeScript", icon: SiTypescript, color: "#3178C6" },
-        { name: "JavaScript", icon: SiJavascript, color: "#F7DF1E" },
-        { name: "Go", icon: SiGo, color: "#00ADD8" },
-        { name: "Python", icon: SiPython, color: "#3776AB" },
-        { name: "C", icon: SiC, color: "#00599C" },
-        { name: "C++", icon: SiCplusplus, color: "#00599C" },
-      ],
-    },
+
+
     {
       title: "DevOps & Cloud",
       items: [
@@ -150,6 +122,37 @@ export const portfolioData: PortfolioData = {
         { name: "Render", icon: SiRender, color: "#0466C8" },
       ],
     },
+    {
+      title: "AI & LLM Integration",
+      items: [
+        { name: "LangChain", icon: SiLangchain, color: "#12C465" },
+        { name: "OpenAI", icon: SiOpenai, color: "#00A67E" },
+        { name: "Ollama", icon: SiOllama, color: "#FFFFFF" },
+        { name: "Model Context Protocol (MCP)", icon: TbNetwork, color: "#00f0ff" },
+        { name: "Claude", icon: SiAnthropic, color: "#D97757" },
+      ],
+    },
+    {
+      title: "Architecture & Messaging",
+      items: [
+        { name: "Microservices", icon: SiDocker, color: "#FF6B00" },
+        { name: "Kafka", icon: SiApachekafka, color: "#FFFFFF" },
+        { name: "gRPC", icon: TbNetwork, color: "#244c5a" },
+        // { name: "RabbitMQ", icon: SiRabbitmq, color: "#FF6600" },
+      ],
+    },
+    {
+      title: "Core Languages",
+      items: [
+        { name: "TypeScript", icon: SiTypescript, color: "#3178C6" },
+        { name: "JavaScript", icon: SiJavascript, color: "#F7DF1E" },
+        { name: "Go", icon: SiGo, color: "#00ADD8" },
+        { name: "Python", icon: SiPython, color: "#3776AB" },
+        { name: "C", icon: SiC, color: "#00599C" },
+        { name: "C++", icon: SiCplusplus, color: "#00599C" },
+      ],
+    },
+
     {
       title: "Frontend",
       items: [
