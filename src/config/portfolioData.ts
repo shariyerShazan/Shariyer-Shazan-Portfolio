@@ -15,7 +15,7 @@ import {
   FaUsers, FaComments, FaHandshake, FaClock, FaCode, FaLayerGroup, FaCheckCircle,
   FaFacebook, FaInstagram, FaLinux, FaTerminal, FaCreditCard,
 } from "react-icons/fa";
-import { TbNetwork } from "react-icons/tb";
+import { TbNetwork, TbApi } from "react-icons/tb";
 import { FiGitBranch, FiServer } from "react-icons/fi";
 import { PortfolioData } from "@/types/portfolio";
 
@@ -95,6 +95,8 @@ export const portfolioData: PortfolioData = {
         { name: "Express.js", icon: SiExpress, color: "#FFFFFF" },
         { name: "Kafka", icon: SiApachekafka, color: "#FFFFFF" },
         { name: "gRPC", icon: TbNetwork, color: "#244c5a" },
+        { name: "REST API", icon: TbApi, color: "#009688" },
+        { name: "GraphQL", icon: SiGraphql, color: "#E10098" },
         { name: "Redis", icon: SiRedis, color: "#DC382D" },
         { name: "Socket.IO", icon: SiSocketdotio, color: "#FFFFFF" },
         { name: "PostgreSQL", icon: SiPostgresql, color: "#4169E1" },
@@ -102,7 +104,6 @@ export const portfolioData: PortfolioData = {
         { name: "MongoDB", icon: SiMongodb, color: "#47A248" },
         { name: "Mongoose", icon: SiMongoose, color: "#880000" },
         { name: "MySQL", icon: SiMysql, color: "#4479A1" },
-        { name: "GraphQL", icon: SiGraphql, color: "#E10098" },
         { name: "Swagger", icon: SiSwagger, color: "#85EA2D" },
         { name: "JWT", icon: SiJsonwebtokens, color: "#FFFFFF" },
         { name: "Firebase", icon: SiFirebase, color: "#FFCA28" },
