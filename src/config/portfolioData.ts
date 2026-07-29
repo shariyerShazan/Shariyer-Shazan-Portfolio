@@ -8,7 +8,7 @@ import {
   SiNginx, SiVercel, SiRender, SiReact, SiNextdotjs, SiTailwindcss,
   SiRedux, SiMui, SiShadcnui, SiStripe,
   SiFirebase, SiPostman, SiFigma, SiSwagger, SiCloudinary, SiMongoose,
-  SiLangchain, SiOpenai, SiOllama, SiAnthropic,
+  SiLangchain, SiOpenai, SiOllama, SiAnthropic, SiKong,
 } from "react-icons/si";
 import {
   FaGithub, FaLinkedin, FaTwitter, FaEnvelope, FaAws,
@@ -16,6 +16,7 @@ import {
   FaFacebook, FaInstagram, FaLinux, FaTerminal, FaCreditCard,
 } from "react-icons/fa";
 import { TbNetwork } from "react-icons/tb";
+import { FiGitBranch, FiServer } from "react-icons/fi";
 import { PortfolioData } from "@/types/portfolio";
 
 export const portfolioData: PortfolioData = {
@@ -133,12 +134,15 @@ export const portfolioData: PortfolioData = {
       ],
     },
     {
-      title: "Architecture & Messaging",
+      title: "Architecture & Design",
       items: [
-        { name: "Microservices", icon: SiDocker, color: "#FF6B00" },
-        { name: "Kafka", icon: SiApachekafka, color: "#FFFFFF" },
-        { name: "gRPC", icon: TbNetwork, color: "#244c5a" },
-        // { name: "RabbitMQ", icon: SiRabbitmq, color: "#FF6600" },
+        { name: "Monolithic", icon: FaLayerGroup, color: "#64748B" },
+        { name: "Microservices", icon: SiDocker, color: "#EF4444" },
+        { name: "Event-Driven", icon: FiGitBranch, color: "#0EA5E9" },
+        { name: "Distributed Systems", icon: FiServer, color: "#8B5CF6" },
+        { name: "API Gateway", icon: SiKong, color: "#0D9488" },
+        // { name: "Kafka", icon: SiApachekafka, color: "#FFFFFF" },
+        // { name: "gRPC", icon: TbNetwork, color: "#244c5a" },
       ],
     },
     {
