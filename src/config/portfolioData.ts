@@ -5,7 +5,7 @@ import {
   //  SiRabbitmq,
   SiSocketdotio, SiGraphql,
   SiJsonwebtokens, SiDocker, SiGithubactions,
-  SiNginx, SiVercel, SiRender, SiReact, SiNextdotjs, SiTailwindcss,
+  SiNginx, SiCaddy, SiVercel, SiRender, SiReact, SiNextdotjs, SiTailwindcss,
   SiRedux, SiMui, SiShadcnui, SiStripe,
   SiFirebase, SiPostman, SiFigma, SiSwagger, SiCloudinary, SiMongoose,
   SiLangchain, SiOpenai, SiOllama, SiAnthropic, SiKong,
@@ -25,15 +25,15 @@ export const portfolioData: PortfolioData = {
   roles: [
     "distributed systems",
     "microservice architecture",
-    "event-driven systems",
-    "backend infrastructure",
+    "event-driven workflows",
+    "AI & LLM integrations",
     "high-performance APIs",
   ],
   location: "Tejgaon, Dhaka, Bangladesh",
   resumeLink:
     "https://drive.google.com/file/d/1vq9T0M7qWBFi7xLagAcx9nojvnApvJyQ/view?usp=sharing",
   careerObjective:
-    "I am a Backend Engineer focused on building production-ready backend systems and distributed architectures. I enjoy developing scalable services using NestJS, Node.js, gRPC, Kafka, PostgreSQL, MongoDB, Redis, and Docker. Through projects like Waave, I have designed microservice architectures, asynchronous event-driven workflows, and high-performance APIs with a strong focus on reliability, maintainability, and developer experience.",
+    "Backend Engineer specializing in Node.js, NestJS, and event-driven microservices (Kafka, gRPC, Redis) with hands-on experience building LLM-integrated systems using OpenAI, LangChain, and the Model Context Protocol (MCP). Focused on applying expertise in scalable API design, distributed database architectures, and AI-driven systems to engineer reliable, production-grade backend solutions.",
   languages: [
     "English (Fluent)",
     "Bangla (Native)",
@@ -41,7 +41,7 @@ export const portfolioData: PortfolioData = {
     "Urdu (Conversational)",
   ],
   about:
-    "I am a Backend Engineer focused on designing production-minded server architectures. I enjoy building scalable backend systems using NestJS, Node.js, gRPC, Kafka, PostgreSQL, MongoDB, Redis, and Docker. Through projects like Waave, I've designed microservice architectures, asynchronous event-driven workflows, and performant APIs with a strong focus on reliability, maintainability, and developer experience.",
+    "I am a Backend Engineer focused on designing production-minded server architectures. I specialize in building scalable backend systems and distributed microservices using NestJS, Node.js, gRPC, Kafka, PostgreSQL, MongoDB, Redis, and Docker, alongside integrating advanced AI/LLM solutions via OpenAI API, LangChain, and the Model Context Protocol (MCP). Through development of enterprise platforms like Waave, I have engineered event-driven workflows, secure Double Ratchet-based E2EE chat, and autonomous AI agents designed to execute tasks across multi-service APIs cleanly and reliably.",
   education: [
     {
       school: "Southeast University",
@@ -120,6 +120,7 @@ export const portfolioData: PortfolioData = {
         { name: "Shell Scripting", icon: FaTerminal, color: "#FFFFFF" },
         { name: "GitHub Actions", icon: SiGithubactions, color: "#2088FF" },
         { name: "Nginx", icon: SiNginx, color: "#009639" },
+        { name: "Caddy", icon: SiCaddy, color: "#00A2EE" },
         { name: "Vercel", icon: SiVercel, color: "#FFFFFF" },
         { name: "Render", icon: SiRender, color: "#0466C8" },
       ],
