@@ -86,6 +86,26 @@ export const portfolioData: PortfolioData = {
       ],
     },
   ],
+  openSourceContributions: [
+    {
+      project: "NestJS — Core Framework",
+      repoUrl: "https://github.com/nestjs/nest",
+      prUrl: "https://github.com/nestjs/nest/pull/17430",
+      prNumber: "#17430",
+      status: "Merged into Master Branch",
+      description: [
+        "Core bug fix: Improved singleton provider reuse for lazily loaded modules, preventing unnecessary provider reconstruction and ensuring existing instances are correctly shared.",
+        "Added regression tests covering lazy module loading and singleton provider reuse.",
+      ],
+      highlights: [
+        "Improved singleton provider reuse for lazily loaded modules",
+        "Prevented unnecessary provider reconstruction during dynamic module loading",
+        "Added comprehensive regression test suite covering lazy module loading",
+        "Successfully merged into the NestJS master branch — PR #17430",
+      ],
+      tech: ["NestJS", "TypeScript", "Node.js", "Dependency Injection", "Jest"],
+    },
+  ],
   techStack: [
     {
       title: "Backend & Databases",
@@ -218,7 +238,7 @@ export const portfolioData: PortfolioData = {
       backendLink:
         "https://github.com/shariyerShazan/my-product",
       swaggerLink:
-        "https://github.com/shariyerShazan/my-product", // Show Swagger button
+        "http://72.62.29.237:4000/docs",
       tags: [
         "NestJS",
         "Apache Kafka",

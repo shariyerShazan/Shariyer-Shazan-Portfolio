@@ -4,6 +4,7 @@ import React from "react";
 import Hero from "@/components/sections/Hero";
 import Skills from "@/components/sections/TechStack";
 import Experience from "@/components/sections/Experience";
+import OpenSource from "@/components/sections/OpenSource";
 import Projects from "@/components/sections/Projects";
 import Education from "@/components/sections/Education";
 import Contact from "@/components/sections/Contact";
@@ -21,6 +22,7 @@ export default function Home() {
       <Hero />
       <Skills />
       <Experience />
+      <OpenSource />
       <Projects />
       <Education />
       <Contact />

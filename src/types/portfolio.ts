@@ -60,6 +60,17 @@ export interface Certificate {
   fileUrl?: string;
 }
 
+export interface OpenSourceContribution {
+  project: string;
+  repoUrl?: string;
+  prUrl?: string;
+  prNumber?: string;
+  status?: string;
+  description: string[];
+  highlights?: string[];
+  tech?: string[];
+}
+
 export interface PortfolioData {
   name: string;
   role: string;
@@ -71,6 +82,7 @@ export interface PortfolioData {
   education: Education[];
   about: string;
   experience: Experience[];
+  openSourceContributions: OpenSourceContribution[];
   techStack: TechCategory[];
   projects: Project[];
   certificates: Certificate[];

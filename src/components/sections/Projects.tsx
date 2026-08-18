@@ -20,7 +20,7 @@ const Projects = () => {
       
       <div className="max-w-5xl mx-auto w-full relative z-10">
         <h2 className="text-3xl md:text-5xl font-bold text-white mb-16 flex items-center gap-4" data-aos="fade-right">
-          <span className="text-[#00f0ff] font-mono text-2xl md:text-4xl">03.</span>
+          <span className="text-[#00f0ff] font-mono text-2xl md:text-4xl">04.</span>
           Featured Projects
           <div className="h-[1px] flex-grow bg-gradient-to-r from-[#475569] to-transparent ml-4"></div>
         </h2>

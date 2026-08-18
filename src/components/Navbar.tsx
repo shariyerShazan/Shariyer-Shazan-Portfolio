@@ -10,6 +10,7 @@ const NAV_LINKS = [
   { name: "Home", href: "#home" },
   { name: "Skills", href: "#tech" },
   { name: "Experience", href: "#experience" },
+  { name: "Open Source", href: "#opensource" },
   { name: "Projects", href: "#projects" },
   { name: "Education", href: "#education" },
   { name: "Contact", href: "#contact" },
