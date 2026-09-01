@@ -21,73 +21,148 @@ export async function POST(req: Request) {
       },
     });
 
+    const formattedDate = new Date().toLocaleString("en-US", { 
+      dateStyle: "medium", 
+      timeStyle: "short",
+      timeZone: "Asia/Dhaka"
+    });
+
     const mailOptions = {
       from: `"${name}" <${email}>`,
       to: "shariyershazan1@gmail.com",
+      replyTo: email,
       subject: `[${type}] ${subject}`,
       html: `
-        <div style="font-family: 'DM Mono', Courier, monospace, sans-serif; background-color: #070a13; color: #cbd5e1; padding: 40px 20px; min-height: 100%; border: 1px solid #1e293b; border-radius: 12px;">
-          <div style="max-w: 600px; margin: 0 auto; background: #0b0f19; border: 1px solid #1e293b; border-radius: 16px; overflow: hidden; box-shadow: 0 10px 30px rgba(0,0,0,0.5);">
-            <!-- Top Cyber Accent Header -->
-            <div style="background: linear-gradient(90deg, #00f0ff 0%, #7c3aed 100%); height: 4px; width: 100%;"></div>
-            
-            <div style="padding: 30px 25px;">
-              <!-- Logo/Title block -->
-              <table style="width: 100%; margin-bottom: 25px;">
-                <tr>
-                  <td>
-                    <span style="font-size: 11px; letter-spacing: 2px; color: #00f0ff; text-transform: uppercase; font-weight: bold; display: block; margin-bottom: 5px;">[ INBOUND INQUIRY TRANSACTION ]</span>
-                    <h2 style="margin: 0; color: #ffffff; font-size: 20px; font-weight: 800;">PORTFOLIO GATEWAY</h2>
-                  </td>
-                  <td style="text-align: right; vertical-align: top;">
-                    <span style="font-size: 10px; color: #22c55e; border: 1px solid rgba(34, 197, 94, 0.3); background-color: rgba(34, 197, 94, 0.05); padding: 3px 8px; border-radius: 20px; text-transform: uppercase;">ONLINE_SECURE</span>
-                  </td>
-                </tr>
-              </table>
+        <!DOCTYPE html>
+        <html lang="en">
+        <head>
+          <meta charset="UTF-8">
+          <meta name="viewport" content="width=device-width, initial-scale=1.0">
+          <title>Inbound Portfolio Inquiry</title>
+        </head>
+        <body style="margin: 0; padding: 0; background-color: #070b14; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; -webkit-font-smoothing: antialiased;">
+          <table role="presentation" width="100%" border="0" cellspacing="0" cellpadding="0" style="background-color: #070b14; padding: 30px 12px;">
+            <tr>
+              <td align="center">
+                <!-- Main Email Card Container -->
+                <table role="presentation" width="100%" border="0" cellspacing="0" cellpadding="0" style="max-width: 600px; background-color: #0f172a; border: 1px solid #1e293b; border-radius: 16px; overflow: hidden; box-shadow: 0 20px 40px rgba(0, 0, 0, 0.6);">
+                  
+                  <!-- Top Neon Accent Gradient Bar -->
+                  <tr>
+                    <td style="background: linear-gradient(90deg, #00f0ff 0%, #7c3aed 50%, #00f0ff 100%); height: 4px; font-size: 0; line-height: 0;">&nbsp;</td>
+                  </tr>
 
-              <!-- Metadata Box (Inquiry details) -->
-              <div style="background-color: #040810; border: 1px solid #1e293b; border-radius: 10px; padding: 18px; margin-bottom: 25px;">
-                <table style="width: 100%; font-size: 13px; line-height: 1.8;">
+                  <!-- Header Area -->
                   <tr>
-                    <td style="color: #64748b; font-weight: bold; width: 120px;">SENDER:</td>
-                    <td style="color: #ffffff;">${name}</td>
-                  </tr>
-                  <tr>
-                    <td style="color: #64748b; font-weight: bold;">EMAIL:</td>
-                    <td style="color: #00f0ff;"><a href="mailto:${email}" style="color: #00f0ff; text-decoration: none;">${email}</a></td>
-                  </tr>
-                  <tr>
-                    <td style="color: #64748b; font-weight: bold;">INQUIRY TYPE:</td>
-                    <td style="color: #e2e8f0; font-weight: bold;">
-                      <span style="background-color: rgba(0, 240, 255, 0.1); border: 1px solid rgba(0, 240, 255, 0.2); padding: 2px 6px; border-radius: 4px; font-size: 11px; color: #00f0ff; text-transform: uppercase;">${type}</span>
+                    <td style="padding: 26px 28px 20px 28px; border-bottom: 1px solid #1e293b; background-color: #0b1120;">
+                      <table role="presentation" width="100%" border="0" cellspacing="0" cellpadding="0">
+                        <tr>
+                          <td>
+                            <div style="font-family: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, monospace; font-size: 11px; color: #00f0ff; text-transform: uppercase; letter-spacing: 1.5px; font-weight: 700; margin-bottom: 6px;">
+                              // INBOUND PORTFOLIO TRANSMISSION
+                            </div>
+                            <h1 style="margin: 0; font-size: 20px; font-weight: 800; color: #ffffff; letter-spacing: -0.5px;">
+                              PORTFOLIO GATEWAY INQUIRY
+                            </h1>
+                          </td>
+                          <td align="right" valign="top" style="white-space: nowrap;">
+                            <span style="display: inline-block; font-family: 'SFMono-Regular', Consolas, monospace; font-size: 10px; font-weight: 700; color: #22c55e; background-color: rgba(34, 197, 94, 0.1); border: 1px solid rgba(34, 197, 94, 0.3); padding: 4px 10px; border-radius: 20px; text-transform: uppercase;">
+                              ● VERIFIED
+                            </span>
+                          </td>
+                        </tr>
+                      </table>
                     </td>
                   </tr>
+
+                  <!-- Card Body Content -->
                   <tr>
-                    <td style="color: #64748b; font-weight: bold;">SUBJECT:</td>
-                    <td style="color: #ffffff;">${subject || "N/A"}</td>
+                    <td style="padding: 24px 28px 28px 28px;">
+                      
+                      <!-- Sender Details Box -->
+                      <table role="presentation" width="100%" border="0" cellspacing="0" cellpadding="0" style="background-color: #070c18; border: 1px solid #1e293b; border-radius: 12px; margin-bottom: 24px;">
+                        <tr>
+                          <td style="padding: 20px;">
+                            
+                            <!-- Sender Name & Badge Row -->
+                            <table role="presentation" width="100%" border="0" cellspacing="0" cellpadding="0" style="margin-bottom: 14px;">
+                              <tr>
+                                <td>
+                                  <div style="font-size: 10px; font-family: 'SFMono-Regular', Consolas, monospace; color: #64748b; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 4px;">CLIENT / SENDER</div>
+                                  <div style="font-size: 18px; font-weight: 800; color: #ffffff;">${name}</div>
+                                </td>
+                                <td align="right" valign="top">
+                                  <span style="display: inline-block; font-size: 11px; font-family: 'SFMono-Regular', Consolas, monospace; font-weight: 700; color: #00f0ff; background-color: rgba(0, 240, 255, 0.1); border: 1px solid rgba(0, 240, 255, 0.25); padding: 4px 10px; border-radius: 6px; text-transform: uppercase;">
+                                    ${type}
+                                  </span>
+                                </td>
+                              </tr>
+                            </table>
+
+                            <div style="height: 1px; background-color: #1e293b; margin-bottom: 14px;"></div>
+
+                            <!-- Meta Fields Table -->
+                            <table role="presentation" width="100%" border="0" cellspacing="0" cellpadding="0" style="font-size: 13px; color: #cbd5e1; line-height: 1.7;">
+                              <tr>
+                                <td width="90" style="color: #64748b; font-family: 'SFMono-Regular', Consolas, monospace; font-size: 11px; text-transform: uppercase; font-weight: 600; padding-bottom: 8px;">EMAIL:</td>
+                                <td style="padding-bottom: 8px;">
+                                  <a href="mailto:${email}" style="color: #00f0ff; text-decoration: none; font-weight: 600; font-family: 'SFMono-Regular', Consolas, monospace;">${email}</a>
+                                </td>
+                              </tr>
+                              <tr>
+                                <td width="90" style="color: #64748b; font-family: 'SFMono-Regular', Consolas, monospace; font-size: 11px; text-transform: uppercase; font-weight: 600; padding-bottom: 8px;">SUBJECT:</td>
+                                <td style="color: #ffffff; font-weight: 600; padding-bottom: 8px;">${subject || "No Subject Specified"}</td>
+                              </tr>
+                              <tr>
+                                <td width="90" style="color: #64748b; font-family: 'SFMono-Regular', Consolas, monospace; font-size: 11px; text-transform: uppercase; font-weight: 600;">TIMESTAMP:</td>
+                                <td style="color: #94a3b8; font-size: 12px; font-family: 'SFMono-Regular', Consolas, monospace;">${formattedDate}</td>
+                              </tr>
+                            </table>
+
+                          </td>
+                        </tr>
+                      </table>
+
+                      <!-- Message Payload Section -->
+                      <div style="margin-bottom: 28px;">
+                        <div style="font-family: 'SFMono-Regular', Consolas, monospace; font-size: 11px; color: #a78bfa; text-transform: uppercase; letter-spacing: 1px; font-weight: 700; margin-bottom: 10px;">
+                          // MESSAGE PAYLOAD
+                        </div>
+                        <div style="background-color: #0b1120; border: 1px solid #1e293b; border-left: 4px solid #00f0ff; border-radius: 8px; padding: 20px; color: #f1f5f9; font-size: 14px; line-height: 1.7; white-space: pre-wrap; word-break: break-word;">${message}</div>
+                      </div>
+
+                      <!-- Quick Direct Reply CTA Button -->
+                      <table role="presentation" width="100%" border="0" cellspacing="0" cellpadding="0">
+                        <tr>
+                          <td align="center">
+                            <a href="mailto:${email}?subject=Re: ${encodeURIComponent(subject || 'Portfolio Inquiry')}" style="display: inline-block; background-color: #00f0ff; color: #0a0f1d; font-family: 'SFMono-Regular', Consolas, monospace; font-size: 13px; font-weight: 800; text-transform: uppercase; letter-spacing: 1px; text-decoration: none; padding: 14px 28px; border-radius: 10px; box-shadow: 0 4px 15px rgba(0, 240, 255, 0.3);">
+                              ⚡ Reply Directly to ${name}
+                            </a>
+                          </td>
+                        </tr>
+                      </table>
+
+                    </td>
                   </tr>
+
+                  <!-- Footer Section -->
                   <tr>
-                    <td style="color: #64748b; font-weight: bold;">TIMESTAMP:</td>
-                    <td style="color: #94a3b8; font-size: 11px;">${new Date().toISOString()}</td>
+                    <td style="padding: 20px 28px; background-color: #070b14; border-top: 1px solid #1e293b; text-align: center;">
+                      <div style="font-family: 'SFMono-Regular', Consolas, monospace; font-size: 10px; color: #64748b; text-transform: uppercase; letter-spacing: 1.5px;">
+                        SHARIYER SHAZAN PORTFOLIO GATEWAY // DISPATCHED TELEMETRY
+                      </div>
+                      <div style="font-size: 11px; color: #475569; margin-top: 4px;">
+                        This transmission originated from your portfolio website at shariyer-shazan.vercel.app
+                      </div>
+                    </td>
                   </tr>
+
                 </table>
-              </div>
-
-              <!-- Message Payload Section -->
-              <div style="margin-bottom: 25px;">
-                <span style="font-size: 11px; letter-spacing: 1.5px; color: #7c3aed; text-transform: uppercase; font-weight: bold; display: block; margin-bottom: 8px;">// MESSAGE PAYLOAD RAW</span>
-                <div style="background-color: #0d1321; border-left: 3px solid #00f0ff; border-radius: 4px; padding: 20px; color: #cbd5e1; font-size: 14px; line-height: 1.6; white-space: pre-wrap; font-family: sans-serif;">${message}</div>
-              </div>
-
-              <!-- Footer Info -->
-              <div style="border-top: 1px solid #1e293b; padding-top: 20px; text-align: center;">
-                <span style="font-size: 9px; color: #64748b; text-transform: uppercase; letter-spacing: 2px;">
-                  SYSTEM TRANSACTION COMPLETED // PORTFOLIO GATEWAY V2.0
-                </span>
-              </div>
-            </div>
-          </div>
-        </div>
+              </td>
+            </tr>
+          </table>
+        </body>
+        </html>
       `,
     };
 
