@@ -1,134 +1,103 @@
 @import "tailwindcss";
-@import "aos/dist/aos.css";
 
 @theme {
-  --color-brand-bg: #0a0f1d;
+  --color-brand-bg: #08090d;
+  --color-brand-surface: #0f131d;
+  --color-brand-surface-elevated: #161c2b;
   --color-brand-cyan: #00f0ff;
-  --color-brand-purple: #7C3AED;
-  --color-brand-metallic: #94a3b8;
-  --color-brand-metallic-light: #cbd5e1;
-  --color-brand-metallic-dark: #475569;
-  --font-sans: var(--font-inter);
-  --font-outfit: var(--font-outfit);
+  --color-brand-cyan-muted: #38bdf8;
+  --color-brand-purple: #8b5cf6;
+  --color-brand-emerald: #10b981;
+  --font-sans: var(--font-inter), system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  --font-outfit: var(--font-outfit), sans-serif;
 }
 
 :root {
-  --background: var(--color-brand-bg);
+  --background: #08090d;
   --foreground: #f8fafc;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  color-scheme: dark;
+  scroll-behavior: smooth;
 }
 
 body {
   background-color: var(--background);
   color: var(--foreground);
   overflow-x: hidden;
-  scroll-behavior: smooth;
+  font-feature-settings: "cv02", "cv03", "cv04", "cv11";
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
 }
 
-
-
-/* Railway Border Utilities */
-.railway-border {
-  position: fixed;
-  pointer-events: none;
-  z-index: 100;
+::selection {
+  background-color: rgba(0, 240, 255, 0.25);
+  color: #ffffff;
 }
 
-.railway-outer {
-  top: 10px; bottom: 10px; left: 10px; right: 10px;
-  border: 1px solid var(--color-brand-metallic-dark);
-  opacity: 0.6;
-}
-
-.railway-middle {
-  top: 18px; bottom: 18px; left: 18px; right: 18px;
-  border: 2px dashed rgba(148, 163, 184, 0.2);
-}
-
-.railway-inner {
-  top: 26px; bottom: 26px; left: 26px; right: 26px;
-  border: 1px solid rgba(0, 240, 255, 0.4);
-  box-shadow: 0 0 10px rgba(0, 240, 255, 0.1), inset 0 0 10px rgba(0, 240, 255, 0.1);
-}
-
-/* Intersecting horizontal/vertical corner overlaps */
-.railway-cross-topLeft, .railway-cross-topRight,
-.railway-cross-bottomLeft, .railway-cross-bottomRight {
-  position: fixed;
-  width: 32px;
-  height: 32px;
-  border: 1px solid var(--color-brand-cyan);
-  z-index: 101;
-  pointer-events: none;
-  opacity: 0.8;
-}
-.railway-cross-topLeft { top: 10px; left: 10px; border-right: none; border-bottom: none; }
-.railway-cross-topRight { top: 10px; right: 10px; border-left: none; border-bottom: none; }
-.railway-cross-bottomLeft { bottom: 10px; left: 10px; border-right: none; border-top: none; }
-.railway-cross-bottomRight { bottom: 10px; right: 10px; border-left: none; border-top: none; }
-
-
-/* Background Grid / Circuit */
-.bg-circuit {
-  position: fixed;
-  inset: 0;
-  z-index: -1;
-  background-image: 
-    linear-gradient(rgba(0, 240, 255, 0.04) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(0, 240, 255, 0.04) 1px, transparent 1px);
-  background-size: 40px 40px;
-  opacity: 0.7;
-}
-
-.bg-circuit::after {
-  content: "";
+/* Subtle ambient spotlight for top of page */
+.bg-spotlight {
   position: absolute;
-  inset: 0;
-  background: radial-gradient(circle at center, transparent 0%, #0a0f1d 80%);
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 100%;
+  max-width: 1200px;
+  height: 600px;
+  background: radial-gradient(ellipse 60% 40% at 50% 0%, rgba(56, 189, 248, 0.12), transparent 75%);
+  pointer-events: none;
+  z-index: 0;
 }
 
-/* Custom Scrollbar */
+/* Subtle architectural dot grid */
+.bg-dot-grid {
+  background-image: radial-gradient(rgba(255, 255, 255, 0.07) 1px, transparent 1px);
+  background-size: 24px 24px;
+}
+
+/* Custom Scrollbar - Minimal Linear Style */
 ::-webkit-scrollbar {
-  width: 8px;
+  width: 6px;
+  height: 6px;
 }
+
 ::-webkit-scrollbar-track {
-  background: var(--color-brand-bg);
+  background: #08090d;
 }
+
 ::-webkit-scrollbar-thumb {
-  background: var(--color-brand-metallic-dark);
-  border-radius: 4px;
+  background: #1e293b;
+  border-radius: 9999px;
 }
+
 ::-webkit-scrollbar-thumb:hover {
-  background: var(--color-brand-cyan);
-}
-
-@keyframes scan {
-  from { top: 0; }
-  to { top: 100%; }
-}
-
-.animate-scan {
-  animation: scan 3s linear infinite;
-}
-
-.bg-grid-pattern {
-  background-image: 
-    linear-gradient(rgba(0, 240, 255, 0.05) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(0, 240, 255, 0.05) 1px, transparent 1px);
-  background-size: 20px 20px;
+  background: #334155;
 }
 
 @layer base {
   h1, h2, h3, h4, h5, h6 {
-    @apply text-white font-bold tracking-tight;
+    color: #ffffff;
+    font-weight: 700;
+    letter-spacing: -0.025em;
   }
 }
 
-/* Custom Cursor Hide Override for ASCII portrait */
-body.no-custom-cursor {
-  cursor: crosshair !important;
+/* Utility Card Surface */
+.glass-card {
+  background-color: rgba(15, 20, 31, 0.65);
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow: 0 4px 20px -2px rgba(0, 0, 0, 0.5);
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-body.no-custom-cursor .custom-cursor {
-  opacity: 0 !important;
-  visibility: hidden !important;
+.glass-card:hover {
+  border-color: rgba(255, 255, 255, 0.16);
+  box-shadow: 0 12px 32px -4px rgba(0, 0, 0, 0.6);
 }

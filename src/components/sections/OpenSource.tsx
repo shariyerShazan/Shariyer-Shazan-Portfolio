@@ -2,64 +2,65 @@
 
 import React from "react";
 import { portfolioData } from "@/config/portfolioData";
-import { FiGitPullRequest, FiGitBranch, FiExternalLink, FiCheckCircle, FiLayers } from "react-icons/fi";
+import { FiGitPullRequest, FiExternalLink, FiCheckCircle } from "react-icons/fi";
 import { SiNestjs } from "react-icons/si";
 
 const OpenSource = () => {
   return (
-    <section id="opensource" className="py-24 px-6 min-h-screen flex flex-col justify-center relative overflow-hidden bg-gradient-to-b from-[#0a0f1d] via-[#0d1527] to-[#0a0f1d]">
-      {/* Visual background glows */}
-      <div className="absolute top-[25%] left-[5%] w-[350px] h-[350px] bg-[#E0234E]/10 rounded-full blur-[120px] pointer-events-none"></div>
-      <div className="absolute bottom-[20%] right-[5%] w-[320px] h-[320px] bg-[#00f0ff]/10 rounded-full blur-[120px] pointer-events-none"></div>
-
-      <div className="max-w-4xl mx-auto w-full relative z-10">
-        <h2 className="text-3xl md:text-5xl font-bold text-white mb-16 flex items-center gap-4" data-aos="fade-right">
-          <span className="text-[#00f0ff] font-mono text-2xl md:text-4xl">03.</span>
-          Open Source Contributions
-          <div className="h-[1px] flex-grow bg-gradient-to-r from-[#475569] to-transparent ml-4"></div>
-        </h2>
+    <section id="opensource" className="py-24 sm:py-32 relative">
+      <div className="w-full">
+        {/* Section Header */}
+        <div className="mb-14 sm:mb-16" data-aos="fade-right">
+          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-mono font-medium text-[#38bdf8] bg-[#38bdf8]/10 border border-[#38bdf8]/20 mb-4">
+            03 / OPEN SOURCE CREDENTIALS
+          </div>
+          <h2 className="text-3xl sm:text-4xl md:text-5xl font-extrabold text-white tracking-tight mb-4 font-sans">
+            Open Source Contributions
+          </h2>
+          <p className="text-sm sm:text-base text-slate-400 max-w-2xl font-sans leading-relaxed">
+            Direct framework-level contributions to the official NestJS core repository (<span className="text-white font-mono">nestjs/nest</span>), architecting fixes for module lazy-loading, dependency injection, and singleton lifecycle preservation.
+          </p>
+        </div>
 
         <div className="space-y-10">
           {portfolioData.openSourceContributions.map((item, index) => (
-            <div 
-              key={index} 
-              className="bg-[#0f172a]/50 backdrop-blur-md rounded-2xl p-6 md:p-8 border border-[#1e293b]/90 hover:border-[#E0234E]/50 transition-all duration-500 hover:-translate-y-1 group hover:shadow-[0_20px_50px_rgba(224,35,78,0.15)] relative overflow-hidden"
-              data-aos="fade-up" 
+            <div
+              key={index}
+              className="p-6 sm:p-8 rounded-2xl bg-white/[0.02] border border-white/[0.08] hover:border-red-500/30 transition-all duration-300"
+              data-aos="fade-up"
               data-aos-delay={index * 100}
             >
-              {/* Techy background scan grid */}
-              <div className="absolute inset-0 bg-[linear-gradient(rgba(224,35,78,0.02)_1px,transparent_1px)] bg-[size:100%_8px] pointer-events-none group-hover:opacity-70 transition-opacity"></div>
-              <div className="absolute top-0 right-0 w-44 h-44 bg-gradient-to-br from-[#E0234E]/15 to-transparent rounded-bl-full pointer-events-none group-hover:scale-110 transition-transform duration-700"></div>
-              
-              {/* Main Project Header Row */}
-              <div className="flex flex-wrap justify-between items-start gap-4 mb-6 relative z-10">
+              {/* Project Header Row */}
+              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6 pb-6 border-b border-white/[0.06]">
                 <div className="flex items-center gap-4">
-                  <div className="p-3.5 rounded-2xl bg-[#E0234E]/10 border border-[#E0234E]/30 text-[#E0234E] shadow-[0_0_20px_rgba(224,35,78,0.2)] group-hover:scale-105 transition-transform duration-300">
-                    <SiNestjs className="text-3xl md:text-4xl" />
+                  <div className="w-12 h-12 rounded-xl bg-red-500/10 border border-red-500/20 text-[#E0234E] flex items-center justify-center flex-shrink-0 shadow-sm">
+                    <SiNestjs className="text-2xl sm:text-3xl" />
                   </div>
                   <div>
-                    <div className="text-[11px] font-mono text-[#E0234E] uppercase tracking-widest flex items-center gap-1.5 font-bold">
-                      <FiGitBranch className="text-xs" /> Core Framework Contribution
+                    <div className="text-xs font-mono text-[#E0234E] uppercase tracking-wider font-semibold">
+                      Core Framework Contribution
                     </div>
-                    <h3 className="text-2xl md:text-3xl font-extrabold text-white group-hover:text-[#E0234E] transition-colors font-sans tracking-tight">
+                    <h3 className="text-xl sm:text-2xl font-bold text-white tracking-tight font-sans">
                       {item.project}
                     </h3>
                   </div>
                 </div>
 
-                {/* Project Level Badges & Repo Link */}
-                <div className="flex items-center gap-3">
-                  <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-mono font-medium bg-emerald-500/10 border border-emerald-500/30 text-emerald-400">
-                    <FiCheckCircle className="w-3.5 h-3.5" /> {item.status || "Official Contributor"}
+                {/* Badges & Repo Link */}
+                <div className="flex items-center gap-2.5">
+                  <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-mono font-medium bg-emerald-500/10 border border-emerald-500/20 text-emerald-400">
+                    <FiCheckCircle className="w-3.5 h-3.5" />
+                    <span>{item.status || "Official Contributor"}</span>
                   </span>
                   {item.repoUrl && (
-                    <a 
-                      href={item.repoUrl} 
-                      target="_blank" 
-                      rel="noopener noreferrer" 
-                      className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-lg bg-slate-900/90 hover:bg-slate-800 border border-slate-700/80 text-xs font-mono text-[#cbd5e1] hover:text-white transition-all shadow-sm"
+                    <a
+                      href={item.repoUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-lg bg-white/[0.04] hover:bg-white/[0.08] border border-white/[0.08] hover:border-white/[0.16] text-xs font-sans text-slate-200 hover:text-white transition-all shadow-sm"
                     >
-                      NestJS Repo <FiExternalLink className="w-3 h-3 text-[#00f0ff]" />
+                      <span>Repository</span>
+                      <FiExternalLink className="w-3 h-3 text-slate-400" />
                     </a>
                   )}
                 </div>
@@ -67,67 +68,67 @@ const OpenSource = () => {
 
               {/* Project Description */}
               {item.description && item.description.length > 0 && (
-                <div className="mb-8 relative z-10">
+                <div className="mb-8">
                   {item.description.map((desc, dIdx) => (
-                    <p key={dIdx} className="text-[#cbd5e1] text-xs md:text-sm leading-relaxed text-justify opacity-90">
+                    <p key={dIdx} className="text-sm sm:text-base text-slate-300 leading-relaxed font-sans">
                       {desc}
                     </p>
                   ))}
                 </div>
               )}
 
-              {/* Grouped Pull Requests Section (If Present) */}
+              {/* Merged Pull Requests Section */}
               {item.pullRequests && item.pullRequests.length > 0 ? (
-                <div className="space-y-4 mb-8 relative z-10">
-                  <div className="flex items-center gap-2 text-xs font-mono font-semibold text-slate-400 uppercase tracking-wider mb-3">
-                    <FiLayers className="text-[#E0234E]" /> Merged Pull Requests ({item.pullRequests.length})
+                <div className="space-y-4 mb-8">
+                  <div className="text-xs font-mono text-slate-400 uppercase tracking-wider mb-4 font-medium">
+                    Merged Pull Requests ({item.pullRequests.length})
                   </div>
 
                   <div className="grid grid-cols-1 gap-4">
                     {item.pullRequests.map((pr, prIdx) => (
-                      <div 
-                        key={prIdx} 
-                        className="bg-[#0b1329]/80 border border-[#1e293b] hover:border-[#E0234E]/40 rounded-xl p-5 transition-all duration-300 hover:shadow-[0_8px_25px_rgba(0,0,0,0.3)] relative overflow-hidden group/pr"
+                      <div
+                        key={prIdx}
+                        className="p-5 sm:p-6 rounded-xl bg-white/[0.02] border border-white/[0.06] hover:border-white/[0.14] transition-all duration-200"
                       >
-                        <div className="absolute top-0 left-0 w-1 h-full bg-gradient-to-b from-[#E0234E] to-[#00f0ff] rounded-l-xl"></div>
-                        
                         {/* PR Header */}
-                        <div className="flex flex-wrap justify-between items-center gap-2 mb-2.5">
+                        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-3">
                           <div className="flex items-center gap-2.5 flex-wrap">
-                            <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-md text-xs font-mono font-bold bg-[#E0234E]/15 border border-[#E0234E]/40 text-[#f43f5e]">
-                              <FiGitPullRequest className="w-3.5 h-3.5" /> PR {pr.prNumber}
+                            <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-md text-xs font-mono font-semibold bg-red-500/10 border border-red-500/20 text-red-400">
+                              <FiGitPullRequest className="w-3 h-3" />
+                              <span>PR #{pr.prNumber}</span>
                             </span>
-                            <h4 className="text-base md:text-lg font-bold text-white group-hover/pr:text-[#00f0ff] transition-colors">
+                            <h4 className="text-base sm:text-lg font-semibold text-white tracking-tight font-sans">
                               {pr.title}
                             </h4>
                           </div>
 
                           <div className="flex items-center gap-2">
-                            <span className="inline-flex items-center gap-1 text-[11px] font-mono text-emerald-400 bg-emerald-500/10 px-2 py-0.5 rounded border border-emerald-500/20">
+                            <span className="inline-flex items-center gap-1 text-xs font-mono text-emerald-400 bg-emerald-500/10 px-2 py-0.5 rounded border border-emerald-500/20">
                               <FiCheckCircle className="w-3 h-3" /> Merged
                             </span>
-                            <a 
+                            <a
                               href={pr.prUrl}
                               target="_blank"
                               rel="noopener noreferrer"
-                              className="inline-flex items-center gap-1 px-3 py-1 rounded-md text-xs font-mono font-medium bg-[#E0234E] hover:bg-[#c81e43] text-white transition-all shadow-[0_0_12px_rgba(224,35,78,0.25)]"
+                              className="inline-flex items-center gap-1 px-3 py-1 rounded-md text-xs font-sans font-medium bg-white/[0.06] hover:bg-white/[0.12] text-white border border-white/[0.08] transition-all"
                             >
-                              View PR <FiExternalLink className="w-3 h-3" />
+                              <span>View PR</span>
+                              <FiExternalLink className="w-3 h-3 text-slate-400" />
                             </a>
                           </div>
                         </div>
 
-                        {/* PR Description */}
-                        <p className="text-[#94a3b8] text-xs md:text-sm leading-relaxed mb-3">
+                        {/* PR Narrative Description */}
+                        <p className="text-sm text-slate-300 leading-relaxed font-sans mb-4">
                           {pr.description}
                         </p>
 
-                        {/* PR Highlights */}
+                        {/* PR Technical Highlights */}
                         {pr.highlights && pr.highlights.length > 0 && (
-                          <div className="grid grid-cols-1 md:grid-cols-2 gap-2 mb-3">
+                          <div className="grid grid-cols-1 md:grid-cols-2 gap-2 mb-4">
                             {pr.highlights.map((h, hIdx) => (
-                              <div key={hIdx} className="flex items-start gap-2 text-xs text-[#cbd5e1]">
-                                <FiCheckCircle className="text-[#00f0ff] w-3.5 h-3.5 mt-0.5 flex-shrink-0" />
+                              <div key={hIdx} className="flex items-start gap-2 text-xs sm:text-sm text-slate-300 font-sans">
+                                <span className="w-1.5 h-1.5 rounded-full bg-[#38bdf8] mt-2 flex-shrink-0" />
                                 <span>{h}</span>
                               </div>
                             ))}
@@ -136,9 +137,12 @@ const OpenSource = () => {
 
                         {/* PR Sub-tech Tags */}
                         {pr.tech && pr.tech.length > 0 && (
-                          <div className="flex flex-wrap gap-1.5 pt-2 border-t border-[#1e293b]/50">
+                          <div className="flex flex-wrap gap-1.5 pt-3 border-t border-white/[0.04]">
                             {pr.tech.map((t) => (
-                              <span key={t} className="text-[9px] font-mono text-slate-400 bg-[#070c18] px-2 py-0.5 rounded border border-slate-800">
+                              <span
+                                key={t}
+                                className="text-xs font-mono text-slate-400 bg-white/[0.03] px-2.5 py-0.5 rounded border border-white/[0.04]"
+                              >
                                 {t}
                               </span>
                             ))}
@@ -149,33 +153,33 @@ const OpenSource = () => {
                   </div>
                 </div>
               ) : (
-                /* Fallback for single PR format */
-                <div className="space-y-4 mb-6 relative z-10">
-                  {item.highlights && item.highlights.length > 0 && (
-                    <div className="pt-2 space-y-2">
-                      <div className="text-[10px] font-mono text-slate-400 uppercase tracking-wider">Key Details &amp; Impact:</div>
-                      <div className="grid grid-cols-1 md:grid-cols-2 gap-2.5">
-                        {item.highlights.map((h, hIdx) => (
-                          <div key={hIdx} className="flex items-start gap-2 text-xs text-[#e2e8f0]">
-                            <FiCheckCircle className="text-[#00f0ff] w-3.5 h-3.5 mt-0.5 flex-shrink-0" />
-                            <span>{h}</span>
-                          </div>
-                        ))}
-                      </div>
+                /* Fallback for single highlight format */
+                item.highlights && item.highlights.length > 0 && (
+                  <div className="space-y-2 mb-6">
+                    <div className="text-xs font-mono text-slate-400 uppercase tracking-wider mb-2">Key Highlights:</div>
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-2.5">
+                      {item.highlights.map((h, hIdx) => (
+                        <div key={hIdx} className="flex items-start gap-2 text-sm text-slate-300 font-sans">
+                          <span className="w-1.5 h-1.5 rounded-full bg-[#38bdf8] mt-2 flex-shrink-0" />
+                          <span>{h}</span>
+                        </div>
+                      ))}
                     </div>
-                  )}
-                </div>
+                  </div>
+                )
               )}
 
-              {/* Bottom Project Level Tech Stack Tags */}
+              {/* Project-Level Core Topics */}
               {item.tech && item.tech.length > 0 && (
-                <div className="pt-5 border-t border-[#1e293b]/70 flex flex-wrap justify-between items-center gap-4 relative z-10">
-                  <div className="text-[10px] font-mono text-slate-400 uppercase tracking-wider">Core Topics:</div>
-                  <div className="flex flex-wrap gap-1.5">
+                <div className="pt-6 border-t border-white/[0.06] flex flex-wrap items-center justify-between gap-3">
+                  <span className="text-xs font-mono text-slate-500 uppercase tracking-wider">
+                    Core Engineering Topics:
+                  </span>
+                  <div className="flex flex-wrap gap-2">
                     {item.tech.map((t) => (
-                      <span 
-                        key={t} 
-                        className="text-[10px] font-mono text-[#cbd5e1] bg-[#0a0f1d] px-2.5 py-1 rounded-md border border-slate-800 hover:border-[#E0234E]/40 hover:text-white transition-colors cursor-default"
+                      <span
+                        key={t}
+                        className="text-xs font-sans text-slate-300 bg-white/[0.03] border border-white/[0.06] px-3 py-1 rounded-lg"
                       >
                         {t}
                       </span>

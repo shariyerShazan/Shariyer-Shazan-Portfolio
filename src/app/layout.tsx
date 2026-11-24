@@ -15,13 +15,13 @@ const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://shariyer-shazan.ver
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
   title: {
-    default: "Shariyer Shazan | Backend Engineer & Systems Architect",
+    default: "Shariyer Shazan | Lead Full-Stack & DevOps Engineer (Node.js, NestJS, AWS, Kubernetes)",
     template: "%s | Shariyer Shazan"
   },
   verification: {
     google: "google1d6343d8e9a74899",
   },
-  description: "Senior portfolio of Md Shariyer Shazan. Professional Full Stack Developer (Backend Focused) specializing in Node.js, NestJS, TypeScript, Kafka, gRPC, and Microservices.",
+  description: "Official portfolio of Shariyer Shazan — Lead Full-Stack & DevOps Engineer at YouFresh LLC. Core NestJS framework contributor specializing in Node.js, NestJS, AWS EKS, Kubernetes, Terraform, React Native, and distributed microservices.",
   alternates: {
     canonical: "/",
   },
@@ -29,14 +29,23 @@ export const metadata: Metadata = {
     "Shariyer Shazan",
     "Md Shariyer Shazan",
     "Shariyer Shazan Developer",
-    "Backend Engineer",
-    "Systems Architect",
+    "Shariyer Shazan YouFresh",
+    "YouFresh LLC Lead Engineer",
+    "Grovr Developer",
+    "Lead DevOps Engineer",
+    "Lead Full Stack Developer",
+    "Backend Specialist",
+    "NestJS Core Contributor",
+    "AWS EKS Engineer",
+    "Kubernetes Terraform Architect",
     "Node.js Backend Developer",
     "NestJS Developer",
     "Microservice Architecture",
-    "TypeScript Developer",
+    "React Native Expo Developer",
+    "TypeScript Engineer",
     "Kafka Event-Driven Developer",
-    "Dhaka Backend Engineer",
+    "Dhaka DevOps Engineer",
+    "Bangladesh Senior Backend Engineer",
   ],
   authors: [{ name: "Md Shariyer Shazan", url: siteUrl }],
   creator: "Md Shariyer Shazan",
@@ -61,25 +70,25 @@ export const metadata: Metadata = {
     ],
   },
   openGraph: {
-    type: "website",
+    type: "profile",
     locale: "en_US",
     url: siteUrl,
-    title: "Shariyer Shazan | Backend Engineer & Systems Architect",
-    description: "Professional portfolio of Md Shariyer Shazan, Backend Engineer specializing in NestJS, Kafka, gRPC, Node.js, and scaling distributed microservices.",
+    title: "Shariyer Shazan | Lead Full-Stack & DevOps Engineer (Node.js, NestJS, AWS, Kubernetes)",
+    description: "Official portfolio of Shariyer Shazan — Lead Full-Stack & DevOps Engineer at YouFresh LLC. Core NestJS contributor specializing in Node.js, AWS EKS, Kubernetes, Terraform, React Native, and distributed microservices.",
     siteName: "Shariyer Shazan Portfolio",
     images: [
       {
         url: "/og-image.png",
         width: 1200,
         height: 630,
-        alt: "Md Shariyer Shazan - Backend Engineer & Systems Architect Portfolio",
+        alt: "Shariyer Shazan - Lead Full-Stack & DevOps Engineer Portfolio",
       },
     ],
   },
   twitter: {
     card: "summary_large_image",
-    title: "Shariyer Shazan | Backend Engineer & Systems Architect",
-    description: "Professional portfolio of Md Shariyer Shazan, Backend Engineer specializing in NestJS, Kafka, gRPC, Node.js, and scaling distributed microservices.",
+    title: "Shariyer Shazan | Lead Full-Stack & DevOps Engineer (Node.js, NestJS, AWS, Kubernetes)",
+    description: "Official portfolio of Shariyer Shazan — Lead Full-Stack & DevOps Engineer at YouFresh LLC. Core NestJS contributor specializing in Node.js, AWS EKS, Kubernetes, Terraform, React Native, and distributed microservices.",
     creator: "@SJan_1293",
     images: ["/og-image.png"],
   },
@@ -95,8 +104,8 @@ const jsonLd = {
       "givenName": "Md Shariyer",
       "familyName": "Shazan",
       "additionalName": "Shariyer Shazan",
-      "jobTitle": "Full Stack Developer (Backend Focused)",
-      "description": "Backend Engineer focused on building production-ready backend systems and distributed architectures, specializing in NestJS, Node.js, gRPC, Kafka, PostgreSQL, MongoDB, Redis, and Docker.",
+      "jobTitle": "Lead Full-Stack & DevOps Engineer",
+      "description": "Lead Full-Stack & DevOps Engineer at YouFresh LLC and verified NestJS core framework contributor. Specializes in building distributed systems, event-driven microservices (Kafka, gRPC, Redis), cloud infrastructure (AWS EKS, EC2, Kubernetes, Terraform, Helm, Ansible), cross-platform mobile apps (React Native, Expo), and AI integrations (OpenAI GPT-4o Vision, Whisper, MCP).",
       "url": siteUrl,
       "image": `${siteUrl}/profile.jpg`,
       "email": "shariyershazan1@gmail.com",
@@ -117,44 +126,66 @@ const jsonLd = {
           "name": "BAF Shaheen College"
         }
       ],
-      "worksFor": {
-        "@type": "Organization",
-        "name": "Betopia",
-        "description": "Health & weight-management platform."
+      "worksFor": [
+        {
+          "@type": "Organization",
+          "name": "YouFresh LLC",
+          "description": "Healthcare, nutrition, and telehealth platform company, creator of the Grovr ecosystem.",
+          "employee": {
+            "@type": "Person",
+            "name": "Md Shariyer Shazan"
+          }
+        },
+        {
+          "@type": "Organization",
+          "name": "Softvence",
+          "description": "Software engineering company behind the Canine Registry SaaS platform."
+        }
+      ],
+      "hasOccupation": {
+        "@type": "Occupation",
+        "name": "Lead Full-Stack & DevOps Engineer",
+        "description": "Architects scalable distributed systems, event-driven microservices, cloud-native infrastructure with AWS EKS and Kubernetes, and AI-integrated healthcare platforms.",
+        "skills": "Node.js, NestJS, TypeScript, AWS EKS, EC2, Kubernetes, Terraform, Ansible, Docker, Helm, Kafka, gRPC, PostgreSQL, Prisma, Redis, React Native, Expo, Next.js, OpenAI GPT-4o Vision, Whisper, Stripe Connect"
       },
       "knowsAbout": [
         "Software Engineering",
+        "DevOps & Cloud Architecture",
+        "Kubernetes & EKS",
+        "Terraform Infrastructure as Code",
+        "Ansible Configuration Management",
+        "Helm Charts",
         "Backend Development",
         "System Architecture",
         "Node.js",
-        "NestJS",
+        "NestJS Core Framework",
         "TypeScript",
-        "Microservices",
+        "React Native",
+        "Expo SDK",
+        "Next.js App Router",
+        "Distributed Systems",
         "Apache Kafka",
         "gRPC",
-        "Redis",
+        "Redis Caching",
         "PostgreSQL",
+        "Prisma ORM",
         "MongoDB",
         "Docker",
-        "AWS",
-        "CI/CD",
+        "CI/CD Automation",
         "REST APIs",
-        "WebSockets",
-        "Model Context Protocol",
-        "Double Ratchet",
-        "Language Models",
-        "LangChain",
-        "OpenAI",
-        "Ollama",
-        "Claude",
-        "System Integration Auditing"
+        "Socket.IO",
+        "WebRTC Audio Video Signaling",
+        "Model Context Protocol (MCP)",
+        "OpenAI GPT-4o Vision",
+        "Whisper Audio AI",
+        "Stripe Connect"
       ],
       "sameAs": [
-        "https://www.linkedin.com/in/shariyerShazan",
+        "https://www.linkedin.com/in/md-shariyerShazan",
         "https://github.com/shariyerShazan",
         "https://x.com/SJan_1293",
         "https://www.facebook.com/darling.shazan",
-        "https://www.instagram.com/shariyer.shazan/"
+        "https://instagram.com/shariyer.shazan"
       ]
     },
     {
@@ -162,7 +193,7 @@ const jsonLd = {
       "@id": `${siteUrl}/#website`,
       "url": siteUrl,
       "name": "Shariyer Shazan Portfolio",
-      "description": "Professional portfolio of Md Shariyer Shazan, Backend Engineer and Full Stack Developer.",
+      "description": "Official engineering portfolio of Md Shariyer Shazan, Lead Full-Stack & DevOps Engineer and NestJS Core Contributor.",
       "author": {
         "@id": `${siteUrl}/#person`
       }
@@ -171,14 +202,25 @@ const jsonLd = {
       "@type": "WebPage",
       "@id": `${siteUrl}/#webpage`,
       "url": siteUrl,
-      "name": "Md Shariyer Shazan | Backend Engineer & Systems Architect",
+      "name": "Shariyer Shazan | Lead Full-Stack & DevOps Engineer (Node.js, NestJS, AWS, Kubernetes)",
       "isPartOf": {
         "@id": `${siteUrl}/#website`
       },
       "about": {
         "@id": `${siteUrl}/#person`
       },
-      "description": "Senior portfolio of Md Shariyer Shazan. Professional Full Stack Developer (Backend Focused) specializing in Node.js, NestJS, TypeScript, Kafka, gRPC, and Microservices."
+      "description": "Official engineering portfolio of Shariyer Shazan — Lead Full-Stack & DevOps Engineer at YouFresh LLC. Specializing in Node.js, NestJS, AWS EKS, Kubernetes, Terraform, React Native, and distributed microservices."
+    },
+    {
+      "@type": "SoftwareApplication",
+      "@id": `${siteUrl}/#grovr`,
+      "name": "Grovr",
+      "applicationCategory": "HealthApplication",
+      "operatingSystem": "iOS, Android, Web, Cloud",
+      "description": "Enterprise healthcare, AI nutrition tracking, and telehealth ecosystem connecting Members, certified Providers, and Administrators across Mobile (React Native Expo 57), Web (Next.js 16), and Kubernetes-backed AWS cloud infrastructure (EKS + EC2 k3s).",
+      "creator": {
+        "@id": `${siteUrl}/#person`
+      }
     },
     {
       "@type": "SoftwareApplication",
@@ -203,20 +245,6 @@ const jsonLd = {
         "@id": `${siteUrl}/#person`
       },
       "downloadUrl": "https://github.com/shariyerShazan/Finn-Nestjs-Marketplace-Backend"
-    },
-    {
-      "@type": "Service",
-      "@id": `${siteUrl}/#seo-audit-service`,
-      "name": "Technical SEO & System Architecture Audit",
-      "serviceType": "SEO & Performance Audits",
-      "description": "Comprehensive technical SEO analysis, code review, performance optimization, and architectural auditing for high-load web applications and distributed systems.",
-      "provider": {
-        "@id": `${siteUrl}/#person`
-      },
-      "areaServed": {
-        "@type": "Country",
-        "name": "Worldwide"
-      }
     }
   ]
 };
@@ -228,7 +256,10 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" className="scroll-smooth">
-      <body className={`${inter.variable} ${outfit.variable} font-sans antialiased text-slate-200 bg-[#0a0f1d]`}>
+      <body className={`${inter.variable} ${outfit.variable} font-sans antialiased text-slate-200 bg-[#08090d] min-h-screen relative selection:bg-[#00f0ff]/20 selection:text-white`}>
+        {/* Subtle top ambient spotlight for linear/vercel depth */}
+        <div className="bg-spotlight" />
+
         {/* Inject JSON-LD Schema */}
         <script
           type="application/ld+json"
@@ -241,7 +272,7 @@ export default function RootLayout({
           <CustomCursor />
           <Navbar />
           <FrameBorder />
-          <main className="relative z-10 px-9">
+          <main className="relative z-10 max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
             {children}
           </main>
         </GameModeProvider>

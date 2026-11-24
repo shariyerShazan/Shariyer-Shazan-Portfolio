@@ -75,20 +75,12 @@ export const AsciiImage: React.FC<AsciiImageProps> = ({
   const isSettledRef = useRef(false);
   const colorProgressRef = useRef<number>(colorMode === "original" ? 1.0 : 0.0);
 
-  const [viewMode, setViewMode] = useState<"ascii" | "original">("ascii");
+  const [viewMode, setViewMode] = useState<"ascii" | "original">("original");
   const [colorModeState, setColorModeState] = useState<"original" | "theme">(colorMode);
   const [dimensions, setDimensions] = useState<{ width: number; height: number }>({
     width: 384,
     height: 384,
   });
-
-  // Automatically toggle color scheme every 10 seconds smoothly
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setColorModeState((prev) => (prev === "theme" ? "original" : "theme"));
-    }, 5000);
-    return () => clearInterval(interval);
-  }, []);
 
   // Handle Resize and get bounding dims
   useEffect(() => {
@@ -509,10 +501,9 @@ export const AsciiImage: React.FC<AsciiImageProps> = ({
           viewMode === "original" ? "opacity-100" : "opacity-0 pointer-events-none"
         }`}
       >
-        <div className="absolute inset-0 bg-[#00f0ff]/10 mix-blend-overlay z-10 pointer-events-none"></div>
         <Image
           src={src}
-          alt="Md Shariyer Shazan - Backend Engineer & Systems Architect Profile Photo"
+          alt="Md Shariyer Shazan - Lead Full-Stack & DevOps Engineer Profile Photo"
           width={384}
           height={384}
           priority
@@ -520,20 +511,17 @@ export const AsciiImage: React.FC<AsciiImageProps> = ({
         />
       </div>
 
-      {/* Futuristic cyber scanner screen effect */}
-      <div className="absolute top-0 left-0 w-full h-1 bg-[#00f0ff]/30 opacity-40 animate-scan pointer-events-none z-10"></div>
-
       {/* Control UI: Mode toggle overlay on hover */}
-      <div className="absolute bottom-3 right-3 z-20 flex gap-2 opacity-50 group-hover:opacity-100 transition-opacity duration-300 pointer-events-auto">
+      <div className="absolute bottom-3 right-3 z-20 flex gap-2 opacity-60 hover:opacity-100 transition-opacity duration-300 pointer-events-auto">
         {viewMode === "ascii" && (
           <button
             onClick={(e) => {
               e.stopPropagation();
               setColorModeState((prev) => (prev === "theme" ? "original" : "theme"));
             }}
-            className="px-2 py-1 text-[8px] font-mono font-bold uppercase rounded border border-[#00f0ff]/40 bg-slate-950/95 text-[#00f0ff] hover:bg-[#00f0ff]/10 transition-all cursor-pointer"
+            className="px-2.5 py-1 text-[9px] font-mono font-medium rounded-md border border-slate-700 bg-slate-900/90 text-slate-300 hover:text-white hover:bg-slate-800 transition-all cursor-pointer"
           >
-            {colorModeState === "theme" ? "Colors" : "Matrix"}
+            {colorModeState === "theme" ? "Full Color" : "Theme Tint"}
           </button>
         )}
         <button
@@ -541,9 +529,9 @@ export const AsciiImage: React.FC<AsciiImageProps> = ({
             e.stopPropagation();
             setViewMode((prev) => (prev === "ascii" ? "original" : "ascii"));
           }}
-          className="px-2 py-1 text-[8px] font-mono font-bold uppercase rounded border border-[#00f0ff]/40 bg-slate-950/95 text-[#00f0ff] hover:bg-[#00f0ff]/10 transition-all cursor-pointer shadow-md hover:shadow-[0_0_8px_rgba(0,240,255,0.35)]"
+          className="px-2.5 py-1 text-[9px] font-mono font-medium rounded-md border border-slate-700 bg-slate-900/90 text-slate-300 hover:text-white hover:bg-slate-800 transition-all cursor-pointer shadow-md"
         >
-          {viewMode === "ascii" ? "Photo" : "ASCII"}
+          {viewMode === "ascii" ? "Photo View" : "ASCII Art"}
         </button>
       </div>
     </div>

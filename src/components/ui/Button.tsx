@@ -14,19 +14,23 @@ interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
 export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
   ({ className, variant = "primary", size = "md", ...props }, ref) => {
     const baseStyles =
-      "inline-flex items-center justify-center rounded-md font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-cyan disabled:pointer-events-none disabled:opacity-50";
+      "inline-flex items-center justify-center font-medium transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#00f0ff]/50 disabled:pointer-events-none disabled:opacity-50 select-none cursor-pointer active:scale-[0.98]";
 
     const variants = {
-      primary: "bg-[#00f0ff] text-[#0a0f1d] hover:opacity-90 shadow-[0_0_15px_rgba(0,240,255,0.4)]",
-      secondary: "bg-[#475569] text-white hover:bg-[#94a3b8]",
-      outline: "border border-[#00f0ff] text-[#00f0ff] hover:bg-[rgba(0,240,255,0.1)]",
-      ghost: "hover:bg-[#475569] hover:text-white text-[#cbd5e1]",
+      primary:
+        "bg-white text-zinc-950 hover:bg-zinc-200 font-semibold shadow-[0_1px_2px_rgba(0,0,0,0.1),0_0_20px_rgba(255,255,255,0.15)] rounded-xl",
+      secondary:
+        "bg-slate-900/90 text-slate-200 hover:text-white hover:bg-slate-800 border border-slate-800 hover:border-slate-700 shadow-sm rounded-xl",
+      outline:
+        "border border-slate-700/80 hover:border-slate-500 bg-slate-950/40 hover:bg-slate-900/60 text-slate-200 hover:text-white shadow-sm rounded-xl",
+      ghost:
+        "text-slate-400 hover:text-white hover:bg-slate-800/50 rounded-xl",
     };
 
     const sizes = {
-      sm: "h-9 px-4 text-xs",
-      md: "h-11 px-6 text-sm",
-      lg: "h-14 px-8 text-base",
+      sm: "h-9 px-3.5 text-xs gap-1.5",
+      md: "h-11 px-5 text-sm gap-2",
+      lg: "h-12 px-7 text-base gap-2.5",
     };
 
     return (

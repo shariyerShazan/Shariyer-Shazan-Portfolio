@@ -1,11 +1,11 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
-import profilePic from "../../../public/profile.jpg";
 import { Button } from "../ui/Button";
 import { portfolioData } from "../../config/portfolioData";
-import { FaLinkedin, FaDownload, FaMapMarkerAlt } from "react-icons/fa";
-import Image from "next/image";
+import { FaLinkedin, FaDownload, FaMapMarkerAlt, FaBriefcase, FaCodeBranch } from "react-icons/fa";
+import { SiKubernetes } from "react-icons/si";
+import { FiArrowDown, FiArrowUpRight } from "react-icons/fi";
 import { AsciiImage } from "../ui/AsciiImage";
 
 const Hero = () => {
@@ -22,24 +22,22 @@ const Hero = () => {
       if (currentText !== fullText) {
         timer = setTimeout(() => {
           setCurrentText(fullText.substring(0, currentText.length + 1));
-        }, 80);
+        }, 45);
       } else {
-        // Pause for 10 seconds at full text state before deletion
         timer = setTimeout(() => {
           setIsDeleting(true);
-        }, 10000);
+        }, 5000);
       }
     } else {
       if (currentText !== "") {
         timer = setTimeout(() => {
           setCurrentText(fullText.substring(0, currentText.length - 1));
-        }, 40);
+        }, 20);
       } else {
-        // Pause briefly at empty state before changing to next role
         timer = setTimeout(() => {
           setIsDeleting(false);
           setRoleIndex((prev) => (prev + 1) % roles.length);
-        }, 300);
+        }, 150);
       }
     }
 
@@ -49,97 +47,132 @@ const Hero = () => {
   return (
     <section
       id="home"
-      className="relative min-h-[100svh] flex flex-col justify-center px-6 pt-32 pb-20 overflow-hidden bg-gradient-to-b from-[#0a0f1d] to-[#0a0f1d]"
+      className="relative min-h-[92svh] flex flex-col justify-center pt-32 pb-20 overflow-hidden"
     >
-      {/* Decorative radial gradients for professional depth */}
-      <div className="absolute top-[20%] left-[10%] w-[350px] h-[350px] bg-[#00f0ff]/10 rounded-full blur-[100px] pointer-events-none"></div>
-      <div className="absolute bottom-[20%] right-[10%] w-[400px] h-[400px] bg-[#7C3AED]/5 rounded-full blur-[120px] pointer-events-none"></div>
-
-      <div className="max-w-6xl mx-auto w-full grid grid-cols-1 lg:grid-cols-12 gap-12 items-center relative z-10">
-        {/* Text Content */}
-        <div className="lg:col-span-7" data-aos="fade-up">
+      <div className="w-full grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-center relative z-10">
+        {/* Left Column: Bio & Core Info */}
+        <div className="lg:col-span-7 flex flex-col justify-center" data-aos="fade-up">
+          {/* Top Status & Location Badges */}
           <div className="flex flex-wrap items-center gap-3 mb-6">
-            <p className="text-[#00f0ff] font-mono tracking-wider border-l-2 border-[#00f0ff] pl-3 text-xs md:text-sm">
-              SYSTEMS_INITIALIZED: TRUE
-            </p>
-            
-            <div className="flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-mono bg-[#1e293b]/80 border border-[#334155] text-slate-300">
-              <FaMapMarkerAlt className="text-[#00f0ff] animate-bounce" />
+            <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full text-xs font-mono bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 font-medium">
+              <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+              <span>Lead Engineer @ YouFresh LLC</span>
+            </div>
+
+            <div className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-mono bg-white/[0.04] border border-white/[0.08] text-slate-300">
+              <FaMapMarkerAlt className="text-slate-400 text-xs" />
               <span>{portfolioData.location}</span>
             </div>
           </div>
 
-          <h1 className="text-4xl md:text-6xl xl:text-7xl font-bold text-white mb-3 leading-tight">
+          {/* Name & Headline */}
+          <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-extrabold text-white mb-4 tracking-tight font-sans">
             {portfolioData.name}
           </h1>
 
-          {/* Static Professional Title */}
-          <p className="text-base md:text-xl font-mono text-[#00f0ff] mb-6 font-semibold tracking-wide">
+          <p className="text-lg md:text-xl font-medium text-slate-200 mb-3 tracking-tight font-sans">
             {portfolioData.role}
           </p>
 
-          <div className="h-10 md:h-12 mb-8 flex items-center">
-            <h2 className="text-xl md:text-3xl font-bold text-[#94a3b8]">
-              I design &amp; build <span className="text-[#00f0ff] border-r-2 border-[#00f0ff] pr-1 animate-pulse font-mono">{currentText}</span>
-            </h2>
+          {/* Dynamic Specialization Subtitle */}
+          <div className="min-h-[2.5rem] mb-6 flex items-center">
+            <p className="text-sm md:text-base text-slate-400 font-sans">
+              Specializing in{" "}
+              <span className="text-[#38bdf8] font-mono font-medium border-b border-[#38bdf8]/40 pb-0.5">
+                {currentText}
+              </span>
+              <span className="text-[#38bdf8] animate-pulse ml-0.5">|</span>
+            </p>
           </div>
 
-          <p className="text-sm md:text-base text-[#cbd5e1] leading-relaxed max-w-2xl mb-10 text-justify font-sans">
-            {portfolioData.about.split("Waave").map((part, index, arr) => (
-              <React.Fragment key={index}>
-                {part}
-                {index < arr.length - 1 && (
-                  <a
-                    href="#projects"
-                    className="text-[#00f0ff] hover:underline underline-offset-4 font-semibold transition-all duration-300"
-                  >
-                    Waave
-                  </a>
-                )}
-              </React.Fragment>
-            ))}
+          {/* Authoritative Human Bio */}
+          <p className="text-sm md:text-base text-slate-300/90 leading-relaxed max-w-2xl mb-8 font-sans">
+            {portfolioData.about}
           </p>
 
-          <div className="flex flex-wrap gap-4 items-center">
+          {/* Architectural Credentials Micro-Grid */}
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 mb-8">
+            <a
+              href="#opensource"
+              className="p-3.5 rounded-xl bg-white/[0.03] border border-white/[0.08] hover:border-red-500/40 hover:bg-white/[0.05] transition-all group flex flex-col justify-between"
+            >
+              <div className="flex items-center justify-between mb-2">
+                <FaCodeBranch className="text-[#E0234E] text-base" />
+                <FiArrowUpRight className="text-xs text-slate-500 group-hover:text-white transition-colors" />
+              </div>
+              <div>
+                <div className="text-xs font-semibold text-white font-sans">NestJS Core Contributor</div>
+                <div className="text-[11px] font-mono text-slate-400 mt-0.5">3 Merged Framework PRs</div>
+              </div>
+            </a>
+
+            <a
+              href="#projects"
+              className="p-3.5 rounded-xl bg-white/[0.03] border border-white/[0.08] hover:border-emerald-500/40 hover:bg-white/[0.05] transition-all group flex flex-col justify-between"
+            >
+              <div className="flex items-center justify-between mb-2">
+                <FaBriefcase className="text-emerald-400 text-base" />
+                <FiArrowUpRight className="text-xs text-slate-500 group-hover:text-white transition-colors" />
+              </div>
+              <div>
+                <div className="text-xs font-semibold text-white font-sans">Grovr Ecosystem</div>
+                <div className="text-[11px] font-mono text-slate-400 mt-0.5">AWS EKS &amp; React Native</div>
+              </div>
+            </a>
+
+            <a
+              href="#tech"
+              className="p-3.5 rounded-xl bg-white/[0.03] border border-white/[0.08] hover:border-sky-500/40 hover:bg-white/[0.05] transition-all group flex flex-col justify-between"
+            >
+              <div className="flex items-center justify-between mb-2">
+                <SiKubernetes className="text-sky-400 text-base" />
+                <FiArrowUpRight className="text-xs text-slate-500 group-hover:text-white transition-colors" />
+              </div>
+              <div>
+                <div className="text-xs font-semibold text-white font-sans">Cloud Infrastructure</div>
+                <div className="text-[11px] font-mono text-slate-400 mt-0.5">Terraform, Ansible, Helm</div>
+              </div>
+            </a>
+          </div>
+
+          {/* Action CTAs Row */}
+          <div className="flex flex-wrap gap-3 items-center mb-8">
             <Button
               variant="primary"
-              className="cursor-pointer font-semibold"
+              className="font-semibold text-xs md:text-sm px-6 py-3 cursor-pointer"
               onClick={() => {
                 const el = document.getElementById("projects");
-                if (el)
-                  window.scrollTo({
-                    top: el.offsetTop - 80,
-                    behavior: "smooth",
-                  });
+                if (el) el.scrollIntoView({ behavior: "smooth" });
               }}
             >
-              Configure Projects
+              <span>View Featured Work</span>
+              <FiArrowDown className="text-sm" />
+            </Button>
+
+            <Button
+              variant="secondary"
+              className="font-medium text-xs md:text-sm px-5 py-3 cursor-pointer"
+              onClick={() => window.open(portfolioData.resumeLink, "_blank")}
+            >
+              <FaDownload className="text-xs" />
+              <span>Resume / CV</span>
             </Button>
 
             <Button
               variant="outline"
-              className="gap-2 cursor-pointer"
-              onClick={() => window.open(portfolioData.resumeLink, "_blank")}
+              className="font-medium text-xs md:text-sm px-5 py-3 cursor-pointer"
+              onClick={() => {
+                const el = document.getElementById("contact");
+                if (el) el.scrollIntoView({ behavior: "smooth" });
+              }}
             >
-              <FaDownload className="w-3.5 h-3.5" /> Get CV / Resume
-            </Button>
-
-            <Button
-              variant="ghost"
-              className="gap-2 cursor-pointer"
-              onClick={() =>
-                window.open(
-                  portfolioData.socials.find((s) => s.name === "LinkedIn")?.href,
-                  "_blank"
-                )
-              }
-            >
-              <FaLinkedin /> Connect
+              <span>Get in Touch</span>
             </Button>
           </div>
 
           {/* Social Links Row */}
-          <div className="mt-8 pt-6 border-t border-[#1e293b]/50 flex flex-wrap gap-3">
+          <div className="flex items-center flex-wrap gap-2 pt-4 border-t border-white/[0.08]">
+            <span className="text-xs font-mono text-slate-500 uppercase tracking-wider mr-2">Profiles:</span>
             {portfolioData.socials.map((social) => {
               const SocialIcon = social.icon;
               return (
@@ -148,9 +181,9 @@ const Hero = () => {
                   href={social.href}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="flex items-center gap-2 text-xs md:text-sm font-mono text-[#cbd5e1] hover:text-[#00f0ff] transition-all bg-[#0f172a]/30 hover:bg-[#00f0ff]/5 px-3 py-1.5 rounded-lg border border-[#1e293b]/60 hover:border-[#00f0ff]/30 cursor-pointer group shadow-sm hover:shadow-[0_0_10px_rgba(0,240,255,0.05)]"
+                  className="inline-flex items-center gap-1.5 text-xs font-sans text-slate-400 hover:text-white transition-all bg-white/[0.03] hover:bg-white/[0.08] px-3 py-1.5 rounded-lg border border-white/[0.06] hover:border-white/[0.12]"
                 >
-                  <SocialIcon className="text-sm group-hover:scale-110 transition-transform duration-300" />
+                  <SocialIcon className="text-xs" />
                   <span>{social.name}</span>
                 </a>
               );
@@ -158,26 +191,15 @@ const Hero = () => {
           </div>
         </div>
 
-        {/* Profile Image Column */}
+        {/* Right Column: Profile Portrait */}
         <div
           className="lg:col-span-5 flex justify-center lg:justify-end"
           data-aos="fade-left"
         >
-          <div
-            className="relative w-64 h-64 md:w-80 md:h-80 xl:w-96 xl:h-96"
-            onMouseEnter={() => {
-              if (typeof document !== "undefined") document.body.classList.add("no-custom-cursor");
-            }}
-            onMouseLeave={() => {
-              if (typeof document !== "undefined") document.body.classList.remove("no-custom-cursor");
-            }}
-          >
-            {/* Geometric Background Shapes */}
-            <div className="absolute -inset-4 border border-[#00f0ff]/20 rounded-2xl rotate-6 animate-pulse"></div>
-            <div className="absolute -inset-4 border border-[#7C3AED]/20 rounded-2xl -rotate-3"></div>
-
-            {/* Dynamic Interactive ASCII Canvas Component */}
-            <AsciiImage src="/profile.jpg" />
+          <div className="p-2 rounded-3xl bg-gradient-to-b from-white/[0.12] via-white/[0.04] to-transparent shadow-[0_20px_50px_rgba(0,0,0,0.6)]">
+            <div className="relative w-72 h-72 sm:w-80 sm:h-80 xl:w-96 xl:h-96 rounded-2xl overflow-hidden bg-slate-950 border border-white/[0.08]">
+              <AsciiImage src="/profile.jpg" />
+            </div>
           </div>
         </div>
       </div>
